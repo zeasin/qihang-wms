@@ -23,7 +23,7 @@
         <module>pdd-api</module>
         <module>tao-api</module>
         <module>wei-api</module>
-        <module>sys-api</module>
+<!--        <module>sys-api</module>-->
     </modules>
 
     <properties>

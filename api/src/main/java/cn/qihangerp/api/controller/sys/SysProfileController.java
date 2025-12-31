@@ -1,6 +1,6 @@
-package cn.qihangerp.api.sys.controller;
+package cn.qihangerp.api.controller.sys;
 
-import cn.qihangerp.api.sys.model.CurrentUserDTO;
+import cn.qihangerp.api.controller.sys.model.CurrentUserDTO;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.interfaces.ISysUserService;

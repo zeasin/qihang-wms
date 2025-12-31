@@ -1,4 +1,4 @@
-package cn.qihangerp.api.sys.model;
+package cn.qihangerp.api.controller.sys.model;
 
 import lombok.Data;
 
