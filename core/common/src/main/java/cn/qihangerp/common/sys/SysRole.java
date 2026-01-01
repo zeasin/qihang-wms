@@ -1,4 +1,4 @@
-package cn.qihangerp.model.entity;
+package cn.qihangerp.common.sys;
 
 import java.util.Date;
 import java.util.Map;

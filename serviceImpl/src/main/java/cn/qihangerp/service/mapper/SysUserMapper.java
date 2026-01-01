@@ -1,6 +1,6 @@
 package cn.qihangerp.service.mapper;
 
-import cn.qihangerp.model.entity.SysUser;
+import cn.qihangerp.common.sys.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

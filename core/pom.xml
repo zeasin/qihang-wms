@@ -18,7 +18,7 @@
         <module>security</module>
         <module>common</module>
 <!--        <module>mapper</module>-->
-        <module>interfaces</module>
+<!--        <module>interfaces</module>-->
 <!--        <module>model</module>-->
     </modules>
     <properties>

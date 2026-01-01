@@ -2,10 +2,10 @@ package cn.qihangerp.service.service.impl;
 
 import cn.qihangerp.common.ServiceException;
 import cn.qihangerp.common.constant.UserConstants;
+import cn.qihangerp.common.sys.SysRole;
+import cn.qihangerp.common.sys.SysUser;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.interfaces.ISysUserService;
-import cn.qihangerp.model.entity.SysRole;
-import cn.qihangerp.model.entity.SysUser;
+import cn.qihangerp.common.sys.ISysUserService;
 import cn.qihangerp.model.entity.SysUserRole;
 import cn.qihangerp.service.mapper.SysRoleMapper;
 import cn.qihangerp.service.mapper.SysUserMapper;

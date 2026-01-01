@@ -1,6 +1,6 @@
 package cn.qihangerp.api.controller.sys;
 
-import cn.qihangerp.model.entity.SysUser;
+import cn.qihangerp.common.sys.SysUser;
 import cn.qihangerp.model.request.LoginBody;
 import cn.qihangerp.model.entity.SysMenu;
 import cn.qihangerp.service.service.ISysMenuService;

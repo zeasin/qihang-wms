@@ -1,6 +1,6 @@
 package cn.qihangerp.service.service;
 
-import cn.qihangerp.model.entity.SysRole;
+import cn.qihangerp.common.sys.SysRole;
 import cn.qihangerp.model.entity.SysUserRole;
 
 import java.util.List;

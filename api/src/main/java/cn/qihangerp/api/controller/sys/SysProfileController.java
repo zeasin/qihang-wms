@@ -2,9 +2,9 @@ package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.api.controller.sys.model.CurrentUserDTO;
 import cn.qihangerp.common.AjaxResult;
+import cn.qihangerp.common.sys.SysUser;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.interfaces.ISysUserService;
-import cn.qihangerp.model.entity.SysUser;
+import cn.qihangerp.common.sys.ISysUserService;
 import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.security.TokenService;
 import cn.qihangerp.security.common.BaseController;

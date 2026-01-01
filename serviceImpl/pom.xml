@@ -26,10 +26,15 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>interfaces</artifactId>
-            <version>2.0.0</version>
+            <groupId>cn.qihangerp.model</groupId>
+            <artifactId>model</artifactId>
+            <version>2.0.1</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.service</groupId>-->
+<!--            <artifactId>interfaces</artifactId>-->
+<!--            <version>2.0.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>cn.qihangerp.mapper</groupId>
             <artifactId>mapper</artifactId>
