@@ -9,12 +9,12 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan(basePackages={"cn.qihangerp"})
 //@MapperScan("cn.qihangerp.sys.api.mapper")
 @SpringBootApplication(scanBasePackages = {"cn.qihangerp.api"})
-public class ApiApplication
+public class QihangWmsApi
 {
     public static void main( String[] args )
     {
         System.out.println( "Hello qihang-wms!" );
-        SpringApplication.run(ApiApplication.class, args);
+        SpringApplication.run(QihangWmsApi.class, args);
     }
 
     @Bean
