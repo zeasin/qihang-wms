@@ -7,7 +7,7 @@ import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpStockIn;
 import cn.qihangerp.model.request.StockInCreateRequest;
 import cn.qihangerp.model.request.StockInRequest;
-import cn.qihangerp.module.stock.service.ErpStockInService;
+import cn.qihangerp.service.service.ErpStockInService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

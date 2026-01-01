@@ -1,8 +1,8 @@
 package cn.qihangerp.api.controller.oms;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.wei.domain.OmsWeiRefund;
-import cn.qihangerp.module.open.wei.service.OmsWeiRefundService;
+import cn.qihangerp.model.entity.OmsWeiRefund;
+import cn.qihangerp.service.service.WeiRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/open-api/wei/refund")
 public class WeiRefundFeignController {
-    private final OmsWeiRefundService refundService;
+    private final WeiRefundService refundService;
     @GetMapping(value = "/get_detail")
     public AjaxResult getInfo(String afterSaleOrderId)
     {

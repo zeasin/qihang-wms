@@ -2,9 +2,9 @@ package cn.qihangerp.api.controller.oms;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.open.jd.domain.bo.JdTokenCreateBo;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.model.bo.JdTokenCreateBo;
+import cn.qihangerp.service.service.OShopPlatformService;
+import cn.qihangerp.service.service.OShopService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

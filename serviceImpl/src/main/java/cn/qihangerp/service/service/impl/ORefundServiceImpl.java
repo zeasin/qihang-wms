@@ -2,7 +2,7 @@ package cn.qihangerp.service.service.impl;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.entity.OGoodsSku;
-import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
+import cn.qihangerp.service.mapper.OGoodsSkuMapper;
 import cn.qihangerp.model.entity.OAfterSale;
 import cn.qihangerp.model.entity.OOrder;
 import cn.qihangerp.model.entity.OOrderItem;

@@ -1,8 +1,8 @@
 package cn.qihangerp.api.controller.oms;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.jd.domain.JdRefund;
-import cn.qihangerp.module.open.jd.service.JdRefundService;
+import cn.qihangerp.model.entity.JdRefund;
+import cn.qihangerp.service.service.JdRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

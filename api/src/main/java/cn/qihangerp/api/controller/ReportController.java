@@ -1,12 +1,12 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.goods.service.OGoodsInventoryService;
+import cn.qihangerp.service.service.OGoodsInventoryService;
 import cn.qihangerp.model.vo.SalesDailyVo;
 import cn.qihangerp.model.vo.SalesTopSkuVo;
 import cn.qihangerp.service.service.OOrderItemService;
 import cn.qihangerp.service.service.OOrderService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.service.OShopService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -11,10 +11,10 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
-import cn.qihangerp.module.open.tao.domain.TaoRefund;
-import cn.qihangerp.module.open.tao.service.TaoRefundService;
-import cn.qihangerp.module.service.OShopPullLasttimeService;
-import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.model.entity.TaoRefund;
+import cn.qihangerp.service.service.TaoRefundService;
+import cn.qihangerp.service.service.OShopPullLasttimeService;
+import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
 
 import cn.qihangerp.open.tao.TaoRefundApiHelper;

@@ -1,8 +1,8 @@
 package cn.qihangerp.api.common;
 
 
-import cn.qihangerp.module.open.tao.domain.TaoOrder;
-import cn.qihangerp.module.open.tao.domain.TaoOrderItem;
+import cn.qihangerp.model.entity.TaoOrder;
+import cn.qihangerp.model.entity.TaoOrderItem;
 import cn.qihangerp.open.tao.response.TaoOrderListResponse;
 import org.springframework.util.StringUtils;
 

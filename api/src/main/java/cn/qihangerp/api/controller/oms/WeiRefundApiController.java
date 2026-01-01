@@ -5,8 +5,8 @@ import cn.qihangerp.api.request.PullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.module.open.wei.domain.OmsWeiRefund;
-import cn.qihangerp.module.open.wei.service.OmsWeiRefundService;
+import cn.qihangerp.model.entity.OmsWeiRefund;
+import cn.qihangerp.service.service.WeiRefundService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 
@@ -28,7 +28,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class WeiRefundApiController extends BaseController {
     private final WeiApiCommon apiCommon;
-    private final OmsWeiRefundService refundService;
+    private final WeiRefundService refundService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {

@@ -1,7 +1,7 @@
 package cn.qihangerp.service.service.impl;
 
 import cn.qihangerp.model.entity.OGoodsSku;
-import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
+import cn.qihangerp.service.mapper.OGoodsSkuMapper;
 import cn.qihangerp.model.entity.OfflineGoodsSku;
 import cn.qihangerp.service.mapper.OfflineGoodsSkuMapper;
 import cn.qihangerp.service.service.OfflineGoodsSkuService;

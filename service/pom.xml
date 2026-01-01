@@ -16,17 +16,17 @@
     <url>http://maven.apache.org</url>
 
     <modules>
-        <module>shop</module>
-        <module>goods</module>
+<!--        <module>shop</module>-->
+<!--        <module>goods</module>-->
 <!--        <module>serviceImpl</module>-->
         <module>sys</module>
-        <module>stock</module>
-        <module>dou</module>
-        <module>jd</module>
-        <module>pdd</module>
-        <module>tao</module>
-        <module>wei</module>
-        <module>erp</module>
+<!--        <module>stock</module>-->
+<!--        <module>dou</module>-->
+<!--        <module>jd</module>-->
+<!--        <module>pdd</module>-->
+<!--        <module>tao</module>-->
+<!--        <module>wei</module>-->
+<!--        <module>erp</module>-->
     </modules>
     <properties>
         <java.version>17</java.version>

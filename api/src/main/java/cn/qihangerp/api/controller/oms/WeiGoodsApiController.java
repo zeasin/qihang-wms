@@ -6,9 +6,9 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 
-import cn.qihangerp.module.open.wei.domain.WeiGoods;
-import cn.qihangerp.module.open.wei.domain.WeiGoodsSku;
-import cn.qihangerp.module.open.wei.service.OmsWeiGoodsService;
+import cn.qihangerp.model.entity.WeiGoods;
+import cn.qihangerp.model.entity.WeiGoodsSku;
+import cn.qihangerp.service.service.WeiGoodsService;
 import cn.qihangerp.open.common.ApiResultVo;
 
 import cn.qihangerp.open.wei.WeiGoodsApiService;
@@ -32,7 +32,7 @@ public class WeiGoodsApiController {
     private final WeiGoodsApiService goodsApiService;
     private final WeiApiCommon apiCommon;
 //    private final WeiGoodsService weiGoodsService;
-    private final OmsWeiGoodsService weiGoodsService;
+    private final WeiGoodsService weiGoodsService;
 
     @RequestMapping(value = "/pull_goods_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {

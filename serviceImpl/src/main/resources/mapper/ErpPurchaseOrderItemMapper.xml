@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.service.mapper.ErpPurchaseOrderItemMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpPurchaseOrderItem">
+            <id property="id" column="id" />
+            <result property="orderId" column="order_id" />
+            <result property="orderNum" column="order_num" />
+            <result property="transType" column="trans_type" />
+            <result property="amount" column="amount" />
+            <result property="orderDate" column="order_date" />
+            <result property="remark" column="remark" />
+            <result property="goodsId" column="goods_id" />
+            <result property="goodsNum" column="goods_num" />
+            <result property="goodsName" column="goods_name" />
+            <result property="specId" column="spec_id" />
+            <result property="specNum" column="spec_num" />
+            <result property="colorValue" column="color_value" />
+            <result property="colorImage" column="color_image" />
+            <result property="sizeValue" column="size_value" />
+            <result property="styleValue" column="style_value" />
+            <result property="price" column="price" />
+            <result property="disAmount" column="dis_amount" />
+            <result property="disRate" column="dis_rate" />
+            <result property="quantity" column="quantity" />
+            <result property="inqty" column="inQty" />
+            <result property="locationid" column="locationId" />
+            <result property="isDelete" column="is_delete" />
+            <result property="status" column="status" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_id,order_num,trans_type,amount,order_date,
+        remark,goods_id,goods_num,goods_name,spec_id,
+        spec_num,color_value,color_image,size_value,style_value,
+        price,dis_amount,dis_rate,quantity,inQty,
+        locationId,is_delete,status
+    </sql>
+</mapper>

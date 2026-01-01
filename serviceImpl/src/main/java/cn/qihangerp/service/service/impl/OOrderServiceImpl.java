@@ -1,10 +1,9 @@
 package cn.qihangerp.service.service.impl;
 
 import cn.qihangerp.model.entity.*;
-import cn.qihangerp.module.goods.mapper.OGoodsMapper;
-import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
-import cn.qihangerp.module.goods.mapper.OGoodsSupplierMapper;
-import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
+import cn.qihangerp.service.mapper.OGoodsMapper;
+import cn.qihangerp.service.mapper.OGoodsSkuMapper;
+import cn.qihangerp.service.mapper.OGoodsSupplierMapper;
 import cn.qihangerp.model.bo.OrderAllocateShipRequest;
 import cn.qihangerp.model.bo.OrderShipRequest;
 import cn.qihangerp.model.vo.OrderDiscountVo;

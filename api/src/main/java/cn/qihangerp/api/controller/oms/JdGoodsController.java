@@ -3,12 +3,12 @@ package cn.qihangerp.api.controller.oms;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.goods.service.OGoodsSkuService;
-import cn.qihangerp.module.open.jd.domain.JdGoods;
-import cn.qihangerp.module.open.jd.domain.JdGoodsSku;
-import cn.qihangerp.module.open.jd.domain.bo.JdGoodsBo;
-import cn.qihangerp.module.open.jd.service.JdGoodsService;
-import cn.qihangerp.module.open.jd.service.JdGoodsSkuService;
+import cn.qihangerp.service.service.OGoodsSkuService;
+import cn.qihangerp.model.entity.JdGoods;
+import cn.qihangerp.model.entity.JdGoodsSku;
+import cn.qihangerp.model.bo.JdGoodsBo;
+import cn.qihangerp.service.service.JdGoodsService;
+import cn.qihangerp.service.service.JdGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

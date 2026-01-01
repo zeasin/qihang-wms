@@ -6,7 +6,7 @@ import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.bo.ShipStockUpBo;
 import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.model.entity.OOrderShipListItem;
-import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
+import cn.qihangerp.service.mapper.OGoodsSkuMapper;
 import cn.qihangerp.service.mapper.OOrderShipListItemMapper;
 import cn.qihangerp.service.service.OOrderShipListItemService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

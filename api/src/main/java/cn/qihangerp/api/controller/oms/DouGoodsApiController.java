@@ -8,11 +8,11 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
-import cn.qihangerp.module.open.dou.domain.DouGoods;
-import cn.qihangerp.module.open.dou.domain.DouGoodsSku;
-import cn.qihangerp.module.open.dou.service.DouGoodsService;
-import cn.qihangerp.module.service.OShopPullLasttimeService;
-import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.model.entity.DouGoods;
+import cn.qihangerp.model.entity.DouGoodsSku;
+import cn.qihangerp.service.service.DouGoodsService;
+import cn.qihangerp.service.service.OShopPullLasttimeService;
+import cn.qihangerp.service.service.OShopPullLogsService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 

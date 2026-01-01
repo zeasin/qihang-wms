@@ -11,12 +11,12 @@ import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
-import cn.qihangerp.module.open.tao.domain.TaoGoods;
-import cn.qihangerp.module.open.tao.domain.TaoGoodsSku;
-import cn.qihangerp.module.open.tao.service.TaoGoodsService;
+import cn.qihangerp.model.entity.TaoGoods;
+import cn.qihangerp.model.entity.TaoGoodsSku;
+import cn.qihangerp.service.service.TaoGoodsService;
 
-import cn.qihangerp.module.service.OShopPullLasttimeService;
-import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.service.service.OShopPullLasttimeService;
+import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
 
 import cn.qihangerp.open.tao.TaoGoodsApiHelper;

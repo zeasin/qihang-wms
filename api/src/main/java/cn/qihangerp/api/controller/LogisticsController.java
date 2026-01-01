@@ -4,9 +4,9 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.service.OLogisticsCompanyService;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.service.OLogisticsCompanyService;
+import cn.qihangerp.service.service.OShopPlatformService;
+import cn.qihangerp.service.service.OShopService;
 import cn.qihangerp.model.entity.OLogisticsCompany;
 
 import cn.qihangerp.security.common.BaseController;
