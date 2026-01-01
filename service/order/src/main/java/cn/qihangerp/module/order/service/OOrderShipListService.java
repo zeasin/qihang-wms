@@ -6,7 +6,7 @@ import cn.qihangerp.common.ResultVo;
 
 import cn.qihangerp.model.bo.ShipStockUpBo;
 import cn.qihangerp.model.entity.OOrderShipList;
-import cn.qihangerp.module.order.bo.SupplierOrderShipBo;
+import cn.qihangerp.model.bo.SupplierOrderShipBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

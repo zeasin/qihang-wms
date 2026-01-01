@@ -1,4 +1,4 @@
-package cn.qihangerp.module.order.bo;
+package cn.qihangerp.model.bo;
 
 import lombok.Data;
 

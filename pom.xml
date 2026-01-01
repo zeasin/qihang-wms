@@ -13,6 +13,7 @@
     <module>core</module>
     <module>api</module>
     <module>service</module>
+    <module>mapper</module>
     <module>model</module>
 <!--    <module>microservices</module>-->
 

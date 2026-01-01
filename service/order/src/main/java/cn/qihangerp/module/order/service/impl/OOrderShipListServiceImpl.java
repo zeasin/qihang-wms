@@ -11,7 +11,7 @@ import cn.qihangerp.mapper.ErpStockOutMapper;
 import cn.qihangerp.model.bo.ShipStockUpBo;
 import cn.qihangerp.model.entity.*;
 import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
-import cn.qihangerp.module.order.bo.SupplierOrderShipBo;
+import cn.qihangerp.model.bo.SupplierOrderShipBo;
 import cn.qihangerp.module.order.mapper.OOrderItemMapper;
 import cn.qihangerp.module.order.mapper.OOrderMapper;
 import cn.qihangerp.module.order.mapper.OOrderShipListItemMapper;

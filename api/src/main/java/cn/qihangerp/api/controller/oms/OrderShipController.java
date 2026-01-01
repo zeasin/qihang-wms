@@ -7,7 +7,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.bo.ShipStockUpBo;
-import cn.qihangerp.module.order.bo.SupplierOrderShipBo;
+import cn.qihangerp.model.bo.SupplierOrderShipBo;
 import cn.qihangerp.module.order.service.OOrderShipListItemService;
 import cn.qihangerp.module.order.service.OOrderShipListService;
 import cn.qihangerp.security.common.BaseController;
