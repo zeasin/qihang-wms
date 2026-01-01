@@ -19,7 +19,7 @@
         <module>common</module>
         <module>mapper</module>
         <module>interfaces</module>
-        <module>model</module>
+<!--        <module>model</module>-->
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
