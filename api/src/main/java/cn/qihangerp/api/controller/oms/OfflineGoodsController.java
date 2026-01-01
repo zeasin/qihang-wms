@@ -5,7 +5,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.OfflineGoodsSku;
-import cn.qihangerp.module.order.service.OfflineGoodsSkuService;
+import cn.qihangerp.service.service.OfflineGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

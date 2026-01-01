@@ -9,7 +9,7 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.bo.OfflineOrderCreateBo;
 import cn.qihangerp.model.bo.OfflineOrderPushBo;
-import cn.qihangerp.module.order.service.OfflineOrderService;
+import cn.qihangerp.service.service.OfflineOrderService;
 import cn.qihangerp.model.request.OrderSearchRequest;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;

@@ -15,9 +15,7 @@
     <module>service</module>
     <module>mapper</module>
     <module>model</module>
-<!--    <module>microservices</module>-->
-
-
+    <module>serviceImpl</module>
   </modules>
 
   <properties>

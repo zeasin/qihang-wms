@@ -2,7 +2,7 @@ package cn.qihangerp.api.controller.oms;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.order.service.OfflineRefundService;
+import cn.qihangerp.service.service.OfflineRefundService;
 import cn.qihangerp.model.request.RefundSearchRequest;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;

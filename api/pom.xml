@@ -225,7 +225,7 @@
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.service</groupId>
-            <artifactId>order</artifactId>
+            <artifactId>serviceImpl</artifactId>
             <version>1.0</version>
         </dependency>
         <!-- MapStruct 对象映射 -->
