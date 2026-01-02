@@ -1,6 +1,6 @@
 package cn.qihangerp.api.controller.oms;
 
-import cn.qihangerp.api.common.PddApiCommon;
+import cn.qihangerp.api.common.ShopApiCommon;
 import cn.qihangerp.api.request.PullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
@@ -44,7 +44,7 @@ public class PddOrderApiController {
     private static Logger log = LoggerFactory.getLogger(PddOrderApiController.class);
 
     private final PddOrderService orderService;
-    private final PddApiCommon pddApiCommon;
+    private final ShopApiCommon shopApiCommon;
     private final MqUtils mqUtils;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
@@ -64,7 +64,7 @@ public class PddOrderApiController {
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
-        var checkResult = pddApiCommon.checkBefore(req.getShopId());
+        var checkResult = shopApiCommon.checkBefore(req.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
         }
@@ -215,7 +215,7 @@ public class PddOrderApiController {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，缺少orderId");
         }
 
-        var checkResult = pddApiCommon.checkBefore(req.getShopId());
+        var checkResult = shopApiCommon.checkBefore(req.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }

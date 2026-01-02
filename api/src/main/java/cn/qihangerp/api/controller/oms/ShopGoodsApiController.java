@@ -1,12 +1,12 @@
 package cn.qihangerp.api.controller.oms;
 
-import cn.qihangerp.api.common.PddApiCommon;
+import cn.qihangerp.api.common.ShopApiCommon;
 import cn.qihangerp.api.request.PullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
+import cn.qihangerp.model.entity.OmsShopGoodsSku;
 import cn.qihangerp.model.entity.PddGoods;
 import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.open.common.ApiResultVo;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class ShopGoodsApiController {
-    private final PddApiCommon pddApiCommon;
+    private final ShopApiCommon shopApiCommon;
     private final PddGoodsService goodsService;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
@@ -51,102 +50,79 @@ public class ShopGoodsApiController {
         }
         Long currTimeMillis = System.currentTimeMillis();
         Date currDateTime = new Date();
-        var checkResult = pddApiCommon.checkBefore(params.getShopId());
+        var checkResult = shopApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
-            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg());
         }
         String accessToken = checkResult.getData().getAccessToken();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
+        Long shopId = checkResult.getData().getShopId();
+        int shopType = checkResult.getData().getShopType();
+        int apiResponseSuccessTotal = 0;
+        int apiResponseCode = 0;
+        String apiResponseMsg = "";
+        if(shopType==EnumShopType.PDD.getIndex()) {
+            ApiResultVo<GoodsResultVo> resultVo = PddGoodsApiHelper.pullGoodsList(appKey, appSecret, accessToken, 1, 20);
+            apiResponseCode = resultVo.getCode();
+            apiResponseMsg = resultVo.getMsg();
 
-        // 获取最后更新时间
-        LocalDateTime startTime = null;
-        LocalDateTime endTime = null;
-        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(params.getShopId(), "GOODS");
-        if(params.getPullType()!=null && params.getPullType()==1) {
-            if (lasttime != null) {
-                // 按更新时间来
-                startTime = lasttime.getLasttime().minusHours(7*24);//取上次结束一个小时前
-                endTime = LocalDateTime.now();
+            if (resultVo.getData().getGoodsList() == null) return AjaxResult.error(1200,"数据获取失败");
+
+            for (var g : resultVo.getData().getGoodsList()) {
+
+                PddGoods pddGoods = new PddGoods();
+                BeanUtils.copyProperties(g, pddGoods);
+                // TODO:转换goods
+                pddGoods.setShopId(params.getShopId());
+                pddGoods.setCreateTime(new Date());
+                List<PddGoodsSku> skuList = new ArrayList<>();
+                for (var s : g.getSkuList()) {
+                    PddGoodsSku sku = new PddGoodsSku();
+                    BeanUtils.copyProperties(s, sku);
+                    sku.setShopId(params.getShopId());
+                    sku.setGoodsId(g.getGoodsId());
+                    sku.setGoodsName(g.getGoodsName());
+                    sku.setThumbUrl(g.getThumbUrl());
+
+                    sku.setCreateTime(new Date());
+                    skuList.add(sku);
+                }
+                pddGoods.setSkuList(skuList);
+
+                goodsService.saveGoods(params.getShopId(),pddGoods);
+                apiResponseSuccessTotal++;
             }
         }
-//        String pullParams = "{PageNo:1,PageSize:50,startTime:"+startTime+",endTime:"+endTime+"}";
-        String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
 
-        ApiResultVo<GoodsResultVo> resultVo = PddGoodsApiHelper.pullGoodsList(appKey, appSecret, accessToken, 1, 20);
-        if(resultVo.getCode() == 10019) return AjaxResult.error(HttpStatus.UNAUTHORIZED1,"Token已过期");
-
-//        ApiResultVo<PddGoodsResponse> resultVo = GoodsApiHelper.pullGoodsList(appKey, appSecret,accessToken,startTime,endTime);
-        if(resultVo.getCode() !=0 ){
+        if(apiResponseCode !=0 ){
             OShopPullLogs logs = new OShopPullLogs();
             logs.setShopId(params.getShopId());
-            logs.setShopType(EnumShopType.PDD.getIndex());
+            logs.setShopType(shopType);
             logs.setPullType("GOODS");
             logs.setPullWay("主动拉取商品sku");
-            logs.setPullParams(pullParams);
-            logs.setPullResult(resultVo.getMsg());
+            logs.setPullParams("");
+            logs.setPullResult(apiResponseMsg);
             logs.setPullTime(currDateTime);
             logs.setDuration(System.currentTimeMillis() - currTimeMillis);
             pullLogsService.save(logs);
-            return AjaxResult.error("接口拉取错误："+resultVo.getMsg());
+            if(apiResponseCode == 10019) return AjaxResult.error(HttpStatus.UNAUTHORIZED1,"Token已过期");
+            else return AjaxResult.error("接口拉取错误："+apiResponseMsg);
         }
 
-        int successTotal = 0;
-        if (resultVo.getData().getGoodsList() == null) return AjaxResult.error(1200,"数据获取失败");
 
-        for (var g : resultVo.getData().getGoodsList()) {
-            PddGoods pddGoods = new PddGoods();
-            BeanUtils.copyProperties(g, pddGoods);
-            // TODO:转换goods
-            pddGoods.setShopId(params.getShopId());
-            pddGoods.setCreateTime(new Date());
-            List<PddGoodsSku> skuList = new ArrayList<>();
-            for (var s : g.getSkuList()) {
-                PddGoodsSku sku = new PddGoodsSku();
-                BeanUtils.copyProperties(s, sku);
-                sku.setShopId(params.getShopId());
-                sku.setGoodsId(g.getGoodsId());
-                sku.setGoodsName(g.getGoodsName());
-                sku.setThumbUrl(g.getThumbUrl());
-
-                sku.setCreateTime(new Date());
-                skuList.add(sku);
-            }
-            pddGoods.setSkuList(skuList);
-
-            goodsService.saveGoods(params.getShopId(),pddGoods);
-            successTotal++;
-        }
         // 添加拉取日志
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopId(params.getShopId());
-        logs.setShopType(EnumShopType.PDD.getIndex());
+        logs.setShopType(shopType);
         logs.setPullType("GOODS");
         logs.setPullWay("主动拉取商品sku");
-        logs.setPullParams(pullParams);
-        logs.setPullResult("{successTotal:"+successTotal+"}");
+        logs.setPullParams("");
+        logs.setPullResult("{successTotal:"+ apiResponseSuccessTotal +"}");
         logs.setPullTime(currDateTime);
         logs.setDuration(System.currentTimeMillis() - currTimeMillis);
         pullLogsService.save(logs);
 
-
-        if(lasttime == null){
-            // 新增
-            OShopPullLasttime insertLasttime = new OShopPullLasttime();
-            insertLasttime.setShopId(params.getShopId());
-            insertLasttime.setCreateTime(new Date());
-            insertLasttime.setLasttime(endTime==null?LocalDateTime.now():endTime);
-            insertLasttime.setPullType("GOODS");
-            pullLasttimeService.save(insertLasttime);
-
-        }else {
-            // 修改
-            OShopPullLasttime updateLasttime = new OShopPullLasttime();
-            updateLasttime.setId(lasttime.getId());
-            updateLasttime.setUpdateTime(new Date());
-            updateLasttime.setLasttime(endTime==null?LocalDateTime.now():endTime);
-            pullLasttimeService.updateById(updateLasttime);
-        }
-        return AjaxResult.success("接口拉取成功，总数据："+successTotal);
+        return AjaxResult.success("接口拉取成功，总数据："+ apiResponseSuccessTotal);
     }
 }

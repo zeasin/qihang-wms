@@ -5,9 +5,27 @@ public class ShopApiParams {
     private String appKey;
     private String appSecret;
     private String accessToken;
-    private String redirectUri;
-    private String serverUrl;
+//    private String redirectUri;
+//    private String serverUrl;
     private Long sellerId;
+    private int shopType;
+    private Long shopId;
+
+    public int getShopType() {
+        return shopType;
+    }
+
+    public void setShopType(int shopType) {
+        this.shopType = shopType;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
 
     public String getAppKey() {
         return appKey;
@@ -33,21 +51,21 @@ public class ShopApiParams {
         this.accessToken = accessToken;
     }
 
-    public String getRedirectUri() {
-        return redirectUri;
-    }
-
-    public void setRedirectUri(String redirectUri) {
-        this.redirectUri = redirectUri;
-    }
-
-    public String getServerUrl() {
-        return serverUrl;
-    }
-
-    public void setServerUrl(String serverUrl) {
-        this.serverUrl = serverUrl;
-    }
+//    public String getRedirectUri() {
+//        return redirectUri;
+//    }
+//
+//    public void setRedirectUri(String redirectUri) {
+//        this.redirectUri = redirectUri;
+//    }
+//
+//    public String getServerUrl() {
+//        return serverUrl;
+//    }
+//
+//    public void setServerUrl(String serverUrl) {
+//        this.serverUrl = serverUrl;
+//    }
 
     public Long getSellerId() {
         return sellerId;

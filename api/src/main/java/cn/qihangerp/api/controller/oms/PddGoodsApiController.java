@@ -1,6 +1,6 @@
 package cn.qihangerp.api.controller.oms;
 
-import cn.qihangerp.api.common.PddApiCommon;
+import cn.qihangerp.api.common.ShopApiCommon;
 import cn.qihangerp.api.request.PullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.enums.EnumShopType;
@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class PddGoodsApiController {
-    private final PddApiCommon pddApiCommon;
+    private final ShopApiCommon shopApiCommon;
     private final PddGoodsService goodsService;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
@@ -50,7 +50,7 @@ public class PddGoodsApiController {
         }
         Long currTimeMillis = System.currentTimeMillis();
         Date currDateTime = new Date();
-        var checkResult = pddApiCommon.checkBefore(params.getShopId());
+        var checkResult = shopApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }

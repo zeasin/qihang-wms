@@ -1,6 +1,6 @@
 package cn.qihangerp.api.controller.oms;
 
-import cn.qihangerp.api.common.PddApiCommon;
+import cn.qihangerp.api.common.ShopApiCommon;
 import cn.qihangerp.api.request.PullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
@@ -38,7 +38,7 @@ public class PddRefundApiController {
     private static Logger log = LoggerFactory.getLogger(PddRefundApiController.class);
 
     private final PddRefundService refundService;
-    private final PddApiCommon pddApiCommon;
+    private final ShopApiCommon shopApiCommon;
     private final MqUtils mqUtils;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
@@ -58,7 +58,7 @@ public class PddRefundApiController {
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
-        var checkResult = pddApiCommon.checkBefore(req.getShopId());
+        var checkResult = shopApiCommon.checkBefore(req.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
         }
