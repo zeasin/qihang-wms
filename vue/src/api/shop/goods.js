@@ -1,11 +1,19 @@
 import request from '@/utils/request'
 
 // 查询店铺商品列表
-export function listGoods(query) {
+export function listGoodsSku(query) {
   return request({
-    url: '/shop/goods/list',
+    url: '/shop/goods/skuList',
     method: 'get',
     params: query
+  })
+}
+// 接口拉取商品
+export function pullGoodsItem(data) {
+  return request({
+    url: '/shop/goods/pull_goods_item',
+    method: 'post',
+    data: data
   })
 }
 

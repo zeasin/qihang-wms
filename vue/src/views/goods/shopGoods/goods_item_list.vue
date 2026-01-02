@@ -28,7 +28,7 @@
         />
       </el-form-item>
       <el-form-item label="店铺" prop="shopId">
-        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" @change="handleQuery">
          <el-option
             v-for="item in shopList"
             :key="item.id"
@@ -44,12 +44,18 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-col>
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
@@ -68,26 +74,24 @@
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
 <!--      <el-table-column label="平台商品ID" align="center" prop="goodsId" />-->
-      <el-table-column label="平台SKU ID" align="left" prop="skuId" >
+      <el-table-column label="平台SKU ID" align="left" prop="skuId" width="220px">
         <template slot-scope="scope">
-          {{scope.row.skuId}} <br/>
-          <el-tag>{{ shopList.find(x=>x.id === scope.row.shopId) ? shopList.find(x=>x.id === scope.row.shopId).name : '' }}</el-tag>
+          {{scope.row.skuId}}
         </template>
       </el-table-column>
-      <el-table-column label="商家编码" align="center" prop="outerId" />
-      <el-table-column label="标题" align="center" prop="goodsName" />
-      <el-table-column label="图片" align="center" prop="thumbUrl" width="100">
+      <el-table-column label="店铺" align="left" prop="tid" width="180px">
+        <template slot-scope="scope">
+          <el-tag >{{ shopList.find(x=>x.id === scope.row.shopId) ? shopList.find(x=>x.id === scope.row.shopId).name : '' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="图片" align="center" prop="thumbUrl" width="60">
         <template slot-scope="scope">
           <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>
         </template>
       </el-table-column>
-
-<!--      <el-table-column label="店铺" align="center" prop="categoryId" >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId).name}}</el-tag>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="SKU属性" align="center" prop="spec" ></el-table-column>
+      <el-table-column label="标题" align="left" prop="goodsName" width="380"/>
+      <el-table-column label="商家编码" align="left" prop="outerId" width="160"/>
+      <el-table-column label="SKU名称" align="left" prop="spec" ></el-table-column>
       <el-table-column label="商品库SkuId" align="center" prop="erpGoodsSkuId" />
       <el-table-column label="状态" align="center" prop="isSkuOnsale" >
         <template slot-scope="scope">
@@ -137,13 +141,13 @@
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {getToken} from "@/utils/auth";
-import {listGoodsSku,getGoodsSku,linkErpGoodsSkuId,pullGoodsList} from "@/api/pdd/goods";
+import {listGoodsSku,getGoodsSku,linkErpGoodsSkuId,pullGoodsItem} from "@/api/shop/goods";
 import {listShop} from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 
 export default {
-  name: "GoodsPdd",
+  name: "GoodsItemList",
   components: { Treeselect },
   data() {
     return {
@@ -193,7 +197,7 @@ export default {
     };
   },
   created() {
-    listShop({type:300}).then(response => {
+    listShop({}).then(response => {
       this.shopList = response.rows;
       if(this.shopList && this.shopList.length>0){
         this.queryParams.shopId = this.shopList[0].id
@@ -270,8 +274,8 @@ export default {
     handlePull(pull_type) {
       if(this.queryParams.shopId){
         this.pullLoading = true
-        pullGoodsList({shopId:this.queryParams.shopId,pullType:pull_type}).then(response => {
-          console.log('拉取JD商品接口返回=====',response)
+        pullGoodsItem({shopId:this.queryParams.shopId,pullType:pull_type}).then(response => {
+          console.log('拉取店铺商品接口返回=====',response)
           if(response.code === 1401) {
             MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
               this.$router.push({path:"/shop/shop_list",query:{type:4}})
