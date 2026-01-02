@@ -41,7 +41,7 @@ public class ShopApiCommon {
         params.setSellerId(shop.getSellerId());
 
         if(shop.getType()!=EnumShopType.OFFLINE.getIndex()&&shop.getType()!=EnumShopType.WEI.getIndex()) {
-            OShopPlatform platform = platformService.getById(EnumShopType.PDD.getIndex());
+            OShopPlatform platform = platformService.getById(shop.getType());
 
             if (!StringUtils.hasText(platform.getAppKey())) {
                 return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台参数配置错误，没有找到AppKey");

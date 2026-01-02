@@ -9,7 +9,6 @@ import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.model.bo.DouOrderConfirmBo;
 import cn.qihangerp.model.entity.OOrder;
 import cn.qihangerp.model.entity.OOrderItem;
-import cn.qihangerp.model.entity.DouGoodsSku;
 import cn.qihangerp.model.entity.DouOrder;
 import cn.qihangerp.model.entity.DouOrderItem;
 import cn.qihangerp.model.bo.DouOrderBo;
@@ -42,7 +41,6 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
     implements DouOrderService {
     private final DouOrderMapper mapper;
     private final DouOrderItemMapper itemMapper;
-    private final DouGoodsSkuMapper goodsSkuMapper;
     private final DouOOrderMapper oOrderMapper;
     private final DouOOrderItemMapper oOrderItemMapper;
 
@@ -147,11 +145,11 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
                 itemMapper.delete(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,order.getOrderId()));
                 for (DouOrderItem item : order.getItems()) {
                     // 新增
-                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
-                    if (goodsSku != null) {
-                        item.setOGoodsId(goodsSku.getErpGoodsId().toString());
-                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId().toString());
-                    }
+//                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+//                    if (goodsSku != null) {
+//                        item.setOGoodsId(goodsSku.getErpGoodsId().toString());
+//                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId().toString());
+//                    }
                     itemMapper.insert(item);
                 }
                 return ResultVo.error(ResultVoEnum.DataExist, "订单已经存在，更新成功");
@@ -163,11 +161,11 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
                 mapper.insert(order);
                 // 添加item
                 for (DouOrderItem item : order.getItems()) {
-                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
-                    if (goodsSku != null) {
-                        item.setOGoodsId(goodsSku.getErpGoodsId().toString());
-                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId().toString());
-                    }
+//                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+//                    if (goodsSku != null) {
+//                        item.setOGoodsId(goodsSku.getErpGoodsId().toString());
+//                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId().toString());
+//                    }
                     itemMapper.insert(item);
                 }
 

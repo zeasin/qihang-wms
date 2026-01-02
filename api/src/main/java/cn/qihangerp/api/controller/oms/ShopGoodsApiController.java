@@ -9,12 +9,19 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.OmsShopGoodsSku;
 import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.dou.DouGoodsApiHelper;
+import cn.qihangerp.open.dou.DouTokenApiHelper;
+import cn.qihangerp.open.dou.model.GoodsListResultVo;
+import cn.qihangerp.open.dou.model.Token;
 import cn.qihangerp.open.pdd.PddGoodsApiHelper;
 import cn.qihangerp.open.pdd.model.GoodsResultVo;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.service.service.OmsShopGoodsSkuService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @RequestMapping("/shop/goods")
 @RestController
 @AllArgsConstructor
@@ -62,6 +70,7 @@ public class ShopGoodsApiController {
         int apiResponseCode = 0;
         String apiResponseMsg = "";
         if(shopType==EnumShopType.PDD.getIndex()) {
+            log.info("=============拉取PDD店铺商品=========");
             ApiResultVo<GoodsResultVo> resultVo = PddGoodsApiHelper.pullGoodsList(appKey, appSecret, accessToken, 1, 20);
             apiResponseCode = resultVo.getCode();
             apiResponseMsg = resultVo.getMsg();
@@ -92,8 +101,58 @@ public class ShopGoodsApiController {
                     }
                 }
             }
-        }
 
+        } else if (shopType == EnumShopType.DOU.getIndex()) {
+            log.info("=============拉取DOU店铺商品=========");
+            ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
+
+            if(token.getCode()==0) {
+                accessToken = token.getData().getAccessToken();
+            }else{
+                return AjaxResult.error(token.getMsg());
+            }
+
+            ApiResultVo<GoodsListResultVo> resultVo = DouGoodsApiHelper.getGoodsList(appKey, appSecret, accessToken, 1, 10);
+            apiResponseCode = resultVo.getCode();
+            apiResponseMsg = resultVo.getMsg();
+            if(apiResponseCode==0) {
+                for (var goods : resultVo.getData().getGoodsList()) {
+                    List<OmsShopGoodsSku> skuList = new ArrayList<>();
+                    for (var s : goods.getSkuList()) {
+                        OmsShopGoodsSku sku = new OmsShopGoodsSku();
+                        sku.setShopId(shopId);
+                        sku.setShopType(shopType);
+                        sku.setProductId(goods.getProductId().toString());
+                        sku.setProductTitle(goods.getName());
+                        sku.setImg(goods.getImg());
+                        String skuName ="";
+                        if(StringUtils.hasText(s.getSpecDetailName1())){
+                            skuName = s.getSpecDetailName1();
+                        }
+                        if(StringUtils.hasText(s.getSpecDetailName2())){
+                            skuName = skuName + " " + s.getSpecDetailName2();
+                        }
+                        if(StringUtils.hasText(s.getSpecDetailName3())){
+                            skuName = skuName + " " + s.getSpecDetailName3();
+                        }
+                        sku.setSkuName(skuName);
+                        sku.setSkuId(s.getId().toString());
+                        sku.setSkuCode(s.getCode());
+                        sku.setOuterSkuId(s.getOutSkuId().toString());
+                        sku.setOuterProductId(goods.getOuterProductId());
+                        sku.setPrice(s.getPrice());
+                        sku.setStockNum(s.getStockNum());
+                        sku.setStatus(1);
+                        sku.setAddTime(Long.parseLong(s.getCreateTime()+""));
+                        sku.setModifyTime(Long.parseLong(s.getCreateTime()+""));
+                        skuList.add(sku);
+                        ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
+                        apiResponseSuccessTotal++;
+                    }
+                }
+            }
+        }
+        log.info("=============拉取店铺商品完成，code:{},msg:{}",apiResponseCode,apiResponseMsg);
         if(apiResponseCode !=0 ){
             OShopPullLogs logs = new OShopPullLogs();
             logs.setShopId(params.getShopId());
