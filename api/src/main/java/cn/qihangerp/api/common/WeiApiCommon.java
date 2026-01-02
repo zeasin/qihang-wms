@@ -47,7 +47,7 @@ public class WeiApiCommon {
         params.setAppKey(shop.getAppKey());
         params.setAppSecret(shop.getAppSecret());
         params.setAccessToken(shop.getAccessToken());
-        params.setServerUrl(shop.getApiRequestUrl());
+//        params.setServerUrl(shop.getApiRequestUrl());
         params.setSellerId(shop.getSellerId());
 
 

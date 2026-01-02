@@ -70,7 +70,7 @@ public class TaoOrderApiController {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
         }
         String sessionKey = checkResult.getData().getAccessToken();
-        String url = checkResult.getData().getServerUrl();
+//        String url = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
@@ -199,7 +199,7 @@ public class TaoOrderApiController {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String sessionKey = checkResult.getData().getAccessToken();
-        String url = checkResult.getData().getServerUrl();
+//        String url = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 

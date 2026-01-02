@@ -50,7 +50,7 @@ public class JdGoodsApiController {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
-        String serverUrl = checkResult.getData().getServerUrl();
+//        String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
         // 获取最后更新时间

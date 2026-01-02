@@ -1,6 +1,8 @@
 package cn.qihangerp.service.service;
 
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.OmsShopGoodsSku;
+import cn.qihangerp.model.entity.PddGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,5 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2026-01-02 09:22:54
 */
 public interface OmsShopGoodsSkuService extends IService<OmsShopGoodsSku> {
-
+    ResultVo<Integer> saveGoods(OmsShopGoodsSku goods);
 }

@@ -69,7 +69,7 @@ public class TaoRefundApiController {
         }
 
         String sessionKey = checkResult.getData().getAccessToken();
-        String url = checkResult.getData().getServerUrl();
+//        String url = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
@@ -191,7 +191,7 @@ public class TaoRefundApiController {
         }
 
         String sessionKey = checkResult.getData().getAccessToken();
-        String url = checkResult.getData().getServerUrl();
+//        String url = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 

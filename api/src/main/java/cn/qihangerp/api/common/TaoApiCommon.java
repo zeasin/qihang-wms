@@ -57,8 +57,8 @@ public class TaoApiCommon {
         params.setAppSecret(platform.getAppSecret());
         params.setAccessToken(shop.getAccessToken());
 //        params.setRedirectUri(serverConfig.getUrl()+"/taoapi2/tao_oauth");
-        params.setRedirectUri(platform.getRedirectUri());
-        params.setServerUrl(platform.getServerUrl());
+        params.setCallbackUrl(platform.getRedirectUri());
+//        params.setServerUrl(platform.getServerUrl());
 
         if (!StringUtils.hasText(shop.getAccessToken())) {
 

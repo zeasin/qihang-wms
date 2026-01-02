@@ -3,6 +3,7 @@ package cn.qihangerp.api.controller.oms;
 import cn.qihangerp.api.common.ShopApiCommon;
 import cn.qihangerp.api.request.PullRequest;
 import cn.qihangerp.common.AjaxResult;
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPullLogs;
@@ -14,6 +15,7 @@ import cn.qihangerp.open.pdd.PddGoodsApiHelper;
 import cn.qihangerp.open.pdd.model.GoodsResultVo;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
+import cn.qihangerp.service.service.OmsShopGoodsSkuService;
 import cn.qihangerp.service.service.PddGoodsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +33,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShopGoodsApiController {
     private final ShopApiCommon shopApiCommon;
+    private final OmsShopGoodsSkuService shopGoodsSkuService;
     private final PddGoodsService goodsService;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
@@ -68,30 +71,31 @@ public class ShopGoodsApiController {
             apiResponseMsg = resultVo.getMsg();
 
             if (resultVo.getData().getGoodsList() == null) return AjaxResult.error(1200,"数据获取失败");
-
+            // sku列表
+            List<OmsShopGoodsSku> skuList = new ArrayList<>();
             for (var g : resultVo.getData().getGoodsList()) {
-
-                PddGoods pddGoods = new PddGoods();
-                BeanUtils.copyProperties(g, pddGoods);
-                // TODO:转换goods
-                pddGoods.setShopId(params.getShopId());
-                pddGoods.setCreateTime(new Date());
-                List<PddGoodsSku> skuList = new ArrayList<>();
                 for (var s : g.getSkuList()) {
-                    PddGoodsSku sku = new PddGoodsSku();
-                    BeanUtils.copyProperties(s, sku);
-                    sku.setShopId(params.getShopId());
-                    sku.setGoodsId(g.getGoodsId());
-                    sku.setGoodsName(g.getGoodsName());
-                    sku.setThumbUrl(g.getThumbUrl());
-
-                    sku.setCreateTime(new Date());
+                    OmsShopGoodsSku sku = new OmsShopGoodsSku();
+                    sku.setShopId(shopId);
+                    sku.setShopType(shopType);
+                    sku.setProductId(g.getGoodsId().toString());
+                    sku.setProductTitle(g.getGoodsName());
+                    sku.setImg(g.getThumbUrl());
+                    sku.setSkuName(s.getSpec());
+                    sku.setSkuId(s.getSkuId().toString());
+                    sku.setOuterSkuId(s.getOuterId());
+                    sku.setOuterProductId(s.getOuterGoodsId());
+                    sku.setPrice(0);
+                    sku.setStockNum(s.getSkuQuantity());
+                    sku.setStatus(s.getIsSkuOnsale());
+                    sku.setAddTime(Long.parseLong(g.getCreatedAt()+""));
+                    sku.setModifyTime(Long.parseLong(g.getCreatedAt()+""));
                     skuList.add(sku);
+                    ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
+                    apiResponseSuccessTotal++;
                 }
-                pddGoods.setSkuList(skuList);
 
-                goodsService.saveGoods(params.getShopId(),pddGoods);
-                apiResponseSuccessTotal++;
+
             }
         }
 

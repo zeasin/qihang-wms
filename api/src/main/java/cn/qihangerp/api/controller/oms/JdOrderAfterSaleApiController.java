@@ -60,7 +60,7 @@ public class JdOrderAfterSaleApiController {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
-        String serverUrl = checkResult.getData().getServerUrl();
+//        String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
         Long sellerId = checkResult.getData().getSellerId();
