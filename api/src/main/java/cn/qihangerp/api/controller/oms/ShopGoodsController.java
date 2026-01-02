@@ -2,15 +2,10 @@ package cn.qihangerp.api.controller.oms;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.model.bo.PddGoodsBo;
 import cn.qihangerp.model.entity.OmsShopGoodsSku;
-import cn.qihangerp.model.entity.PddGoods;
-import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.security.common.BaseController;
-import cn.qihangerp.service.service.OGoodsSkuService;
 import cn.qihangerp.service.service.OmsShopGoodsSkuService;
-import cn.qihangerp.service.service.PddGoodsService;
-import cn.qihangerp.service.service.PddGoodsSkuService;
+
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;

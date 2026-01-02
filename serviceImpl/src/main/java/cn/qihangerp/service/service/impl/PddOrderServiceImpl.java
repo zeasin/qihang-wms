@@ -10,12 +10,10 @@ import cn.qihangerp.mapper.ErpOrderItemMapper;
 import cn.qihangerp.mapper.ErpOrderMapper;
 import cn.qihangerp.model.entity.OOrder;
 import cn.qihangerp.model.entity.OOrderItem;
-import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.model.entity.PddOrder;
 import cn.qihangerp.model.entity.PddOrderItem;
 import cn.qihangerp.model.bo.PddOrderBo;
 import cn.qihangerp.model.bo.PddOrderConfirmBo;
-import cn.qihangerp.service.mapper.PddGoodsSkuMapper;
 import cn.qihangerp.service.mapper.PddOrderItemMapper;
 import cn.qihangerp.service.mapper.PddOrderMapper;
 import cn.qihangerp.service.service.PddOrderService;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
-
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -46,7 +43,6 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
     implements PddOrderService {
     private final PddOrderMapper mapper;
     private final PddOrderItemMapper itemMapper;
-    private final PddGoodsSkuMapper goodsSkuMapper;
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
 
@@ -192,11 +188,11 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
 
                 // 添加item
                 for (PddOrderItem item : order.getItems()) {
-                    List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
-                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                        item.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                        item.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
-                    }
+//                    List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
+//                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+//                        item.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
+//                        item.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
+//                    }
                     item.setOrderSn(order.getOrderSn());
                     itemMapper.insert(item);
                 }
@@ -208,11 +204,11 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
                 mapper.insert(order);
                 // 添加item
                 for (PddOrderItem item : order.getItems()) {
-                    List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
-                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                        item.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                        item.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
-                    }
+//                    List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
+//                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+//                        item.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
+//                        item.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
+//                    }
                     item.setOrderSn(order.getOrderSn());
                     itemMapper.insert(item);
                 }

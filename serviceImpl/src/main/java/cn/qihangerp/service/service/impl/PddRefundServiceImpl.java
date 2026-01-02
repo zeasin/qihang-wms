@@ -4,10 +4,8 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.model.entity.PddRefund;
 import cn.qihangerp.model.bo.PddRefundBo;
-import cn.qihangerp.service.mapper.PddGoodsSkuMapper;
 import cn.qihangerp.service.mapper.PddRefundMapper;
 import cn.qihangerp.service.service.PddRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -30,7 +28,7 @@ import java.util.List;
 public class PddRefundServiceImpl extends ServiceImpl<PddRefundMapper, PddRefund>
     implements PddRefundService {
     private final PddRefundMapper mapper;
-    private final PddGoodsSkuMapper goodsSkuMapper;
+
     @Override
     public PageResult<PddRefund> queryPageList(PddRefundBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<PddRefund> queryWrapper = new LambdaQueryWrapper<PddRefund>()
@@ -63,19 +61,19 @@ public class PddRefundServiceImpl extends ServiceImpl<PddRefundMapper, PddRefund
             update.setUpdatedTime(refund.getUpdatedTime());
             update.setUpdateTime(new Date());
             mapper.updateById(update);
-            List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, refund.getSkuId()));
-            if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                refund.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                refund.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
-            }
+//            List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, refund.getSkuId()));
+//            if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+//                refund.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
+//                refund.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
+//            }
             return ResultVo.error(ResultVoEnum.DataExist, "退款已经存在，更新成功");
 
         }else{
-            List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, refund.getSkuId()));
-            if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                refund.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                refund.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
-            }
+//            List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, refund.getSkuId()));
+//            if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+//                refund.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
+//                refund.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
+//            }
             refund.setShopId(shopId);
             refund.setCreateTime(new Date());
             mapper.insert(refund);

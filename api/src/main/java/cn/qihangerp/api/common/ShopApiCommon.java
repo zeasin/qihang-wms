@@ -30,9 +30,10 @@ public class ShopApiCommon {
         if (shop == null) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，没有找到店铺");
         }
-
-        if (shop.getSellerId() == null || shop.getSellerId()<=0) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR, "店铺参数错误，请设置平台店铺ID");
+        if(shop.getType().intValue() == EnumShopType.DOU.getIndex()) {
+            if (shop.getSellerId() == null || shop.getSellerId() <= 0) {
+                return ResultVo.error(HttpStatus.PARAMS_ERROR, "店铺参数错误，请设置平台店铺ID");
+            }
         }
         ShopApiParams params = new ShopApiParams();
         params.setShopId(shopId);

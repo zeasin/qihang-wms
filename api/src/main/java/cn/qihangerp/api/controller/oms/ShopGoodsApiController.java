@@ -8,17 +8,13 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.OmsShopGoodsSku;
-import cn.qihangerp.model.entity.PddGoods;
-import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddGoodsApiHelper;
 import cn.qihangerp.open.pdd.model.GoodsResultVo;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.service.service.OmsShopGoodsSkuService;
-import cn.qihangerp.service.service.PddGoodsService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +30,7 @@ import java.util.List;
 public class ShopGoodsApiController {
     private final ShopApiCommon shopApiCommon;
     private final OmsShopGoodsSkuService shopGoodsSkuService;
-    private final PddGoodsService goodsService;
+
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
 
@@ -55,7 +51,7 @@ public class ShopGoodsApiController {
         Date currDateTime = new Date();
         var checkResult = shopApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
-            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg());
+            return AjaxResult.error(checkResult.getMsg());
         }
         String accessToken = checkResult.getData().getAccessToken();
         String appKey = checkResult.getData().getAppKey();
@@ -69,33 +65,32 @@ public class ShopGoodsApiController {
             ApiResultVo<GoodsResultVo> resultVo = PddGoodsApiHelper.pullGoodsList(appKey, appSecret, accessToken, 1, 20);
             apiResponseCode = resultVo.getCode();
             apiResponseMsg = resultVo.getMsg();
-
-            if (resultVo.getData().getGoodsList() == null) return AjaxResult.error(1200,"数据获取失败");
-            // sku列表
-            List<OmsShopGoodsSku> skuList = new ArrayList<>();
-            for (var g : resultVo.getData().getGoodsList()) {
-                for (var s : g.getSkuList()) {
-                    OmsShopGoodsSku sku = new OmsShopGoodsSku();
-                    sku.setShopId(shopId);
-                    sku.setShopType(shopType);
-                    sku.setProductId(g.getGoodsId().toString());
-                    sku.setProductTitle(g.getGoodsName());
-                    sku.setImg(g.getThumbUrl());
-                    sku.setSkuName(s.getSpec());
-                    sku.setSkuId(s.getSkuId().toString());
-                    sku.setOuterSkuId(s.getOuterId());
-                    sku.setOuterProductId(s.getOuterGoodsId());
-                    sku.setPrice(0);
-                    sku.setStockNum(s.getSkuQuantity());
-                    sku.setStatus(s.getIsSkuOnsale());
-                    sku.setAddTime(Long.parseLong(g.getCreatedAt()+""));
-                    sku.setModifyTime(Long.parseLong(g.getCreatedAt()+""));
-                    skuList.add(sku);
-                    ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
-                    apiResponseSuccessTotal++;
+            if(apiResponseCode==0) {
+                if (resultVo.getData().getGoodsList() == null) return AjaxResult.error(1200,"数据获取失败");
+                // sku列表
+                List<OmsShopGoodsSku> skuList = new ArrayList<>();
+                for (var g : resultVo.getData().getGoodsList()) {
+                    for (var s : g.getSkuList()) {
+                        OmsShopGoodsSku sku = new OmsShopGoodsSku();
+                        sku.setShopId(shopId);
+                        sku.setShopType(shopType);
+                        sku.setProductId(g.getGoodsId().toString());
+                        sku.setProductTitle(g.getGoodsName());
+                        sku.setImg(g.getThumbUrl());
+                        sku.setSkuName(s.getSpec());
+                        sku.setSkuId(s.getSkuId().toString());
+                        sku.setOuterSkuId(s.getOuterId());
+                        sku.setOuterProductId(s.getOuterGoodsId());
+                        sku.setPrice(0);
+                        sku.setStockNum(s.getSkuQuantity());
+                        sku.setStatus(s.getIsSkuOnsale());
+                        sku.setAddTime(Long.parseLong(g.getCreatedAt()+""));
+                        sku.setModifyTime(Long.parseLong(g.getCreatedAt()+""));
+                        skuList.add(sku);
+                        ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
+                        apiResponseSuccessTotal++;
+                    }
                 }
-
-
             }
         }
 

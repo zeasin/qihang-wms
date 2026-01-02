@@ -87,6 +87,7 @@ public class OmsShopGoodsSkuServiceImpl extends ServiceImpl<OmsShopGoodsSkuMappe
         sku.setId(Long.parseLong(bo.getId()));
         sku.setErpGoodsId(Long.parseLong(oGoodsSku.getGoodsId()));
         sku.setErpGoodsSkuId(Long.parseLong(oGoodsSku.getId()));
+        sku.setErpStatus(1);
         sku.setUpdateOn(new Date());
         this.baseMapper.updateById(sku);
 
