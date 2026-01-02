@@ -1,8 +1,10 @@
 package cn.qihangerp.service.service;
 
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.model.entity.OmsShopGoodsSku;
-import cn.qihangerp.model.entity.PddGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2026-01-02 09:22:54
 */
 public interface OmsShopGoodsSkuService extends IService<OmsShopGoodsSku> {
+    PageResult<OmsShopGoodsSku> queryPageList(OmsShopGoodsSku bo, PageQuery pageQuery);
     ResultVo<Integer> saveGoods(OmsShopGoodsSku goods);
+    ResultVo linkErpGoodsSku(LinkErpGoodsSkuBo bo);
 }

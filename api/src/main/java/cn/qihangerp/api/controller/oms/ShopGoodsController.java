@@ -3,10 +3,12 @@ package cn.qihangerp.api.controller.oms;
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.model.bo.PddGoodsBo;
+import cn.qihangerp.model.entity.OmsShopGoodsSku;
 import cn.qihangerp.model.entity.PddGoods;
 import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.service.OGoodsSkuService;
+import cn.qihangerp.service.service.OmsShopGoodsSkuService;
 import cn.qihangerp.service.service.PddGoodsService;
 import cn.qihangerp.service.service.PddGoodsSkuService;
 import lombok.AllArgsConstructor;
@@ -17,14 +19,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 public class ShopGoodsController extends BaseController {
-    private final PddGoodsService goodsService;
-    private final PddGoodsSkuService skuService;
-    private final OGoodsSkuService oGoodsSkuService;
 
+    private final OmsShopGoodsSkuService skuService;
 
     @RequestMapping(value = "/skuList", method = RequestMethod.GET)
-    public TableDataInfo skuList(PddGoodsSku bo, PageQuery pageQuery) {
-        PageResult<PddGoodsSku> result = skuService.queryPageList(bo, pageQuery);
+    public TableDataInfo skuList(OmsShopGoodsSku bo, PageQuery pageQuery) {
+        PageResult<OmsShopGoodsSku> result = skuService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);
     }
