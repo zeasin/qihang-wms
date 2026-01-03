@@ -9,11 +9,9 @@ import cn.qihangerp.mapper.ErpOrderItemMapper;
 import cn.qihangerp.mapper.ErpOrderMapper;
 import cn.qihangerp.model.entity.OOrder;
 import cn.qihangerp.model.entity.OOrderItem;
-import cn.qihangerp.model.entity.WeiGoodsSku;
 import cn.qihangerp.model.entity.WeiOrder;
 import cn.qihangerp.model.entity.WeiOrderItem;
 import cn.qihangerp.model.bo.WeiOrderConfirmBo;
-import cn.qihangerp.service.mapper.WeiGoodsSkuMapper;
 import cn.qihangerp.service.mapper.WeiOrderItemMapper;
 import cn.qihangerp.service.mapper.WeiOrderMapper;
 import cn.qihangerp.service.service.WeiOrderService;
@@ -40,7 +38,6 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
     implements WeiOrderService {
     private final WeiOrderMapper mapper;
     private final WeiOrderItemMapper itemMapper;
-    private final WeiGoodsSkuMapper goodsSkuMapper;
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
 //    private final MQClientService mqClientService;
@@ -96,19 +93,19 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                         // 更新
                         WeiOrderItem itemUpdate = new WeiOrderItem();
                         itemUpdate.setId(taoOrderItems.get(0).getId());
-                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            itemUpdate.setOGoodsId(skus.get(0).getErpGoodsId());
-                            itemUpdate.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
-                        }
+//                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
+//                        if (skus != null && !skus.isEmpty()) {
+//                            itemUpdate.setOGoodsId(skus.get(0).getErpGoodsId());
+//                            itemUpdate.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
+//                        }
                         itemMapper.updateById(itemUpdate);
                     } else {
-                        // 新增
-                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            item.setOGoodsId(skus.get(0).getErpGoodsId());
-                            item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
-                        }
+//                        // 新增
+//                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
+//                        if (skus != null && !skus.isEmpty()) {
+//                            item.setOGoodsId(skus.get(0).getErpGoodsId());
+//                            item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
+//                        }
                         item.setShopId(shopId);
                         item.setOrderId(order.getOrderId());
                         itemMapper.insert(item);
@@ -122,11 +119,11 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
-                    if (skus != null && !skus.isEmpty()) {
-                        item.setOGoodsId(skus.get(0).getErpGoodsId());
-                        item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
-                    }
+//                    List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
+//                    if (skus != null && !skus.isEmpty()) {
+//                        item.setOGoodsId(skus.get(0).getErpGoodsId());
+//                        item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
+//                    }
                     item.setShopId(shopId);
                     item.setOrderId(order.getOrderId());
                     itemMapper.insert(item);

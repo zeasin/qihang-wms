@@ -17,9 +17,12 @@ import cn.qihangerp.open.pdd.PddGoodsApiHelper;
 import cn.qihangerp.open.pdd.model.GoodsResultVo;
 import cn.qihangerp.open.tao.TaoGoodsApiHelper;
 import cn.qihangerp.open.tao.response.TaoGoodsResponse;
+import cn.qihangerp.open.wei.WeiGoodsApiService;
+import cn.qihangerp.open.wei.model.Product;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.service.service.OmsShopGoodsSkuService;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -44,9 +47,9 @@ import java.util.List;
 public class ShopGoodsApiController {
     private final ShopApiCommon shopApiCommon;
     private final OmsShopGoodsSkuService shopGoodsSkuService;
-
+    private final WeiGoodsApiService goodsApiService;
     private final OShopPullLogsService pullLogsService;
-    private final OShopPullLasttimeService pullLasttimeService;
+
 
 
 
@@ -209,8 +212,52 @@ public class ShopGoodsApiController {
 
         }else if (shopType == EnumShopType.WEI.getIndex()) {
             log.info("=============拉取WEI店铺商品=========");
-        }
-        else return AjaxResult.error("暂不支持");
+            ApiResultVo<Product> productApiResultVo = goodsApiService.pullGoodsList(accessToken);
+            apiResponseCode = productApiResultVo.getCode();
+            apiResponseMsg = productApiResultVo.getMsg();
+            if (productApiResultVo.getCode() == 0) {
+                List<OmsShopGoodsSku> skuList = new ArrayList<>();
+
+                // 成功
+                for (var product : productApiResultVo.getList()) {
+                    for (var s : product.getSkus()) {
+                        OmsShopGoodsSku sku = new OmsShopGoodsSku();
+                        sku.setShopId(shopId);
+                        sku.setShopType(shopType);
+                        sku.setProductId(product.getProduct_id());
+                        sku.setOuterProductId(product.getOut_product_id());
+                        sku.setProductTitle(product.getTitle());
+                        sku.setImg(s.getThumb_img());
+//                        sku.setImg(product.getHead_imgs().getString(0));
+                        String skuName = "";
+                        try {
+                            if (!s.getSku_attrs().isEmpty()) {
+                                for (int i = 0; i < s.getSku_attrs().size(); i++) {
+                                    JSONObject item = s.getSku_attrs().getJSONObject(i);
+                                    skuName += " " + item.getString("attr_value");
+                                }
+                            }
+                        } catch (Exception e) {
+                            skuName = JSONObject.toJSONString(s.getSku_attrs());
+                        }
+                        sku.setSkuName(skuName);
+                        sku.setSkuId(s.getSku_id() + "");
+                        sku.setOuterSkuId(s.getOut_sku_id());
+                        sku.setSkuCode(s.getSku_code());
+                        sku.setPrice(s.getSale_price());
+                        sku.setStockNum(s.getStock_num());
+                        sku.setStatus(s.getStatus());
+//                            sku.setAddTime(addTime.toEpochSecond(ZoneOffset.UTC));
+                        sku.setModifyTime(Long.parseLong(product.getEdit_time()));
+                        skuList.add(sku);
+                        ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
+                        apiResponseSuccessTotal++;
+                    }
+                }
+            }
+        } else return AjaxResult.error("暂不支持");
+
+
         log.info("=============拉取店铺商品完成，code:{},msg:{}",apiResponseCode,apiResponseMsg);
         if(apiResponseCode !=0 ){
             OShopPullLogs logs = new OShopPullLogs();

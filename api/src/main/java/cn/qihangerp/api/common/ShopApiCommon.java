@@ -6,6 +6,9 @@ import cn.qihangerp.common.api.ShopApiParams;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
+import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.wei.WeiTokenApiHelper;
+import cn.qihangerp.open.wei.response.WeiTokenResponse;
 import cn.qihangerp.service.service.OShopPlatformService;
 import cn.qihangerp.service.service.OShopService;
 import lombok.AllArgsConstructor;
@@ -42,18 +45,17 @@ public class ShopApiCommon {
 
         if(shop.getType()!=EnumShopType.OFFLINE.getIndex()&&shop.getType()!=EnumShopType.WEI.getIndex()) {
             OShopPlatform platform = platformService.getById(shop.getType());
-
-            if (!StringUtils.hasText(platform.getAppKey())) {
-                return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台参数配置错误，没有找到AppKey");
-            }
-            if (!StringUtils.hasText(platform.getAppSecret())) {
-                return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台参数配置错误，没有找到AppSercet");
-            }
             params.setAppKey(platform.getAppKey());
             params.setAppSecret(platform.getAppSecret());
         }else {
             params.setAppKey(shop.getAppKey());
             params.setAppSecret(shop.getAppSecret());
+        }
+        if (!StringUtils.hasText(params.getAppKey())) {
+            return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台参数配置错误，没有找到AppKey");
+        }
+        if (!StringUtils.hasText(params.getAppSecret())) {
+            return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台参数配置错误，没有找到AppSercet");
         }
 //        if (!StringUtils.hasText(platform.getRedirectUri())) {
 //            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到RedirectUri");
@@ -66,9 +68,40 @@ public class ShopApiCommon {
 //            return cn.qihangerp.tao.common.ApiResult.build(HttpStatus.PARAMS_ERROR,  "第三方平台配置错误，没有找到SellerUserId");
 //        }
 
-        if(shop.getType()!=EnumShopType.OFFLINE.getIndex()&&shop.getType()!=EnumShopType.DOU.getIndex()) {
+        if(shop.getType()!=EnumShopType.OFFLINE.getIndex()&&shop.getType()!=EnumShopType.DOU.getIndex()&&shop.getType()!=EnumShopType.WEI.getIndex()) {
             if (!StringUtils.hasText(shop.getAccessToken())) {
                 return ResultVo.error(ResultVoEnum.UNAUTHORIZED.getIndex(), "Token已过期，请重新授权", params);
+            }
+        }
+
+        if(shop.getType() == EnumShopType.WEI.getIndex()) {
+            if (!StringUtils.hasText(params.getAccessToken())) {
+                ApiResultVo<WeiTokenResponse> token1 = WeiTokenApiHelper.getToken(params.getAppKey(), params.getAppSecret());
+                if(token1.getCode()==0){
+                    params.setAccessToken(token1.getData().getAccess_token());
+                    shopService.updateSessionKey(shopId, params.getAccessToken());
+                    return ResultVo.success(HttpStatus.SUCCESS,params);
+                }else{
+                    return ResultVo.error(HttpStatus.PARAMS_ERROR, token1.getMsg());
+                }
+            }else {
+                // 调用 店铺基本信息接口 验证Token
+                ApiResultVo<WeiTokenResponse> tokenApiResultVo = WeiTokenApiHelper.checkToken(params.getAppKey(), params.getAppSecret(), params.getAccessToken());
+                if(tokenApiResultVo.getCode()==0){
+//                params.setAccessToken(tokenApiResultVo.getData().getAccess_token());
+//                skuService.updateShopSessionByShopId(shopId, params.getAccessToken());
+                    return ResultVo.success(HttpStatus.SUCCESS,params);
+                }else {
+//                ApiResultVo<Token> token2 = TokenApiHelper.getToken(params.getAppKey(), params.getAppSecret());
+                    ApiResultVo<WeiTokenResponse> token2 = WeiTokenApiHelper.getToken(params.getAppKey(), params.getAppSecret());
+                    if (token2.getCode() == 0) {
+                        params.setAccessToken(token2.getData().getAccess_token());
+                        shopService.updateSessionKey(shopId, params.getAccessToken());
+                        return ResultVo.success(HttpStatus.SUCCESS,params);
+                    } else {
+                        return ResultVo.error(HttpStatus.PARAMS_ERROR, token2.getMsg());
+                    }
+                }
             }
         }
 
