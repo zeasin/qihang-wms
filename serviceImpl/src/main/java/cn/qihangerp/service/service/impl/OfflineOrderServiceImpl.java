@@ -1,12 +1,11 @@
 package cn.qihangerp.service.service.impl;
 
-import cn.qihangerp.model.entity.OfflineOrder;
-import cn.qihangerp.model.entity.OfflineOrderItem;
+import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.model.entity.*;
 import cn.qihangerp.model.bo.OfflineOrderCreateBo;
 import cn.qihangerp.model.bo.OfflineOrderCreateItemBo;
 import cn.qihangerp.model.bo.OfflineOrderShipBo;
-import cn.qihangerp.service.mapper.OfflineOrderItemMapper;
-import cn.qihangerp.service.mapper.OfflineOrderMapper;
+import cn.qihangerp.service.mapper.*;
 import cn.qihangerp.service.service.OfflineOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -39,64 +38,12 @@ import java.util.regex.Pattern;
 @Service
 public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, OfflineOrder>
     implements OfflineOrderService {
-    private final OfflineOrderMapper orderMapper;
-    private final OfflineOrderItemMapper orderItemMapper;
+    private final OOrderMapper orderMapper;
+    private final OShopMapper shopMapper;
+    private final OOrderItemMapper orderItemMapper;
     private final MqUtils mqUtils;
-    private final String DATE_PATTERN =
-            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
-    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
 
-    @Override
-    public PageResult<OfflineOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery) {
-        if(org.springframework.util.StringUtils.hasText(bo.getStartTime())){
-            Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
-            boolean b = matcher.find();
-            if(b){
-                bo.setStartTime(bo.getStartTime()+" 00:00:00");
-            }
-        }
-        if(org.springframework.util.StringUtils.hasText(bo.getEndTime())){
-            Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
-            boolean b = matcher.find();
-            if(b){
-                bo.setEndTime(bo.getEndTime()+" 23:59:59");
-            }
-        }
 
-        LambdaQueryWrapper<OfflineOrder> queryWrapper = new LambdaQueryWrapper<OfflineOrder>()
-                .eq(bo.getShopId()!=null,OfflineOrder::getShopId,bo.getShopId())
-                .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()),OfflineOrder::getOrderNum,bo.getOrderNum())
-                .eq(bo.getOrderStatus()!=null,OfflineOrder::getOrderStatus,bo.getOrderStatus())
-                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OfflineOrder::getOrderTime,bo.getStartTime()+" 00:00:00")
-                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OfflineOrder::getOrderTime,bo.getEndTime()+" 23:59:59")
-                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),OfflineOrder::getReceiverName,bo.getReceiverName())
-                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OfflineOrder::getReceiverMobile,bo.getReceiverMobile())
-                .like(org.springframework.util.StringUtils.hasText(bo.getShippingNumber()),OfflineOrder::getShippingNumber,bo.getShippingNumber())
-                ;
-
-        pageQuery.setOrderByColumn("order_time");
-        pageQuery.setIsAsc("desc");
-        Page<OfflineOrder> pages = orderMapper.selectPage(pageQuery.build(), queryWrapper);
-
-        // 查询子订单
-        if(pages.getRecords()!=null){
-            for (OfflineOrder order:pages.getRecords()) {
-                order.setItemList(orderItemMapper.selectList(new LambdaQueryWrapper<OfflineOrderItem>().eq(OfflineOrderItem::getOrderId, order.getId())));
-            }
-        }
-
-        return PageResult.build(pages);
-    }
-
-    @Override
-    public OfflineOrder queryDetailById(Long id) {
-        OfflineOrder oOrder = orderMapper.selectById(id);
-        if(oOrder!=null) {
-           oOrder.setItemList(orderItemMapper.selectList(new LambdaQueryWrapper<OfflineOrderItem>().eq(OfflineOrderItem::getOrderId, oOrder.getId())));
-        }
-
-        return oOrder;
-    }
 
 
     /**
@@ -107,33 +54,37 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
      */
     @Transactional
     @Override
-    public Long insertOfflineOrder(OfflineOrderCreateBo bo, String createBy)
+    public ResultVo<Long> insertOfflineOrder(OfflineOrderCreateBo bo, String createBy)
     {
-        List<OfflineOrder> oOrders = orderMapper.selectList(new LambdaQueryWrapper<OfflineOrder>().eq(OfflineOrder::getOrderNum, bo.getOrderNum()));
-
-        if (oOrders!=null&& oOrders.size()>0) return -1L;// 订单号已存在
-//        erpOrder.setCreateTime(DateUtils.getNowDate());
-//        int rows = erpOrderMapper.insertErpOrder(erpOrder);
-//        insertErpOrderItem(erpOrder);
-//        return rows;
-        if(bo.getItemList() == null || bo.getItemList().size() == 0) return -2L;
+        if(bo.getShopId()==null){
+            return ResultVo.error("缺少参数：shopId");
+        }
+        if(StringUtils.isEmpty(bo.getOrderNum())) return ResultVo.error("缺少参数：orderNum");
+        if(bo.getItemList()==null || bo.getItemList().isEmpty()) return ResultVo.error("缺少参数：订单商品List");
         else{
             // 循环查找是否缺少specId
             for (OfflineOrderCreateItemBo itemBo : bo.getItemList()) {
-                if(itemBo.getSkuId()==null || itemBo.getQuantity()<=0) return -3L;
+                if(itemBo.getSkuId()==null || itemBo.getQuantity()<=0) return ResultVo.error("请完善订单商品明细");
             }
         }
+        OShop shop = shopMapper.selectById(bo.getShopId());
+        if(shop == null){
+            return ResultVo.error("店铺不存在");
+        }
 
-//        OShop shop = shopMapper.selectById(bo.getShopId());
-//        Integer shopType = 0;
-//        if(shop!=null){
-//            shopType = shop.getType();
-//        }else return -4;
+        List<OOrder> oOrders = orderMapper.selectList(new LambdaQueryWrapper<OOrder>()
+                .eq(OOrder::getOrderNum, bo.getOrderNum())
+                .eq(OOrder::getShopId,bo.getShopId()));
+
+        if (oOrders!=null&& oOrders.size()>0) return ResultVo.error("订单号已存在");// 订单号已存在
+
+
 
         // 开始组合订单信息
-        OfflineOrder order = new OfflineOrder();
+        OOrder order = new OOrder();
         order.setOrderNum(bo.getOrderNum());
         order.setShopId(bo.getShopId());
+        order.setShopType(shop.getType());
         order.setBuyerMemo(bo.getBuyerMemo());
         order.setRemark(bo.getRemark());
         order.setRefundStatus(1);
@@ -154,14 +105,13 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
         order.setCreateTime(new Date());
         order.setShipType(0);
         order.setCreateBy(createBy);
-        order.setOmsPushStatus(0);
         orderMapper.insert(order);
 
-//        List<OOrderItem> itemList = new ArrayList<OOrderItem>();
         for (int i = 0; i < bo.getItemList().size(); i++) {
             OfflineOrderCreateItemBo itemBo = bo.getItemList().get(i);
-            OfflineOrderItem orderItem = new OfflineOrderItem();
-
+            OOrderItem orderItem = new OOrderItem();
+            orderItem.setShopId(order.getShopId());
+            orderItem.setShopType(order.getShopType());
             orderItem.setOrderId(order.getId());
             orderItem.setOrderNum(bo.getOrderNum());
             if(bo.getItemList().size()==1) {
@@ -183,39 +133,15 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
             orderItem.setRefundCount(0);
             orderItem.setRefundStatus(1);
             orderItem.setOrderStatus(order.getOrderStatus());
-            orderItem.setHasPushErp(0);
             orderItem.setCreateTime(new Date());
             orderItem.setCreateBy(createBy);
             orderItemMapper.insert(orderItem);
-//            itemList.add(orderItem);
         }
 
-        return Long.parseLong(order.getId());
+        return ResultVo.success(Long.parseLong(order.getId()));
     }
 
-    @Transactional
-    @Override
-    public int orderLogistics(OfflineOrderShipBo bo, String operator) {
-        if(!StringUtils.hasText(bo.getOrderNum())) return -1;
-        if(!StringUtils.hasText(bo.getShippingNumber()) || !StringUtils.hasText(bo.getShippingCompany())) return -2;
-        List<OfflineOrder> offlineOrders = orderMapper.selectList(new LambdaQueryWrapper<OfflineOrder>().eq(OfflineOrder::getOrderNum, bo.getOrderNum()));
-        if(offlineOrders==null || offlineOrders.size()==0) return -3;
-        else if(offlineOrders.get(0).getOrderStatus()!=1) return -4;
-        if(offlineOrders.get(0).getRefundStatus()!=1) return -5;
 
-        OfflineOrder update = new OfflineOrder();
-        update.setId(offlineOrders.get(0).getId());
-        update.setShippingCompany(bo.getShippingCompany());
-        update.setShippingNumber(bo.getShippingNumber());
-        update.setUpdateBy(operator);
-        update.setUpdateTime(new Date());
-        int rows = orderMapper.updateById(update);
-        if (rows > 0){
-            // TODO 通知OMS系统备货
-            mqUtils.sendApiMessage(MqMessage.build(EnumShopType.OFFLINE, MqType.SHIP_STOCKUP_MESSAGE, bo.getOrderNum()));
-        }
-        return 1;
-    }
 }
 
 

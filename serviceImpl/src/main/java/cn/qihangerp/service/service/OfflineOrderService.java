@@ -3,6 +3,7 @@ package cn.qihangerp.service.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.OfflineOrder;
 import cn.qihangerp.model.bo.OfflineOrderCreateBo;
 import cn.qihangerp.model.bo.OfflineOrderShipBo;
@@ -17,15 +18,12 @@ import cn.qihangerp.model.request.OrderSearchRequest;
 * @createDate 2024-07-27 23:03:38
 */
 public interface OfflineOrderService extends IService<OfflineOrder> {
-    PageResult<OfflineOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
-
-    OfflineOrder queryDetailById(Long id);
 
     /**
      * 手动添加订单
      * @param bo
      * @return
      */
-    Long insertOfflineOrder(OfflineOrderCreateBo bo, String createBy);
-    int orderLogistics(OfflineOrderShipBo bo, String operator);
+    ResultVo<Long> insertOfflineOrder(OfflineOrderCreateBo bo, String createBy);
+
 }

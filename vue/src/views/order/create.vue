@@ -472,7 +472,7 @@ export default {
               this.$modal.msgSuccess("订单创建成功");
               // 调用全局挂载的方法,关闭当前标签页
               this.$store.dispatch("tagsView/delView", this.$route);
-              this.$router.push('/offline/order');
+              this.$router.push('/sales/order_list');
             });
 
         }else{
