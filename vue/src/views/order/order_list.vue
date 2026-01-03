@@ -67,7 +67,15 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >手动创建订单</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          :loading="pushLoading"-->
@@ -79,16 +87,16 @@
 <!--          @click="handlePushErp"-->
 <!--        >手动将选中订单推送到ERP</el-button>-->
 <!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="warning"-->
-<!--          plain-->
-<!--          icon="el-icon-download"-->
-<!--          size="mini"-->
-<!--          @click="handleExport"-->
-<!--          v-hasPermi="['shop:order:export']"-->
-<!--        >导出</el-button>-->
-<!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+          v-hasPermi="['shop:order:export']"
+        >导出</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -525,7 +533,7 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.$router.push('/order/create');
+      this.$router.push('/sales/order_create');
     },
     /** 查询店铺订单列表 */
     getList() {

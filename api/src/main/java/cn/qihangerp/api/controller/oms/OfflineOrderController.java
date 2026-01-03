@@ -21,52 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class OfflineOrderController extends BaseController {
     private final OfflineOrderService orderService;
     private final MqUtils mqUtils;
-    /**
-     * 查询店铺订单列表
-     */
-    @GetMapping("/list")
-    public TableDataInfo list(OrderSearchRequest bo, PageQuery pageQuery)
-    {
-        var pageList = orderService.queryPageList(bo,pageQuery);
-        return getDataTable(pageList);
-    }
 
-
-    /**
-     * 获取店铺订单详细信息
-     */
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
-        return success(orderService.queryDetailById(id));
-    }
-
-//    @PostMapping("/pushErp/{ids}")
-//    public AjaxResult remove(@PathVariable Long[] ids) {
-//        for (Long id : ids) {
-//            OOrder oOrder = orderService.getById(id);
-//            if (oOrder != null) {
-//                oOrder.setItemList(orderItemService.getOrderItemListByOrderId(id));
-//                ResultVo resultVo = erpPushHelper.pushOrderSingle(oOrder);
-//                OOrder pushUpdate = new OOrder();
-//                if (oOrder.getOrderStatus() == 1 || oOrder.getOrderStatus() == 2 || oOrder.getOrderStatus() == 3) {
-//                    // 待发货、已发货、已完成 订单推送
-//                    pushUpdate.setErpPushStatus(resultVo.getCode() == 0 ? 200 : resultVo.getCode());
-//
-//                } else if (oOrder.getOrderStatus() == 11) {
-//                    pushUpdate.setErpPushStatus(resultVo.getCode() == 0 ? 100 : resultVo.getCode());//推送状态200 订单推送成功 100 取消订单推送成功
-//                }
-//                pushUpdate.setErpPushResult(resultVo.getMsg());
-//                pushUpdate.setErpPushTime(new Date());
-//                pushUpdate.setUpdateBy("手动推送到ERP");
-//                pushUpdate.setUpdateTime(new Date());
-//                pushUpdate.setId(id.toString());
-//                orderService.updateById(pushUpdate);
-//            }
-//        }
-//
-//        return success();
-//    }
 
 
     @PostMapping("/create")
@@ -86,21 +41,5 @@ public class OfflineOrderController extends BaseController {
         return toAjax(1);
     }
 
-    /**
-     * 手动推送到系统
-     * @param bo
-     * @return
-     */
-    @PostMapping("/push_oms")
-    @ResponseBody
-    public AjaxResult pushOms(@RequestBody OfflineOrderPushBo bo) {
-        // TODO:需要优化消息格式
-        if(bo!=null && bo.getIds()!=null) {
-            for(String id: bo.getIds()) {
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.OFFLINE, MqType.ORDER_MESSAGE, id));
-            }
-        }
-        return success();
-    }
 }
 

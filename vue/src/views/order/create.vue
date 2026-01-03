@@ -12,6 +12,12 @@
           <el-select v-model="form.shopId" filterable r placeholder="搜索店铺" >
           <el-option v-for="item in shopList" :key="item.id" :label="item.name" :value="item.id">
              <span style="float: left">{{ item.name }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东POP</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">其他渠道</span>
           </el-option>
         </el-select>
         </el-form-item>
@@ -73,9 +79,9 @@
               <!-- <el-input v-model="scope.row.goodsTitle" placeholder="请输入商品标题" /> -->
               <el-select v-model="scope.row.skuId" filterable remote reserve-keyword placeholder="搜索商品SKU" style="width: 330px;"
                 :remote-method="searchSku" :loading="skuListLoading" @change="skuChanage(scope.row)">
-                <el-option v-for="item in skuList" :key="item.id"
+                <el-option v-for="item in skuList" :key="item.skuId"
                   :label="item.goodsName + ' ' + item.skuName +' - ' + item.skuCode"
-                  :value="item.id">
+                  :value="item.skuId">
                 </el-option>
               </el-select>
             </template>
@@ -166,8 +172,7 @@
 </template>
 
 <script>
-import { searchSku } from "@/api/offline/goodsSku";
-// import { listShop } from "@/api/offline/shop";
+import { searchSku } from "@/api/goods/goodsSpec";
 import { addOrder } from "@/api/offline/order";
 import { listShop } from "@/api/shop/shop";
 import {
@@ -221,7 +226,7 @@ export default {
   },
   created() {
     this.form.orderDate = this.getDate()
-    listShop({type: 999}).then(response => {
+    listShop({}).then(response => {
         this.shopList = response.rows;
       });
   },
@@ -337,11 +342,11 @@ export default {
     },
     skuChanage(row) {
       console.log('=====0000====',row)
-      const spec = this.skuList.find(x => x.id === row.skuId);
+      const spec = this.skuList.find(x => x.skuId === row.skuId);
       if (spec) {
         console.log('=======11111==', spec)
-        row.skuId = spec.id
-        row.salePrice = spec.salePrice
+        row.skuId = spec.skuId
+        row.salePrice = spec.retailPrice
         // row.sku = spec.colorValue + ' ' + spec.sizeValue + ' ' + spec.styleValue
         row.skuName = spec.skuName
         row.goodsImg = spec.colorImage
@@ -439,6 +444,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
+
       this.$refs["form"].validate(valid => {
         if (valid) {
 
@@ -447,6 +453,7 @@ export default {
           this.form.town = this.form.provinces[2]
 
           if(this.form.itemList && this.form.itemList.length >0){
+            console.log('======创建订单=====',this.form)
             for(var i=0;i<this.form.itemList.length;i++){
               if(!this.form.itemList[i].skuId || !this.form.itemList[i].quantity){
                 this.$modal.msgError("请完善商品信息");
@@ -460,7 +467,7 @@ export default {
             //   }
             // })
 
-            console.log('======创建订单=====',this.form)
+
             addOrder(this.form).then(response => {
               this.$modal.msgSuccess("订单创建成功");
               // 调用全局挂载的方法,关闭当前标签页
