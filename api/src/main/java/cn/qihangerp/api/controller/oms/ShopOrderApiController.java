@@ -7,8 +7,6 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.common.mq.MqMessage;
-import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.*;
 import cn.qihangerp.open.common.ApiResultVo;
@@ -17,22 +15,16 @@ import cn.qihangerp.open.pdd.model.OrderListResultVo;
 import cn.qihangerp.service.service.OOrderService;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
-import cn.qihangerp.service.service.PddOrderService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -195,7 +187,7 @@ public class ShopOrderApiController {
     @RequestMapping("/pull_order_detail")
     @ResponseBody
     public AjaxResult getOrderPullDetail(@RequestBody PullRequest req) throws Exception {
-        log.info("/**************主动更新pdd订单by number****************/");
+        log.info("============更新店铺订单订单：{}",JSONObject.toJSONString(req));
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
@@ -205,7 +197,7 @@ public class ShopOrderApiController {
 
         var checkResult = shopApiCommon.checkBefore(req.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
-            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+            return AjaxResult.error(checkResult.getMsg());
         }
         String accessToken = checkResult.getData().getAccessToken();
         String appKey = checkResult.getData().getAppKey();
@@ -231,7 +223,7 @@ public class ShopOrderApiController {
             }
             return AjaxResult.success();
         } else {
-            return AjaxResult.error(resultVo.getCode(), resultVo.getMsg());
+            return AjaxResult.error( resultVo.getMsg());
         }
     }
 }

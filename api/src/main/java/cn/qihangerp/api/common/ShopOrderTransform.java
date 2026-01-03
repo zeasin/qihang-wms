@@ -18,7 +18,11 @@ public class ShopOrderTransform {
         shopOrder.setBuyerMemo(order.getBuyerMemo());
         shopOrder.setSellerMemo(order.getRemark());
         shopOrder.setRefundStatus(order.getRefundStatus());
-        shopOrder.setOrderStatus(order.getOrderStatus());
+        if(order.getRefundStatus()==1){
+            shopOrder.setOrderStatus(order.getOrderStatus());
+        }else{
+            shopOrder.setOrderStatus(11);//已取消
+        }
         shopOrder.setPlatformOrderStatus(order.getOrderStatus()+"");
         //发货状态，枚举值：1：待发货，2：已发货待签收，3：已签收
         if(order.getOrderStatus()==1){

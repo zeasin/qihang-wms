@@ -78,13 +78,12 @@
       </el-col>
       <el-col :span="1.5">
       <el-button
-        :loading="pullLoading"
         type="primary"
         plain
         icon="el-icon-download"
         size="mini"
         @click="handlePull"
-      >API拉取订单</el-button>
+      >API下载订单</el-button>
       </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
@@ -287,7 +286,12 @@
             icon="el-icon-delete"
             @click="handleCancel(scope.row)"
           >取消订单</el-button>
-
+          <el-button style="padding-right: 6px;padding-left: 6px"
+             :loading="pullLoading"
+             size="mini"
+             icon="el-icon-refresh"
+             @click="handlePullUpdate(scope.row)"
+          >更新订单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -449,9 +453,10 @@
 </template>
 
 <script>
-import {listOrder, getOrder, pushErp,cancelOrder} from "@/api/order/order";
+import {listOrder, getOrder,cancelOrder} from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
 import Clipboard from "clipboard";
+import {pullOrderDetail} from "@/api/shop/order";
 
 export default {
   name: "Order",
@@ -470,6 +475,7 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      pullLoading: false,
       // 总条数
       total: 0,
       // 店铺订单表格数据
@@ -545,6 +551,9 @@ export default {
     handleAdd() {
       this.$router.push('/sales/order_create');
     },
+    handlePull() {
+      this.$router.push('/sales/order_pull');
+    },
     /** 查询店铺订单列表 */
     getList() {
       console.log('=====搜索条件：=====',this.queryParams)
@@ -586,17 +595,17 @@ export default {
     reset(){
 
     },
-    handlePushErp(row){
-      const id = row.id || this.ids
-      this.pushLoading = true
-      pushErp(id).then(response => {
-        console.log('======返回====',response)
-        this.$modal.msgSuccess("推送成功！请在订单详情查看推送结果！");
-        this.pushLoading = false
-        this.getList()
-      });
-    },
 
+    handlePullUpdate(row) {
+      // 接口拉取订单并更新
+      this.pullLoading = true
+      pullOrderDetail({shopId:row.shopId,orderId:row.orderNum}).then(response => {
+        console.log('拉取pdd订单详情接口返回=====',response)
+        this.$modal.msgSuccess(JSON.stringify(response));
+        this.pullLoading = false
+        this.getList()
+      })
+    },
     //取消订单
     handleCancel(row){
       this.form.id = row.id

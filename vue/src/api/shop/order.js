@@ -9,3 +9,10 @@ export function pullOrder(data) {
   })
 }
 
+export function pullOrderDetail(data) {
+  return request({
+    url: '/shop/order/pull_order_detail',
+    method: 'post',
+    data: data
+  })
+}

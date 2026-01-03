@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 03/01/2026 16:12:25
+ Date: 03/01/2026 16:53:21
 */
 
 SET NAMES utf8mb4;
@@ -883,8 +883,8 @@ CREATE TABLE `o_order`  (
 -- ----------------------------
 -- Records of o_order
 -- ----------------------------
-INSERT INTO `o_order` VALUES (1, '260103-143340377723488', 300, 1011, NULL, '', '', NULL, 4, 1, 39.32, 0, 0, 0, 14.54, 24.78, 24.78, 0, '', '', '', '', '', '', '2026-01-03 13:08:45', '2026-01-03 13:18:01', '2026-01-03 13:08:46', '', 0, 0, 0, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, NULL, NULL, NULL, '待发货', '1');
-INSERT INTO `o_order` VALUES (2, '260103-064550356563156', 300, 1011, NULL, '', '', NULL, 1, 2, 33.93, 0, 0, 0, 0, 33.93, 33.93, 0, NULL, NULL, NULL, '', '', '', '2026-01-03 13:45:26', '2026-01-03 15:41:10', '2026-01-03 13:45:27', '', 0, 0, 0, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, NULL, NULL, NULL, '已发货待签收', '2');
+INSERT INTO `o_order` VALUES (1, '260103-143340377723488', 300, 1011, NULL, '', '', NULL, 4, 11, 39.32, 0, 0, 0, 14.54, 24.78, 24.78, 0, '', '', '', '', '', '', '2026-01-03 13:08:45', '2026-01-03 13:18:01', '2026-01-03 13:08:46', '', 0, 0, 0, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, '待发货', '1');
+INSERT INTO `o_order` VALUES (2, '260103-064550356563156', 300, 1011, NULL, '', '', NULL, 1, 2, 33.93, 0, 0, 0, 0, 33.93, 33.93, 0, NULL, NULL, NULL, '', '', '', '2026-01-03 13:45:26', '2026-01-03 15:41:10', '2026-01-03 13:45:27', '', 0, 0, 0, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, '已发货待签收', '2');
 
 -- ----------------------------
 -- Table structure for o_order_item
@@ -932,8 +932,8 @@ CREATE TABLE `o_order_item`  (
 -- ----------------------------
 -- Records of o_order_item
 -- ----------------------------
-INSERT INTO `o_order_item` VALUES (1, 1011, 300, 1, NULL, '260103-143340377723488-1742164849117', '1742164849117', 0, 13, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/70732144-21a8-423c-90df-553c3ea4fe36.jpeg.a.jpeg', 'LEDDX001', '24W白光-215mm', 'LEDDX00103', 39.32, 39.32, 0, 39.32, 1, NULL, 0, 1, 1, 0, 0, 0, '2026-01-03 16:08:13', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `o_order_item` VALUES (2, 1011, 300, 2, NULL, '260103-064550356563156-1742164849116', '1742164849116', 0, 12, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/dfb81deb-a7c1-4028-b6b1-b3f02fb63c72.jpeg.a.jpeg', 'LEDDX001', '18W白光-175mm', 'LEDDX00102', 33.93, 33.93, 0, 33.93, 1, NULL, 0, 1, 2, 0, 0, 0, '2026-01-03 16:08:13', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `o_order_item` VALUES (1, 1011, 300, 1, NULL, '260103-143340377723488-1742164849117', '1742164849117', 0, 13, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/70732144-21a8-423c-90df-553c3ea4fe36.jpeg.a.jpeg', 'LEDDX001', '24W白光-215mm', 'LEDDX00103', 39.32, 39.32, 0, 39.32, 1, NULL, 0, 1, 1, 0, 0, 0, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, NULL);
+INSERT INTO `o_order_item` VALUES (2, 1011, 300, 2, NULL, '260103-064550356563156-1742164849116', '1742164849116', 0, 12, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/dfb81deb-a7c1-4028-b6b1-b3f02fb63c72.jpeg.a.jpeg', 'LEDDX001', '18W白光-175mm', 'LEDDX00102', 33.93, 33.93, 0, 33.93, 1, NULL, 0, 1, 2, 0, 0, 0, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for o_order_ship_list
@@ -1302,7 +1302,7 @@ CREATE TABLE `o_shop_pull_logs`  (
   `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
   `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2007363351869005827 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2007370800982339586 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_shop_pull_logs
@@ -1328,6 +1328,7 @@ INSERT INTO `o_shop_pull_logs` VALUES (2007254711795396610, 1012, 500, 'GOODS', 
 INSERT INTO `o_shop_pull_logs` VALUES (2007255303028682753, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:0}', '2026-01-03 08:56:36', 136242);
 INSERT INTO `o_shop_pull_logs` VALUES (2007255692893470721, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:6}', '2026-01-03 09:00:23', 2095);
 INSERT INTO `o_shop_pull_logs` VALUES (2007363351869005826, 1011, 300, 'ORDER', '主动拉取订单', '{startTime:2026-01-03 00:00:01,endTime:2026-01-03 23:59:59}', '{insert:2,update:0,fail:0}', '2026-01-03 16:08:09', 3437);
+INSERT INTO `o_shop_pull_logs` VALUES (2007370800982339585, 1011, 300, 'ORDER', '主动拉取订单', '{startTime:2026-01-03 00:00:01,endTime:2026-01-03 23:59:59}', '{insert:2,update:0,fail:0}', '2026-01-03 16:37:48', 635);
 
 -- ----------------------------
 -- Table structure for o_shop_region
@@ -2843,8 +2844,8 @@ INSERT INTO `sys_menu` VALUES (5, '系统设置', 0, 99, '/system', 'Layout', ''
 INSERT INTO `sys_menu` VALUES (6, '出库管理', 0, 20, 'ship', 'Layout', NULL, 1, 0, 'M', '0', '0', '', 'guide', 'admin', '2024-03-30 17:36:10', 'admin', '2025-12-30 02:33:36', '');
 INSERT INTO `sys_menu` VALUES (7, '仓库设置', 0, 40, 'stock', 'Layout', NULL, 1, 0, 'M', '0', '0', '', 'lock', 'admin', '2024-08-25 15:54:14', 'admin', '2025-12-30 03:01:19', '');
 INSERT INTO `sys_menu` VALUES (100, '发货订单库', 1, 1, 'order_list', 'order/index', '', 1, 0, 'C', '0', '0', '', 'shopping', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-02 01:05:49', '用户管理菜单');
-INSERT INTO `sys_menu` VALUES (101, '电商订单拉取', 1, 32, 'order_pull', 'order/pull_order', '', 1, 0, 'C', '0', '0', '', 'documentation', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-03 05:47:11', '角色管理菜单');
-INSERT INTO `sys_menu` VALUES (102, '店铺订单管理', 1, 3, 'shop_order_list', 'order/shopOrder/index', '', 1, 0, 'C', '0', '0', '', 'list', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-01 07:08:26', '菜单管理菜单');
+INSERT INTO `sys_menu` VALUES (101, '电商订单拉取', 1, 2, 'order_pull', 'order/pull_order', '', 1, 0, 'C', '0', '0', '', 'documentation', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-03 08:41:47', '角色管理菜单');
+INSERT INTO `sys_menu` VALUES (102, '店铺订单管理', 1, 3, 'shop_order_list', 'order/shopOrder/index', '', 1, 0, 'C', '1', '0', '', 'list', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-03 08:42:38', '菜单管理菜单');
 INSERT INTO `sys_menu` VALUES (106, '店铺售后管理', 1, 20, 'shop_refund_list', 'refund/shopRefund/index', '', 1, 0, 'C', '0', '0', '', 'edit', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-01 07:08:01', '参数设置菜单');
 INSERT INTO `sys_menu` VALUES (108, '店铺管理', 1, 86, 'shop_list', 'shop/index', '', 1, 0, 'C', '0', '0', '', 'shop', 'admin', '2023-12-29 09:14:02', 'admin', '2026-01-01 07:07:02', '');
 INSERT INTO `sys_menu` VALUES (110, '平台参数设置', 1, 88, 'platform/setting', 'shop/platform/index', '', 1, 0, 'C', '0', '0', '', 'system', 'admin', '2023-12-29 13:32:41', 'admin', '2025-07-11 13:59:36', '');
@@ -2864,7 +2865,7 @@ INSERT INTO `sys_menu` VALUES (2088, '发货设置', 7, 9, 'ship_set', 'shipping
 INSERT INTO `sys_menu` VALUES (2089, '发货记录', 6, 3, 'record', 'shipping/record/index', NULL, 1, 0, 'C', '0', '0', '', 'list', 'admin', '2024-03-30 17:37:42', 'admin', '2025-10-10 00:44:48', '');
 INSERT INTO `sys_menu` VALUES (2090, '角色管理', 5, 2, 'role', 'system/role/index', NULL, 1, 0, 'C', '0', '0', NULL, 'peoples', 'admin', '2024-03-31 12:40:50', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2091, '部门管理', 5, 3, 'dept', 'system/dept/index', NULL, 1, 0, 'C', '0', '0', NULL, 'tree', 'admin', '2024-03-31 12:42:57', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2093, '发货订单商品', 1, 2, 'order_item_list', 'order/item_list', NULL, 1, 0, 'C', '1', '0', '', 'chart', 'admin', '2024-04-06 18:58:06', 'admin', '2025-10-01 08:36:11', '');
+INSERT INTO `sys_menu` VALUES (2093, '发货订单明细', 1, 2, 'order_item_list', 'order/item_list', NULL, 1, 0, 'C', '1', '0', '', 'chart', 'admin', '2024-04-06 18:58:06', 'admin', '2026-01-03 08:41:57', '');
 INSERT INTO `sys_menu` VALUES (2096, '备货出库', 6, 2, 'stockup', 'shipping/stockup', NULL, 1, 0, 'C', '0', '0', '', 'email', 'admin', '2024-07-20 11:53:24', 'admin', '2025-10-09 02:37:28', '');
 INSERT INTO `sys_menu` VALUES (2099, '私域订单管理', 1, 10, 'offline_order_list', 'order/private/index', NULL, 1, 0, 'C', '0', '1', '', 'checkbox', 'admin', '2024-07-27 17:33:03', 'admin', '2025-05-24 13:10:53', '');
 INSERT INTO `sys_menu` VALUES (2100, '私域售后管理', 2, 3, 'offline_aftersale', 'refund/private/index', NULL, 1, 0, 'C', '0', '1', '', 'code', 'admin', '2024-07-27 17:33:33', 'admin', '2025-05-25 14:59:03', '');
