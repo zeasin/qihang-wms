@@ -181,7 +181,7 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import {listOrder} from "@/api/pdd/order";
+// import {listOrder} from "@/api/pdd/order";
 import {
   getWaybillAccountList,
   pullWaybillAccount,

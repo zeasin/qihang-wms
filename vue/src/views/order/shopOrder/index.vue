@@ -4,7 +4,7 @@
       <el-tab-pane v-for="item in typeList" :label="item.name" :name="item.code" lazy>
         <order-tao v-if="item.id === 100"></order-tao>
         <order-jd v-if="item.id === 200"></order-jd>
-        <order-pdd v-if="item.id === 300"></order-pdd>
+<!--        <order-pdd v-if="item.id === 300"></order-pdd>-->
         <order-dou v-if="item.id === 400"></order-dou>
         <order-wei v-if="item.id === 500"></order-wei>
 <!--        <order-offline v-if="item.id === 999"></order-offline>-->
@@ -34,13 +34,13 @@
 import OrderTao  from "@/views/tao/order/index";
 import OrderJd  from "@/views/jd/order/index";
 import OrderDou  from "@/views/dou/order/index";
-import OrderPdd  from "@/views/pdd/order/index";
+
 import OrderWei  from "@/views/wei/order/index";
 // import OrderOffline  from "@/views/offline/order/index";
 import {listPlatform} from "@/api/shop/shop";
 export default {
   name: "Order",
-  components:{OrderTao,OrderJd,OrderDou,OrderPdd,OrderWei},
+  components:{OrderTao,OrderJd,OrderDou,OrderWei},
   data() {
     return {
       activeName: '',
