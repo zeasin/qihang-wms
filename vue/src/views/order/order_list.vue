@@ -270,7 +270,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="下单时间" align="center" prop="orderTime" >
         <template slot-scope="scope">
-          {{ parseTime(scope.row.orderTime) }}
+          {{ scope.row.orderCreated }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

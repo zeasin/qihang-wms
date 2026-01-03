@@ -86,7 +86,7 @@
 
     <select id="selectOrderItemListByOrderId" parameterType="Long" resultType="cn.qihangerp.model.vo.OrderItemListVo">
         SELECT
-            oi.*,o.shop_id,o.order_time,gs.outer_erp_sku_id
+            oi.*,o.shop_id,o.order_created as order_time,gs.outer_erp_sku_id
         FROM o_order_item as oi
                  left join o_order as o on o.id = oi.order_id
                  left join o_goods_sku as gs on gs.id = oi.goods_sku_id

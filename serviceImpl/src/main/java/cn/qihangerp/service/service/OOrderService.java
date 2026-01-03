@@ -77,4 +77,5 @@ public interface OOrderService extends IService<OOrder> {
      * @return
      */
     ResultVo cancelOrderItem(Long orderItemId, String cancelReason, String man);
+    ResultVo saveShopOrder(OOrder order);
 }

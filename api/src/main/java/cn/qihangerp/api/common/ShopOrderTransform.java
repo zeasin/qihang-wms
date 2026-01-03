@@ -45,9 +45,12 @@ public class ShopOrderTransform {
         shopOrder.setProvince(order.getProvince());
         shopOrder.setCity(order.getCity());
         shopOrder.setTown(order.getTown());
-        shopOrder.setAddress(order.getReceiverAddressMask());
-        shopOrder.setReceiverName(order.getReceiverNameMask());
-        shopOrder.setReceiverMobile(order.getReceiverPhoneMask());
+        if(order.getOrderStatus()==1){
+            shopOrder.setAddress(order.getReceiverAddressMask());
+            shopOrder.setReceiverName(order.getReceiverNameMask());
+            shopOrder.setReceiverMobile(order.getReceiverPhoneMask());
+        }
+
 
         // 订单明细
         List<OOrderItem> itemList = new ArrayList<>();

@@ -14,6 +14,7 @@ import cn.qihangerp.model.entity.*;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddOrderApiHelper;
 import cn.qihangerp.open.pdd.model.OrderListResultVo;
+import cn.qihangerp.service.service.OOrderService;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.service.service.PddOrderService;
@@ -44,7 +45,8 @@ import java.util.regex.Pattern;
 public class ShopOrderApiController {
     private static Logger log = LoggerFactory.getLogger(ShopOrderApiController.class);
 
-    private final PddOrderService orderService;
+//    private final PddOrderService orderService;
+    private final OOrderService orderService;
     private final ShopApiCommon shopApiCommon;
     private final MqUtils mqUtils;
     private final OShopPullLogsService pullLogsService;
@@ -132,28 +134,18 @@ public class ShopOrderApiController {
                     oOrder.setShopId(shopId);
                     oOrder.setShopType(shopType);
 
-                    PddOrder pddOrder = new PddOrder();
-                    BeanUtils.copyProperties(trade,pddOrder);
-                    List<PddOrderItem> items = new ArrayList<>();
-                    for (var it:trade.getItemList()) {
-                        PddOrderItem item = new PddOrderItem();
-                        BeanUtils.copyProperties(it,item);
-                        items.add(item);
-                    }
-                    pddOrder.setItems(items);
                     //插入订单数据
-                    var result = orderService.saveOrder(req.getShopId(), pddOrder);
+                    var result = orderService.saveShopOrder(oOrder);
                     if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                         //已经存在
-                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新************开始通知****/");
-                        mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
+                        log.info("=============主动更新pdd订单：开始更新数据库：" + trade.getOrderSn() + "存在、更新");
                         hasExistOrder++;
                     } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增************开始通知****/");
-                        mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD,MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
+                        log.info("============主动更新pdd订单：开始更新数据库：" + trade.getOrderSn() + "不存在、新增");
+
                         insertSuccess++;
                     } else {
-                        log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "报错****************/");
+                        log.info("===============主动更新pdd订单：开始更新数据库：" + trade.getOrderSn() + "报错:{}", result.getMsg());
                         totalError++;
                     }
                 }
@@ -218,31 +210,25 @@ public class ShopOrderApiController {
         String accessToken = checkResult.getData().getAccessToken();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-
+        Long shopId = checkResult.getData().getShopId();
+        int shopType = checkResult.getData().getShopType();
 
         var resultVo = PddOrderApiHelper.pullOrderDetail(appKey, appSecret, accessToken,req.getOrderId());
         if (resultVo.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-            PddOrder pddOrder = new PddOrder();
-            BeanUtils.copyProperties(resultVo.getData(),pddOrder);
-            List<PddOrderItem> orderItemList = new ArrayList<>();
-            if(resultVo.getData().getItemList()!=null&&resultVo.getData().getItemList().size()>0){
-                for(var item:resultVo.getData().getItemList()){
-                    PddOrderItem pddOrderItem = new PddOrderItem();
-                    BeanUtils.copyProperties(item,pddOrderItem);
-                    orderItemList.add(pddOrderItem);
-                }
-            }
-            pddOrder.setItems(orderItemList);
-            var result = orderService.saveOrder(req.getShopId(), pddOrder);
+            OOrder oOrder = ShopOrderTransform.transformPddOrder(resultVo.getData());
+            oOrder.setShopId(shopId);
+            oOrder.setShopType(shopType);
+
+            var result = orderService.saveShopOrder(oOrder);
             if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                 //已经存在
-                log.info("/**************主动更新PDD订单：开始更新数据库：" + resultVo.getData().getOrderSn() + "存在、更新****************/");
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE,resultVo.getData().getOrderSn()));
+                log.info("============主动更新PDD订单：开始更新数据库：" + resultVo.getData().getOrderSn() + "存在、更新");
             } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                log.info("/**************主动更新PDD订单：开始更新数据库：" + resultVo.getData().getOrderSn() + "不存在、新增****************/");
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD,MqType.ORDER_MESSAGE,resultVo.getData().getOrderSn()));
+                log.info("============主动更新PDD订单：开始更新数据库：" + resultVo.getData().getOrderSn() + "不存在、新增");
             }
-
+            else {
+                log.info("===============主动更新pdd订单：开始更新数据库：" + resultVo.getData().getOrderSn() + "报错:{}", result.getMsg());
+            }
             return AjaxResult.success();
         } else {
             return AjaxResult.error(resultVo.getCode(), resultVo.getMsg());

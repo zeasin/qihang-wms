@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -42,6 +43,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
     private final OOrderMapper orderMapper;
     private final OOrderItemMapper orderItemMapper;
+
+    private final OmsShopGoodsSkuMapper shopGoodsSkuMapper;
 
     private final OGoodsMapper goodsMapper;
     private final OGoodsSkuMapper goodsSkuMapper;
@@ -616,6 +619,63 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //            }
 
 
+        }
+
+        return ResultVo.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultVo saveShopOrder(OOrder order) {
+        if(order.getShopId()==null) return ResultVo.error("缺少参数：shopId");
+        if(order.getShopType()==null) return ResultVo.error("缺少参数：shopType");
+        if(order.getItemList()==null||order.getItemList().isEmpty()) return ResultVo.error("缺少参数：itemList");
+        if(StringUtils.isEmpty(order.getOrderNum())) return ResultVo.error("缺少参数：orderNum");
+        Long orderId = null;
+        List<OOrder> oOrders = this.baseMapper.selectList(new LambdaQueryWrapper<OOrder>()
+                .eq(OOrder::getOrderNum, order.getOrderNum())
+                .eq(OOrder::getShopId, order.getShopId()));
+        if(oOrders.isEmpty()){
+            // 新增
+            order.setCreateTime(new Date());
+            this.baseMapper.insert(order);
+            orderId = Long.parseLong(order.getId());
+        }else{
+            order.setUpdateTime(new Date());
+            order.setId(oOrders.get(0).getId());
+            orderId = Long.parseLong(order.getId());
+            this.baseMapper.updateById(order);
+        }
+
+        //保存item
+        for(OOrderItem orderItem : order.getItemList()){
+            orderItem.setOrderId(orderId.toString());
+            orderItem.setShopId(order.getShopId());
+            orderItem.setShopType(order.getShopType());
+            // 查询店铺商品sku
+            List<OmsShopGoodsSku> omsShopGoodsSkus = shopGoodsSkuMapper.selectList(new LambdaQueryWrapper<OmsShopGoodsSku>()
+                    .eq(OmsShopGoodsSku::getSkuId, orderItem.getSkuId())
+                    .eq(OmsShopGoodsSku::getShopId, orderItem.getShopId()));
+            if(!omsShopGoodsSkus.isEmpty()){
+                orderItem.setGoodsId(0L);
+                orderItem.setGoodsSkuId(omsShopGoodsSkus.get(0).getId());
+            }else{
+                orderItem.setGoodsId(0L);
+                orderItem.setGoodsSkuId(0L);
+            }
+
+            List<OOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OOrderItem>()
+                    .eq(OOrderItem::getOrderId, order.getId())
+                    .eq(OOrderItem::getSkuId, orderItem.getSkuId()));
+            if(oOrderItems.isEmpty()){
+                // 新增items
+                orderItem.setCreateTime(new Date());
+                orderItemMapper.insert(orderItem);
+            }else{
+                orderItem.setId(oOrderItems.get(0).getId());
+                orderItem.setUpdateTime(new Date());
+                orderItemMapper.updateById(orderItem);
+            }
         }
 
         return ResultVo.success();
