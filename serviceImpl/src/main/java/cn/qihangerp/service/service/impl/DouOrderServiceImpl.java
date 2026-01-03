@@ -24,6 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -225,7 +229,14 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(douOrder.getCreateTime()!=null?new Date(douOrder.getCreateTime()*1000):new Date());
+        // 定义日期时间格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime createTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.of("UTC"));
+        LocalDateTime updateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getUpdateTime()), ZoneId.of("UTC"));
+
+        order.setOrderCreated(createTime.format(formatter));
+        order.setOrderUpdated(updateTime.format(formatter));
+
         order.setShipper(0L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());

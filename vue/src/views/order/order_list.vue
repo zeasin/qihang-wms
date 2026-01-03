@@ -76,6 +76,16 @@
           @click="handleAdd"
         >手动创建订单</el-button>
       </el-col>
+      <el-col :span="1.5">
+      <el-button
+        :loading="pullLoading"
+        type="primary"
+        plain
+        icon="el-icon-download"
+        size="mini"
+        @click="handlePull"
+      >API拉取订单</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          :loading="pushLoading"-->

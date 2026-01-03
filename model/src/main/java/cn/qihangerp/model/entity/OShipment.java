@@ -47,7 +47,7 @@ public class OShipment implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private String orderTime;
 
     /**
      * 发货方 0 仓库发货 1 供应商发货

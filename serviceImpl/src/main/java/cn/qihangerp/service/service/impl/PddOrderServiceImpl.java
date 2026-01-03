@@ -269,7 +269,9 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(StringUtils.hasText(pddOrder.getCreatedTime())?DateUtils.dateTime("yyyy-MM-dd HH:mm:ss",pddOrder.getCreatedTime()):new Date());
+        order.setOrderCreated(pddOrder.getCreatedTime());
+        order.setOrderUpdated(order.getOrderUpdated());
+
         order.setShipper(0l);
         order.setShipStatus(0);
         order.setCreateTime(new Date());

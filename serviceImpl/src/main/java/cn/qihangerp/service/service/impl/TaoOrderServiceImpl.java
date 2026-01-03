@@ -275,7 +275,8 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(StringUtils.hasText(pddOrder.getCreated())? DateUtils.dateTime("yyyy-MM-dd HH:mm:ss",pddOrder.getCreated()):new Date());
+        order.setOrderCreated(pddOrder.getCreated());
+        order.setOrderUpdated(pddOrder.getModified());
         order.setShipper(0L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());

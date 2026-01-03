@@ -71,10 +71,17 @@ public class OOrder implements Serializable {
      */
     private Integer orderStatus;
 
+    private String platformOrderStatus;
+    private String platformOrderStatusText;
+
     /**
      * 订单商品金额
      */
     private Double goodsAmount;
+    /**
+     * 订单改价金额
+     */
+    private Double changeAmount;
 
     /**
      * 订单运费
@@ -100,6 +107,10 @@ public class OOrder implements Serializable {
      * 实付金额
      */
     private Double payment;
+    /**
+     * 服务费
+     */
+    private Double serviceFee;
 
     /**
      * 收件人姓名
@@ -134,7 +145,10 @@ public class OOrder implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private String orderCreated;
+    private String orderUpdated;
+    private String orderPayTime;
+    private String orderFinishTime;
 
     //发货方
     private Long shipper;

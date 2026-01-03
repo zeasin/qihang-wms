@@ -91,8 +91,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 .eq(bo.getShopId()!=null,OOrder::getShopId,bo.getShopId())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()),OOrder::getOrderNum,bo.getOrderNum())
                 .eq(bo.getOrderStatus()!=null,OOrder::getOrderStatus,bo.getOrderStatus())
-                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderTime,bo.getStartTime()+" 00:00:00")
-                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OOrder::getOrderTime,bo.getEndTime()+" 23:59:59")
+                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderCreated,bo.getStartTime()+" 00:00:00")
+                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OOrder::getOrderCreated,bo.getEndTime()+" 23:59:59")
 
 //                .eq(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),OOrder::getReceiverName,bo.getReceiverName())
 //                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OOrder::getReceiverMobile,bo.getReceiverMobile())
@@ -139,8 +139,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 .eq(OOrder::getRefundStatus,1)
                 .eq(OOrder::getShipStatus,0)//发货状态 0 待发货 1 已分配供应商发货 2全部发货
 //                .lt(ErpOrder::getShipType,2)//ship_type发货方式 0 自己发货1联合发货2供应商发货
-                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderTime,bo.getStartTime())
-                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OOrder::getOrderTime,bo.getEndTime())
+                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderCreated,bo.getStartTime())
+                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OOrder::getOrderCreated,bo.getEndTime())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()),OOrder::getOrderNum,bo.getOrderNum())
                 ;
         Page<OOrder> pages = orderMapper.selectPage(pageQuery.build(), queryWrapper);
@@ -279,7 +279,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         oShipment.setShopType(erpOrder.getShopType());
         oShipment.setOrderId(Long.parseLong(erpOrder.getId()));
         oShipment.setOrderNum(erpOrder.getOrderNum());
-        oShipment.setOrderTime(erpOrder.getOrderTime());
+        oShipment.setOrderTime(erpOrder.getOrderCreated());
         oShipment.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
         oShipment.setShipCompany(erpLogisticsCompany.getName());
         oShipment.setShipCompanyCode(erpLogisticsCompany.getCode());

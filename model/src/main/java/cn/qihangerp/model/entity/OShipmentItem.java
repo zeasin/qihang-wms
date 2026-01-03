@@ -64,7 +64,7 @@ public class OShipmentItem implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private String orderTime;
 
     /**
      * 订单itemID（o_order_item外键）
