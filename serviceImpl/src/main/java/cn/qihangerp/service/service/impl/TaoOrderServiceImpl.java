@@ -10,7 +10,6 @@ import cn.qihangerp.mapper.ErpOrderItemMapper;
 import cn.qihangerp.mapper.ErpOrderMapper;
 import cn.qihangerp.model.entity.OOrder;
 import cn.qihangerp.model.entity.OOrderItem;
-import cn.qihangerp.model.entity.TaoGoodsSku;
 import cn.qihangerp.model.entity.TaoOrder;
 import cn.qihangerp.model.entity.TaoOrderItem;
 import cn.qihangerp.model.entity.TaoOrderPromotion;
@@ -19,7 +18,6 @@ import cn.qihangerp.model.bo.TaoOrderConfirmBo;
 import cn.qihangerp.service.mapper.TaoOrderItemMapper;
 import cn.qihangerp.service.mapper.TaoOrderMapper;
 import cn.qihangerp.service.mapper.TaoOrderPromotionMapper;
-import cn.qihangerp.service.service.TaoGoodsSkuService;
 import cn.qihangerp.service.service.TaoOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -49,7 +47,6 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
     private final TaoOrderMapper mapper;
     private final TaoOrderItemMapper itemMapper;
     private final TaoOrderPromotionMapper promotionDetailsMapper;
-    private final TaoGoodsSkuService goodsSkuService;
     private final ErpOrderMapper erpOrderMapper;
     private final ErpOrderItemMapper erpOrderItemMapper;
 
@@ -163,20 +160,20 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
                         itemUpdate.setShippingType(item.getShippingType());
                         itemUpdate.setLogisticsCompany(item.getLogisticsCompany());
                         itemUpdate.setInvoiceNo(item.getInvoiceNo());
-                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            itemUpdate.setoGoodsId(skus.get(0).getErpGoodsId().toString());
-                            itemUpdate.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
-                        }
+//                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
+//                        if (skus != null && !skus.isEmpty()) {
+//                            itemUpdate.setoGoodsId(skus.get(0).getErpGoodsId().toString());
+//                            itemUpdate.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
+//                        }
 
                         itemMapper.updateById(itemUpdate);
                     } else {
                         // 新增
-                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            item.setoGoodsId(skus.get(0).getErpGoodsId().toString());
-                            item.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
-                        }
+//                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
+//                        if (skus != null && !skus.isEmpty()) {
+//                            item.setoGoodsId(skus.get(0).getErpGoodsId().toString());
+//                            item.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
+//                        }
                         itemMapper.insert(item);
                     }
                 }

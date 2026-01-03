@@ -98,6 +98,7 @@ public class OShop implements Serializable {
      * 请求url
      */
     private String apiRequestUrl;
+    private Integer apiStatus;
 
     private static final long serialVersionUID = 1L;
 

@@ -15,6 +15,8 @@ import cn.qihangerp.open.dou.model.GoodsListResultVo;
 import cn.qihangerp.open.dou.model.Token;
 import cn.qihangerp.open.pdd.PddGoodsApiHelper;
 import cn.qihangerp.open.pdd.model.GoodsResultVo;
+import cn.qihangerp.open.tao.TaoGoodsApiHelper;
+import cn.qihangerp.open.tao.response.TaoGoodsResponse;
 import cn.qihangerp.service.service.OShopPullLasttimeService;
 import cn.qihangerp.service.service.OShopPullLogsService;
 import cn.qihangerp.service.service.OmsShopGoodsSkuService;
@@ -27,6 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -151,7 +157,60 @@ public class ShopGoodsApiController {
                     }
                 }
             }
+        }else if (shopType == EnumShopType.TAO.getIndex()) {
+            log.info("=============拉取TAO店铺商品=========");
+            ApiResultVo<TaoGoodsResponse> resultVo = TaoGoodsApiHelper.pullGoodsList(appKey, appSecret, accessToken);
+            apiResponseCode = resultVo.getCode();
+            apiResponseMsg = resultVo.getMsg();
+            if (apiResponseCode == 0) {
+                for (var goods : resultVo.getList()) {
+                    List<OmsShopGoodsSku> skuList = new ArrayList<>();
+                    for (var s : goods.getSkuList()) {
+                        OmsShopGoodsSku sku = new OmsShopGoodsSku();
+                        sku.setShopId(shopId);
+                        sku.setShopType(shopType);
+                        sku.setProductId(goods.getNum_iid() + "");
+                        sku.setOuterProductId(goods.getOuter_id());
+                        sku.setProductTitle(goods.getTitle());
+                        sku.setImg(goods.getPic_url());
+                        String skuName = "";
+                        try {
+                            if (StringUtils.hasText(s.getProperties_name())) {
+                                skuName = s.getProperties_name().replace(s.getProperties(), "");
+                            }
+                        } catch (Exception e) {
+                            skuName = s.getProperties_name();
+                        }
+                        sku.setSkuName(skuName);
+                        sku.setSkuId(s.getSku_id() + "");
+                        sku.setOuterSkuId(s.getOuter_id());
+
+//                        BigDecimal.valueOf(sku.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        Integer price = BigDecimal.valueOf(Double.parseDouble(s.getPrice())).multiply(BigDecimal.valueOf(100)).intValue();
+                        sku.setPrice(price);
+                        sku.setStockNum(s.getQuantity());
+                        sku.setStatus(1);
+                        try {
+                            // 定义日期时间格式
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                            // 解析字符串为 LocalDateTime
+                            LocalDateTime addTime = LocalDateTime.parse(s.getCreated(), formatter);
+                            LocalDateTime modifyTime = LocalDateTime.parse(s.getModified(), formatter);
+                            sku.setAddTime(addTime.toEpochSecond(ZoneOffset.UTC));
+                            sku.setModifyTime(modifyTime.toEpochSecond(ZoneOffset.UTC));
+                        } catch (Exception e) {
+                        }
+                        skuList.add(sku);
+                        ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
+                        apiResponseSuccessTotal++;
+                    }
+                }
+            }
+
+        }else if (shopType == EnumShopType.WEI.getIndex()) {
+            log.info("=============拉取WEI店铺商品=========");
         }
+        else return AjaxResult.error("暂不支持");
         log.info("=============拉取店铺商品完成，code:{},msg:{}",apiResponseCode,apiResponseMsg);
         if(apiResponseCode !=0 ){
             OShopPullLogs logs = new OShopPullLogs();
