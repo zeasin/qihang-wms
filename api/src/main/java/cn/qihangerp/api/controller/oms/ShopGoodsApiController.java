@@ -13,6 +13,8 @@ import cn.qihangerp.open.dou.DouGoodsApiHelper;
 import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.GoodsListResultVo;
 import cn.qihangerp.open.dou.model.Token;
+import cn.qihangerp.open.jd.JdGoodsApiHelper;
+import cn.qihangerp.open.jd.response.JdGoodsSkuListResponse;
 import cn.qihangerp.open.pdd.PddGoodsApiHelper;
 import cn.qihangerp.open.pdd.model.GoodsResultVo;
 import cn.qihangerp.open.tao.TaoGoodsApiHelper;
@@ -253,6 +255,34 @@ public class ShopGoodsApiController {
                         ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
                         apiResponseSuccessTotal++;
                     }
+                }
+            }
+        } else if (shopType == EnumShopType.JD.getIndex()) {
+            log.info("=============拉取JD店铺商品=========");
+            ApiResultVo<JdGoodsSkuListResponse> resultVo = JdGoodsApiHelper.pullGoodsSkuList(appKey, appSecret, accessToken);
+            apiResponseCode = resultVo.getCode();
+            apiResponseMsg = resultVo.getMsg();
+            List<OmsShopGoodsSku> skuList = new ArrayList<>();
+            if (apiResponseCode == 0) {
+                for (var s : resultVo.getList()) {
+                    OmsShopGoodsSku sku = new OmsShopGoodsSku();
+                    sku.setShopId(shopId);
+                    sku.setShopType(shopType);
+                    sku.setProductId(s.getWareId().toString());
+                    sku.setOuterProductId("");
+                    sku.setProductTitle(s.getWareTitle());
+                    sku.setImg(s.getLogo());
+                    sku.setSkuName(s.getSkuName());
+                    sku.setSkuId(s.getSkuId().toString());
+                    sku.setOuterSkuId(s.getOuterId());
+                    sku.setPrice(s.getJdPrice());
+                    sku.setStockNum(0);
+                    sku.setStatus(s.getStatus());
+                    sku.setAddTime(s.getCreated());
+                    sku.setModifyTime(s.getModified());
+                    skuList.add(sku);
+                    ResultVo<Integer> integerResultVo = shopGoodsSkuService.saveGoods(sku);
+                    apiResponseSuccessTotal++;
                 }
             }
         } else return AjaxResult.error("暂不支持");

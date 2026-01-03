@@ -1,11 +1,9 @@
 package cn.qihangerp.service.service.impl;
 
 import cn.qihangerp.model.bo.JdOrderBo;
-import cn.qihangerp.model.entity.JdGoodsSku;
 import cn.qihangerp.model.entity.JdOrder;
 import cn.qihangerp.model.entity.JdOrderCoupon;
 import cn.qihangerp.model.entity.JdOrderItem;
-import cn.qihangerp.service.mapper.JdGoodsSkuMapper;
 import cn.qihangerp.service.mapper.JdOrderCouponMapper;
 import cn.qihangerp.service.mapper.JdOrderItemMapper;
 import cn.qihangerp.service.mapper.JdOrderMapper;
@@ -39,7 +37,6 @@ public class JdOrderServiceImpl extends ServiceImpl<JdOrderMapper, JdOrder>
     private final JdOrderMapper mapper;
     private final JdOrderItemMapper itemMapper;
     private final JdOrderCouponMapper couponMapper;
-    private final JdGoodsSkuMapper goodsSkuMapper;
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
     private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
@@ -111,11 +108,11 @@ public class JdOrderServiceImpl extends ServiceImpl<JdOrderMapper, JdOrder>
 
                 // 添加item
                 for (JdOrderItem item : order.getItems()) {
-                    List<JdGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getSkuId, item.getSkuId()));
-                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                        item.setErpGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                        item.setErpGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId());
-                    }
+//                    List<JdGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getSkuId, item.getSkuId()));
+//                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+//                        item.setErpGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
+//                        item.setErpGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId());
+//                    }
                     item.setOrderId(jdOrders.get(0).getId());
                     itemMapper.insert(item);
                 }
@@ -154,11 +151,11 @@ public class JdOrderServiceImpl extends ServiceImpl<JdOrderMapper, JdOrder>
                 mapper.insert(order);
                 // 添加item
                 for (JdOrderItem item : order.getItems()) {
-                    List<JdGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getSkuId, item.getSkuId()));
-                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                        item.setErpGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                        item.setErpGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId());
-                    }
+//                    List<JdGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getSkuId, item.getSkuId()));
+//                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+//                        item.setErpGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
+//                        item.setErpGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId());
+//                    }
                     item.setOrderId(order.getId());
                     itemMapper.insert(item);
                 }

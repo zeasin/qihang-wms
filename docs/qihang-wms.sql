@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 02/01/2026 20:22:15
+ Date: 03/01/2026 09:40:30
 */
 
 SET NAMES utf8mb4;
@@ -1322,14 +1322,15 @@ CREATE TABLE `o_shop`  (
   `modify_on` bigint NOT NULL COMMENT '更新时间',
   `create_on` bigint NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1013 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1014 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_shop
 -- ----------------------------
 INSERT INTO `o_shop` VALUES (1007, '抖店测试', 400, NULL, 9, 1, NULL, '4463798', NULL, NULL, 'c3tzx2q5p41h7zl69zjws9900002noae-11', NULL, NULL, '070t45roa51h7zl69zjws9900002noae-12', NULL, NULL, NULL, NULL, NULL, 0, 0, 1759307372, 1759307261);
 INSERT INTO `o_shop` VALUES (1011, '爱顾家的小店', 300, NULL, 9, 1, NULL, '0', NULL, NULL, '64411135d0a54e43a9a92b9690390032de409a4f', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1759371874, 1759371874);
-INSERT INTO `o_shop` VALUES (1012, '微信小店测试', 500, NULL, 9, 1, NULL, '0', 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '96_KI-x2ByMfcE_X37Orem1O7qW03jVdUdiQU8QtGbZWjWS1LqOn9lXaxArEhlnCAL-AFNhia6IGIN1gHyvCa2gkMK_KcofMs7AnKGqj_ssy3L6vKP9vVklqvNBIUgEGDgAGANPM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1759373401, 1759373401);
+INSERT INTO `o_shop` VALUES (1012, '微信小店测试', 500, NULL, 9, 1, NULL, '0', 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '99_fTlkZRP6GjasIVJEoEmbvMpEFOIO99Pld8JwA4eSzFfIa2-sbgbjbL6iGSzt2ZX7ydg0CKxe6kzLxvs9L1GxoINeyST5efbptdvrqu0LJkCEXzkZ4crveaIK5vMKKMgABAUUW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1759373401, 1759373401);
+INSERT INTO `o_shop` VALUES (1013, '测试TMALL', 100, NULL, 9, 1, NULL, '2', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1767360004, 1767360004);
 
 -- ----------------------------
 -- Table structure for o_shop_platform
@@ -1396,7 +1397,7 @@ CREATE TABLE `o_shop_pull_logs`  (
   `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
   `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2007063329415884803 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2007255692893470722 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_shop_pull_logs
@@ -1409,6 +1410,18 @@ INSERT INTO `o_shop_pull_logs` VALUES (2007054347586490370, 1011, 300, 'GOODS', 
 INSERT INTO `o_shop_pull_logs` VALUES (2007060914402689025, 1007, 400, 'GOODS', '主动拉取商品sku', '', '请求API错误：认证失败, 确保app_key, method, param_json, timestamp, v, sign等参数不为空', '2026-01-02 20:06:26', 246);
 INSERT INTO `o_shop_pull_logs` VALUES (2007061626629062658, 1007, 400, 'GOODS', '主动拉取商品sku', '', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2026-01-02 20:07:44', 92188);
 INSERT INTO `o_shop_pull_logs` VALUES (2007063329415884802, 1007, 400, 'GOODS', '主动拉取商品sku', '', '{successTotal:299}', '2026-01-02 20:15:27', 34667);
+INSERT INTO `o_shop_pull_logs` VALUES (2007080897514033153, 1013, 100, 'GOODS', '主动拉取商品sku', '', 'SessionKey非法', '2026-01-02 21:25:32', 18452);
+INSERT INTO `o_shop_pull_logs` VALUES (2007080916300320770, 1013, 100, 'GOODS', '主动拉取商品sku', '', 'SessionKey非法', '2026-01-02 21:25:55', 54);
+INSERT INTO `o_shop_pull_logs` VALUES (2007081406052421634, 1013, 100, 'GOODS', '主动拉取商品sku', '', 'SessionKey非法', '2026-01-02 21:26:02', 109359);
+INSERT INTO `o_shop_pull_logs` VALUES (2007084780449681410, 1013, 100, 'GOODS', '主动拉取商品sku', '', '{successTotal:0}', '2026-01-02 21:27:58', 798366);
+INSERT INTO `o_shop_pull_logs` VALUES (2007086428349714433, 1013, 100, 'GOODS', '主动拉取商品sku', '', '{successTotal:887}', '2026-01-02 21:45:42', 127474);
+INSERT INTO `o_shop_pull_logs` VALUES (2007246559934894081, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:0}', '2026-01-03 08:24:07', 5);
+INSERT INTO `o_shop_pull_logs` VALUES (2007247972962381826, 1012, 500, 'GOODS', '主动拉取商品sku', '', 'invalid credential, access_token is invalid or not latest, could get access_token by getStableAccessToken, more details at https://mmbizurl.cn/s/JtxxFh33r rid: 695862e9-14c7ceab-423f4f5c', '2026-01-03 08:29:24', 20600);
+INSERT INTO `o_shop_pull_logs` VALUES (2007247993237647361, 1012, 500, 'GOODS', '主动拉取商品sku', '', 'invalid credential, access_token is invalid or not latest, could get access_token by getStableAccessToken, more details at https://mmbizurl.cn/s/JtxxFh33r rid: 695862fd-06f01503-4fa2639f', '2026-01-03 08:29:49', 73);
+INSERT INTO `o_shop_pull_logs` VALUES (2007248036346703874, 1012, 500, 'GOODS', '主动拉取商品sku', '', 'invalid credential, access_token is invalid or not latest, could get access_token by getStableAccessToken, more details at https://mmbizurl.cn/s/JtxxFh33r rid: 69586307-50f58f7f-3572dd68', '2026-01-03 08:29:59', 76);
+INSERT INTO `o_shop_pull_logs` VALUES (2007254711795396610, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:0}', '2026-01-03 08:55:58', 33005);
+INSERT INTO `o_shop_pull_logs` VALUES (2007255303028682753, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:0}', '2026-01-03 08:56:36', 136242);
+INSERT INTO `o_shop_pull_logs` VALUES (2007255692893470721, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:6}', '2026-01-03 09:00:23', 2095);
 
 -- ----------------------------
 -- Table structure for o_shop_region
@@ -1869,83 +1882,6 @@ CREATE TABLE `oms_dou_refund`  (
 
 -- ----------------------------
 -- Records of oms_dou_refund
--- ----------------------------
-
--- ----------------------------
--- Table structure for oms_jd_goods
--- ----------------------------
-DROP TABLE IF EXISTS `oms_jd_goods`;
-CREATE TABLE `oms_jd_goods`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `ware_id` bigint NULL DEFAULT NULL COMMENT '商品id',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
-  `ware_status` int NULL DEFAULT NULL COMMENT '商品状态 -1：删除 1:从未上架 2:自主下架 4:系统下架 8:上架 513:从未上架待审 514:自主下架待审 516:系统下架待审 520:上架待审核 1028:系统下架审核失败',
-  `outer_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '	商品外部ID,商家自行设置的ID（便于关联京东商品）',
-  `item_num` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品货号',
-  `bar_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品的条形码.UPC码,SN码,PLU码统称为条形码',
-  `modified` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品最后一次修改时间',
-  `created` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品创建时间，只读属性',
-  `offline_time` datetime NULL DEFAULT NULL COMMENT '最后下架时间',
-  `online_time` datetime NULL DEFAULT NULL COMMENT '最后上架时间',
-  `delivery` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发货地',
-  `pack_listing` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '包装清单',
-  `wrap` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '包装规格',
-  `weight` float NULL DEFAULT NULL,
-  `width` int NULL DEFAULT NULL,
-  `height` int NULL DEFAULT NULL,
-  `length` int NULL DEFAULT NULL,
-  `mobile_desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `introduction` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `after_sales` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `market_price` decimal(10, 2) NULL DEFAULT NULL,
-  `cost_price` decimal(10, 2) NULL DEFAULT NULL,
-  `jd_price` decimal(10, 2) NULL DEFAULT NULL,
-  `brand_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `stock_num` int NULL DEFAULT NULL,
-  `sell_point` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `after_sale_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `spu_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id（sys_shop表id）',
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '京东商品表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of oms_jd_goods
--- ----------------------------
-
--- ----------------------------
--- Table structure for oms_jd_goods_sku
--- ----------------------------
-DROP TABLE IF EXISTS `oms_jd_goods_sku`;
-CREATE TABLE `oms_jd_goods_sku`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `ware_id` bigint NULL DEFAULT NULL COMMENT '平台商品id',
-  `sku_id` bigint NULL DEFAULT NULL,
-  `status` int NULL DEFAULT NULL,
-  `jd_price` decimal(10, 2) NULL DEFAULT NULL,
-  `outer_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `bar_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `sale_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `sku_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `stock_num` int NULL DEFAULT NULL,
-  `modified` datetime NULL DEFAULT NULL,
-  `created` datetime NULL DEFAULT NULL,
-  `currency_spu_id` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `erp_goods_sku_id` bigint NULL DEFAULT NULL COMMENT '商品skuid(o_goods_sku外键)',
-  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 813 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '京东商品SKU表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of oms_jd_goods_sku
 -- ----------------------------
 
 -- ----------------------------
@@ -2580,7 +2516,7 @@ CREATE TABLE `oms_shop_goods_sku`  (
   `create_on` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_on` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 337 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '其他渠道店铺商品SKU' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1230 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '其他渠道店铺商品SKU' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_shop_goods_sku
@@ -2919,85 +2855,12 @@ INSERT INTO `oms_shop_goods_sku` VALUES (333, 1007, 400, '3794963221690056839', 
 INSERT INTO `oms_shop_goods_sku` VALUES (334, 1007, 400, '3794963221690056839', '跨境新春秋季T恤男士长袖秋衣打底体恤小衫休闲秋款打底衫可外穿', '', '（八伊）T35白色 XL', '3628112641869314', '0', '', 'https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_23cb22a9cc50415f5469b784d5f0dcc2_sx_209760_www800-800', 1500, 8847, 1, NULL, 1767169423, 1767169423, 0, 0, 0, '2026-01-02 20:16:02', NULL);
 INSERT INTO `oms_shop_goods_sku` VALUES (335, 1007, 400, '3794963221690056839', '跨境新春秋季T恤男士长袖秋衣打底体恤小衫休闲秋款打底衫可外穿', '', '（八伊）T35白色 L', '3628112641869058', '0', '', 'https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_23cb22a9cc50415f5469b784d5f0dcc2_sx_209760_www800-800', 1500, 8859, 1, NULL, 1767169423, 1767169423, 0, 0, 0, '2026-01-02 20:16:02', NULL);
 INSERT INTO `oms_shop_goods_sku` VALUES (336, 1007, 400, '3794963221690056839', '跨境新春秋季T恤男士长袖秋衣打底体恤小衫休闲秋款打底衫可外穿', '', '（八伊）T35白色 M', '3628112641868802', '0', '', 'https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_23cb22a9cc50415f5469b784d5f0dcc2_sx_209760_www800-800', 1500, 8883, 1, NULL, 1767169423, 1767169423, 0, 0, 0, '2026-01-02 20:16:02', NULL);
-
--- ----------------------------
--- Table structure for oms_tao_goods
--- ----------------------------
-DROP TABLE IF EXISTS `oms_tao_goods`;
-CREATE TABLE `oms_tao_goods`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `iid` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品id',
-  `num_iid` bigint NULL DEFAULT NULL COMMENT '商品数字id',
-  `title` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
-  `nick` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '卖家昵称',
-  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品类型(fixed:一口价;auction:拍卖)注：取消团购',
-  `cid` bigint NULL DEFAULT NULL COMMENT '商品所属的叶子类目 id',
-  `seller_cids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品所属的店铺内卖家自定义类目列表',
-  `pic_url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主图',
-  `num` int NULL DEFAULT NULL COMMENT '商品数量',
-  `props` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品属性 格式：pid:vid;pid:vid',
-  `valid_thru` int NULL DEFAULT NULL COMMENT '有效期,7或者14（默认是7天）',
-  `has_discount` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '支持会员打折,true/false',
-  `has_invoice` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否有发票,true/false',
-  `has_warranty` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否有保修,true/false',
-  `has_showcase` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '橱窗推荐,true/false',
-  `modified` datetime NULL DEFAULT NULL COMMENT '商品修改时间（格式：yyyy-MM-dd HH:mm:ss）',
-  `delist_time` datetime NULL DEFAULT NULL COMMENT '下架时间（格式：yyyy-MM-dd HH:mm:ss）',
-  `postage_id` bigint NULL DEFAULT NULL COMMENT '宝贝所属的运费模板ID，如果没有返回则说明没有使用运费模板',
-  `outer_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家外部编码(可与商家外部系统对接)。需要授权才能获取。',
-  `list_time` datetime NULL DEFAULT NULL COMMENT '上架时间（格式：yyyy-MM-dd HH:mm:ss）',
-  `price` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品价格，格式：5.00；单位：元；精确到：分',
-  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `is_ex` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否在外部网店显示',
-  `is_virtual` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '虚拟商品的状态字段',
-  `is_taobao` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否在淘宝显示',
-  `sold_quantity` int NULL DEFAULT 0 COMMENT '商品销量',
-  `is_cspu` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否为达尔文挂接成功了的商品',
-  `first_starts_time` datetime NULL DEFAULT NULL COMMENT '商品首次上架时间',
-  `shop_id` bigint NOT NULL COMMENT '店铺id',
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT 'erp商品id',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '淘宝商品表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of oms_tao_goods
--- ----------------------------
-
--- ----------------------------
--- Table structure for oms_tao_goods_sku
--- ----------------------------
-DROP TABLE IF EXISTS `oms_tao_goods_sku`;
-CREATE TABLE `oms_tao_goods_sku`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  `tao_goods_id` bigint NOT NULL COMMENT '外键id',
-  `num_iid` bigint NOT NULL COMMENT 'sku所属商品数字id',
-  `iid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku所属商品id(注意：iid近期即将废弃，请用num_iid参数)',
-  `sku_id` bigint NOT NULL COMMENT '商品skuid，阿里',
-  `properties` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku的销售属性组合字符串（颜色，大小，等等，可通过类目API获取某类目下的销售属性）,格式是p1:v1;p2:v2',
-  `properties_name` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku所对应的销售属性的中文名字串，格式如：pid1:vid1:pid_name1:vid_name1;pid2:vid2:pid_name2:vid_name2……',
-  `quantity` bigint NULL DEFAULT NULL COMMENT '属于这个sku的商品的数量，',
-  `spec` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT 'specId',
-  `price` double NULL DEFAULT NULL COMMENT '属于这个sku的商品的价格 取值范围:0-100000000;精确到2位小数;单位:元。如:200.07，表示:200元7分。',
-  `outer_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家设置的外部id。',
-  `created` datetime NULL DEFAULT NULL COMMENT 'sku创建日期 时间格式：yyyy-MM-dd HH:mm:ss',
-  `modified` datetime NULL DEFAULT NULL COMMENT 'sku最后修改日期 时间格式：yyyy-MM-dd HH:mm:ss',
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku状态。	normal',
-  `sku_spec_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表示SKu上的产品规格信息',
-  `barcode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品级别的条形码',
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `erp_goods_sku_id` bigint NULL DEFAULT NULL COMMENT '商品skuid(o_goods_sku外键)',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `shop_id` bigint NOT NULL COMMENT '店铺id',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `sku_id_index`(`sku_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '淘宝商品SKU表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of oms_tao_goods_sku
--- ----------------------------
+INSERT INTO `oms_shop_goods_sku` VALUES (1224, 1012, 500, '10000239789987', '牧马人K100机械键盘黑色经典电竞游戏办公有线背光键鼠套装网吧', '', '', '3531937224', '', '', '', 19900, 100, 5, NULL, NULL, 0, 0, 0, 0, '2026-01-03 09:00:24', NULL);
+INSERT INTO `oms_shop_goods_sku` VALUES (1225, 1012, 500, '10000239803737', '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', '', ' 18W白光', '3531475359', '', '', '', 3990, 9, 5, NULL, NULL, 0, 0, 0, 0, '2026-01-03 09:00:24', NULL);
+INSERT INTO `oms_shop_goods_sku` VALUES (1226, 1012, 500, '10000239803737', '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', '', ' 24W白光', '3531318781', '', '', '', 4990, 12, 5, NULL, NULL, 0, 0, 0, 0, '2026-01-03 09:00:25', NULL);
+INSERT INTO `oms_shop_goods_sku` VALUES (1227, 1012, 500, '10000239803737', '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', '', ' 36W白光', '3531485362', '', '', '', 5990, 12, 5, NULL, NULL, 0, 0, 0, 0, '2026-01-03 09:00:25', NULL);
+INSERT INTO `oms_shop_goods_sku` VALUES (1228, 1012, 500, '10000239803737', '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', '', ' 48W白光', '3531313894', '', '', '', 6990, 12, 5, NULL, NULL, 0, 0, 0, 0, '2026-01-03 09:00:25', NULL);
+INSERT INTO `oms_shop_goods_sku` VALUES (1229, 1012, 500, '10000239803737', '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', '', ' 72W白光', '3531430948', '', '', '', 7990, 12, 5, NULL, NULL, 0, 0, 0, 0, '2026-01-03 09:00:25', NULL);
 
 -- ----------------------------
 -- Table structure for oms_tao_order
@@ -3261,68 +3124,6 @@ CREATE TABLE `oms_tao_waybill_account`  (
 
 -- ----------------------------
 -- Records of oms_tao_waybill_account
--- ----------------------------
-
--- ----------------------------
--- Table structure for oms_wei_goods
--- ----------------------------
-DROP TABLE IF EXISTS `oms_wei_goods`;
-CREATE TABLE `oms_wei_goods`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
-  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '平台商品id',
-  `out_product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家编码id',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
-  `sub_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `head_imgs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '主图集合',
-  `head_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第一张主图',
-  `desc_info` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品详情字符串',
-  `attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '属性字符串',
-  `status` int NULL DEFAULT NULL COMMENT '状态',
-  `edit_status` int NULL DEFAULT NULL COMMENT '编辑状态',
-  `min_price` int NULL DEFAULT NULL COMMENT '商品 SKU 最小价格（单位：分）',
-  `spu_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品编码',
-  `product_type` int NULL DEFAULT NULL COMMENT '商品类型。1: 小店普通自营商品；2: 福袋抽奖商品；3: 直播间闪电购商品。注意: 福袋抽奖、直播间闪电购类型的商品为只读数据，不支持编辑、上架操作，不支持用data_type=2的参数获取。',
-  `edit_time` int NULL DEFAULT NULL COMMENT '商品草稿最近一次修改时间',
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of oms_wei_goods
--- ----------------------------
-
--- ----------------------------
--- Table structure for oms_wei_goods_sku
--- ----------------------------
-DROP TABLE IF EXISTS `oms_wei_goods_sku`;
-CREATE TABLE `oms_wei_goods_sku`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `shop_id` bigint NULL DEFAULT NULL COMMENT '店铺id',
-  `product_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '产品id',
-  `sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'skuID',
-  `out_sku_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商家自定义skuID。如果添加时没录入，回包可能不包含该字段',
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品标题',
-  `thumb_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku小图',
-  `sale_price` int NULL DEFAULT NULL COMMENT '售卖价格，以分为单位',
-  `stock_num` int NULL DEFAULT NULL COMMENT 'sku库存',
-  `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku编码',
-  `status` int NULL DEFAULT NULL COMMENT 'sku状态',
-  `sku_attr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku属性',
-  `sku_attrs` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_attrs',
-  `sku_deliver_info` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sku_deliver_info',
-  `erp_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `erp_goods_sku_id` bigint NULL DEFAULT NULL COMMENT '商品skuid(o_goods_sku外键)',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `sku_id_index`(`sku_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of oms_wei_goods_sku
 -- ----------------------------
 
 -- ----------------------------
@@ -3887,7 +3688,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-01-02 19:28:34', 'admin', '2023-08-07 19:31:37', '', '2026-01-02 11:28:34', '管理员');
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-01-03 08:23:46', 'admin', '2023-08-07 19:31:37', '', '2026-01-03 00:23:45', '管理员');
 INSERT INTO `sys_user` VALUES (2, NULL, 'openapi', 'openApi接口专用', '00', '2806456181@qq.com', '15818590000', '0', '', '$2a$10$fHkhoqbMiyracAsTzl38H.55bu.M.of1FXk2EK7RQBjfic3tLU0Ue', '0', '0', '127.0.0.1', '2024-06-24 10:23:35', 'admin', '2024-03-17 14:55:22', 'admin', '2024-06-24 10:23:35', NULL);
 INSERT INTO `sys_user` VALUES (101, 101, '15818590119', 'aaa123', '00', '', '', '0', '', '$2a$10$pXcT6cHaObMeKuYd9vZb5uEb8PyUdF2AcqqRN1cBqiA9rV4qYQW7G', '0', '2', '', NULL, 'admin', '2024-08-15 13:45:25', '', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, 101, '15818590119', '老齐', '00', '', '', '0', '', '$2a$10$ysk.zgJ8wh25c7vOjKyZ8uarM2hkG0S51j8GYdJSo2kZmc3f8HdKe', '0', '0', '', NULL, 'admin', '2024-08-15 13:49:59', 'admin', '2025-02-10 16:26:20', NULL);
