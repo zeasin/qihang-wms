@@ -49,29 +49,6 @@ public class OrderShipController extends BaseController {
         return getDataTable(pageList);
     }
 
-    /**
-     * 备货中-供应商代发
-     * @param bo
-     * @param pageQuery
-     * @return
-     */
-    @GetMapping("/stock_up_list_by_supplier")
-    public TableDataInfo supplierShipList(ShipStockUpBo bo, PageQuery pageQuery)
-    {
-//        bo.setShipper(1);
-//        bo.setStockStatus(0);
-//        bo.setTenantId(getUserId());
-//        PageResult<ErpShipmentItem> list = shippingItemService.queryPageList(bo, pageQuery);
-//        return getDataTable(list);
-//        bo.setShipper(1);
-//        bo.setTenantId(getUserId());
-//        PageResult<ErpShipment> erpShipmentPageResult = shippingService.queryPageList(bo, pageQuery);
-//        return getDataTable(erpShipmentPageResult);
-        var pageList = shipStockUpService.querySupplierPageList(bo,pageQuery);
-        return getDataTable(pageList);
-    }
-
-
 
     /**
      * 生成出库单
@@ -80,6 +57,7 @@ public class OrderShipController extends BaseController {
     public AjaxResult generateStockOutEntry(@RequestBody StockOutEntryGenerateBo bo)
     {
         log.info("============生成出库单========={}", JSON.toJSONString(bo));
+
         if(bo.getId()==null||bo.getId()==0) return AjaxResult.error("缺少参数：id");
         var result = shipStockUpService.generateStockOutEntryByShipOrderId(bo.getId());
         if(result.getCode()==0) return AjaxResult.success();
@@ -93,26 +71,7 @@ public class OrderShipController extends BaseController {
 //        return toAjax(1);
     }
 
-    /**
-      * 供应商发货确认
-      * @param request
-      * @return
-      */
-    @PostMapping("/supplier_ship_confirm")
-    public AjaxResult SupplierShipConfirm(@RequestBody SupplierOrderShipBo request) {
-        log.info("========供应商发货确认：{}", JSON.toJSONString(request));
-        if (request.getId() == null || request.getId() == 0)
-            return AjaxResult.error("缺少参数：orderId");
-        if (StringUtils.isEmpty(request.getLogisticsCompany()))
-            return AjaxResult.error("缺少参数：logisticsCompany");
-        if (StringUtils.isEmpty(request.getLogisticsCode()))
-            return AjaxResult.error("缺少参数：logisticsCode");
 
-        ResultVo<Integer> result = shipStockUpService.supplierShipOrderManualLogistics(request, getUsername());
-        if(result.getCode() == 0) {
-            return AjaxResult.success();
-        }else  return AjaxResult.error(result.getMsg());
-    }
     /**
      * 修改订单明细skuId
      * @param bo

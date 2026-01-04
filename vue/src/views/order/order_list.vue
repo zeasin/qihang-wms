@@ -274,24 +274,36 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-row>
           <el-button style="padding-right: 6px;padding-left: 6px"
             size="mini"
             type="text"
             icon="el-icon-view"
             @click="handleDetail(scope.row)"
           >详情</el-button>
-          <el-button v-if="scope.row.orderStatus===1"
-            size="mini" style="padding-right: 6px;padding-left: 6px"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleCancel(scope.row)"
-          >取消订单</el-button>
+
+            <el-button style="padding-right: 6px;padding-left: 6px"
+                       :loading="pullLoading"
+                       size="mini"
+                       type="text"
+                       icon="el-icon-refresh"
+                       @click="handlePullUpdate(scope.row)"
+            >更新状态</el-button>
+          </el-row>
+          <el-row>
+            <el-button v-if="scope.row.orderStatus===1"
+                       size="mini" style="padding-right: 6px;padding-left: 6px"
+                       type="text"
+                       icon="el-icon-delete"
+                       @click="handleCancel(scope.row)"
+            >取消订单</el-button>
           <el-button style="padding-right: 6px;padding-left: 6px"
-             :loading="pullLoading"
+             v-if="scope.row.orderStatus!==11 && scope.row.shipStatus===0"
              size="mini"
-             icon="el-icon-refresh"
-             @click="handlePullUpdate(scope.row)"
-          >更新订单</el-button>
+             icon="el-icon-ship"
+             @click="handleConfirmStockOut(scope.row)"
+          >确认出库</el-button>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -457,6 +469,8 @@ import {listOrder, getOrder,cancelOrder} from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
 import Clipboard from "clipboard";
 import {pullOrderDetail} from "@/api/shop/order";
+import {delGoods} from "@/api/goods/goods";
+import {stockOut} from "@/api/order/shipping";
 
 export default {
   name: "Order",
@@ -573,6 +587,7 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      this.pullLoading = false
       this.queryParams.pageNum = 1;
       this.getList();
     },
@@ -584,7 +599,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
+      this.ids = selection.map(item => item.orderNum)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -595,7 +610,15 @@ export default {
     reset(){
 
     },
-
+    handleConfirmStockOut(row) {
+      const ids = row.orderNum || this.ids;
+      this.$modal.confirm('订单"' + ids + '"是否确认出库？').then(function() {
+        return stockOut({id:row.id});
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    },
     handlePullUpdate(row) {
       // 接口拉取订单并更新
       this.pullLoading = true

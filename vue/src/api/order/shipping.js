@@ -42,3 +42,11 @@ export function searchOrderItemByReceiverMobile(query) {
     params: query
   })
 }
+
+export function stockOut(data) {
+  return request({
+    url: '/ship/generate_stock_out_entry',
+    method: 'post',
+    data: data
+  })
+}

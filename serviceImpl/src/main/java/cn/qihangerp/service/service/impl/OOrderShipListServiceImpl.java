@@ -183,6 +183,10 @@ public class OOrderShipListServiceImpl extends ServiceImpl<OOrderShipListMapper,
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Long> generateStockOutEntryByShipOrderId(Long shipOrderId) {
+        OOrder oOrder = orderMapper.selectById(shipOrderId);
+        if(oOrder==null) return ResultVo.error("订单数据不存在");
+        if(oOrder.getOrderStatus()==11) return ResultVo.error("已取消的订单不能操作");
+        if(oOrder.getShipStatus()!=0) return ResultVo.error("已出库的订单不能操作");
         OOrderShipList oOrderShipList = this.baseMapper.selectById(shipOrderId);
         if(oOrderShipList==null) return ResultVo.error("发货单不存在");
         else if (oOrderShipList.getStatus()==3) {
