@@ -42,7 +42,9 @@
           @click="handlePull"
         >API拉取订单</el-button>
       </el-col>
-
+      <el-col :span="1.5">
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -116,6 +118,7 @@ export default {
       skuList:[],
       // 是否显示弹出层
       detailOpen:false,
+      pullLoading:false,
       skuListLoading:false,
       // 查询参数
       queryParams: {
@@ -166,11 +169,11 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.pullLoading = false
       this.resetForm("queryForm");
       this.handleQuery();
     },
     handlePull() {
-      this.$modal.msgSuccess(this.orderTime)
       if (this.queryParams.shopId) {
         this.pullLoading = true
         pullOrder({shopId:this.queryParams.shopId,orderTime:this.orderTime}).then(response => {

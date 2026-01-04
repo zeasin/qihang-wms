@@ -10,6 +10,10 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.*;
 import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.dou.DouOrderApiHelper;
+import cn.qihangerp.open.dou.DouTokenApiHelper;
+import cn.qihangerp.open.dou.model.Token;
+import cn.qihangerp.open.dou.model.order.Order;
 import cn.qihangerp.open.pdd.PddOrderApiHelper;
 import cn.qihangerp.open.pdd.model.OrderListResultVo;
 import cn.qihangerp.service.service.OOrderService;
@@ -142,7 +146,45 @@ public class ShopOrderApiController {
                     }
                 }
             }
-        } else return AjaxResult.error("暂不支持");
+        } else if(shopType==EnumShopType.DOU.getIndex()) {
+            log.info("=============拉取DOU店铺订单。开始时间：{} 结束时间：{}", startTime.format(formatter), endTime.format(formatter));
+
+            ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
+            if(token.getCode()==0) {
+                accessToken = token.getData().getAccessToken();
+            }else{
+                return AjaxResult.error(token.getMsg());
+            }
+            //第一次获取
+            ApiResultVo<Order> resultVo = DouOrderApiHelper.pullOrderList(startTimestamp, endTimestamp, 0, 20, appKey, appSecret, accessToken);
+            apiResponseCode = resultVo.getCode();
+            apiResponseMsg = resultVo.getMsg();
+            if(apiResponseCode==0) {
+                //循环插入订单数据到数据库
+                for (var gitem : resultVo.getList()) {
+                    log.info("==========转换DOU订单");
+                    OOrder oOrder = ShopOrderTransform.transformDouOrder(gitem);
+                    oOrder.setShopId(shopId);
+                    oOrder.setShopType(shopType);
+
+                    //插入订单数据
+                    var result = orderService.saveShopOrder(oOrder);
+                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
+                        //已经存在
+                        log.info("=============主动更新DOU订单：开始更新数据库：" + gitem.getOrderId() + "存在、更新");
+                        hasExistOrder++;
+                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+                        log.info("============主动更新DOU订单：开始更新数据库：" + gitem.getOrderId() + "不存在、新增");
+
+                        insertSuccess++;
+                    } else {
+                        log.info("===============主动更新DOU订单：开始更新数据库：" + gitem.getOrderId() + "报错:{}", result.getMsg());
+                        totalError++;
+                    }
+                }
+            }
+        }
+        else return AjaxResult.error("暂不支持");
 
 
         if(apiResponseCode !=0 ){
