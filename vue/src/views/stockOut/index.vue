@@ -42,13 +42,19 @@
         </el-date-picker>
       </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -63,9 +69,9 @@
     </el-row>
 
     <el-table v-loading="loading" :data="stockOutEntryList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="出库单号" align="center" prop="stockOutNum" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
+<!--      <el-table-column label="ID" align="center" prop="id" width="68"/>-->
+      <el-table-column label="出库单号" align="center" prop="stockOutNum" width="260"/>
 <!--      <el-table-column label="源单号" align="center" prop="sourceNo" />-->
 <!--      <el-table-column label="源单Id" align="center" prop="sourceId" />-->
       <el-table-column label="出库类型" align="center" prop="stockOutType" >

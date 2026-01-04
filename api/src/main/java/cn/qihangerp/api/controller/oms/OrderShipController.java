@@ -26,18 +26,10 @@ public class OrderShipController extends BaseController {
     public AjaxResult generateStockOutEntry(@RequestBody StockOutEntryGenerateBo bo)
     {
         log.info("============生成出库单========={}", JSON.toJSONString(bo));
-
         if(bo.getId()==null||bo.getId()==0) return AjaxResult.error("缺少参数：id");
         var result = orderService.generateStockOutEntryByShipOrderId(bo.getId());
         if(result.getCode()==0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());
-//        int result = stockOutEntryService.generateStockOutEntryForOrderItem(bo);
-//        if(result == -1) return AjaxResult.error("参数错误：orderItemIds为空");
-//        if(result == -2) return AjaxResult.error("参数错误：没有要添加的");
-//        else if(result == -1001) return AjaxResult.error("存在错误的orderItemId：状态不对不能生成出库单");
-//        else if(result == -1002) return AjaxResult.error("存在错误的订单数据：名单明细中没有skuId请修改！");
-//        //wmsStockOutEntryService.insertWmsStockOutEntry(wmsStockOutEntry)
-//        return toAjax(1);
     }
 
 
