@@ -5,7 +5,7 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.utils.DateUtils;
-import cn.qihangerp.mapper.ErpStockOutMapper;
+import cn.qihangerp.service.mapper.ErpStockOutMapper;
 import cn.qihangerp.model.entity.OGoodsInventory;
 import cn.qihangerp.model.entity.OGoodsInventoryBatch;
 import cn.qihangerp.model.entity.ErpStockOut;

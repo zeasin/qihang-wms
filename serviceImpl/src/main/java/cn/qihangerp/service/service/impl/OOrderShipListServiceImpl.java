@@ -6,8 +6,8 @@ import cn.qihangerp.common.ResultVo;
 
 import cn.qihangerp.common.enums.EnumStockOutType;
 import cn.qihangerp.common.utils.DateUtils;
-import cn.qihangerp.mapper.ErpStockOutItemMapper;
-import cn.qihangerp.mapper.ErpStockOutMapper;
+import cn.qihangerp.service.mapper.ErpStockOutItemMapper;
+import cn.qihangerp.service.mapper.ErpStockOutMapper;
 import cn.qihangerp.model.bo.ShipStockUpBo;
 import cn.qihangerp.model.entity.*;
 import cn.qihangerp.model.bo.SupplierOrderShipBo;
