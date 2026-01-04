@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 04/01/2026 19:04:56
+ Date: 04/01/2026 19:12:57
 */
 
 SET NAMES utf8mb4;
@@ -2838,11 +2838,11 @@ CREATE TABLE `sys_menu`  (
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, '电商销售管理', 0, 10, '/sales', 'Layout', '', 1, 0, 'M', '0', '0', '', 'shop', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-01 09:22:11', '系统管理目录');
-INSERT INTO `sys_menu` VALUES (2, '入库管理', 0, 30, '/refund', 'Layout', '', 1, 0, 'M', '0', '0', '', 'edit', 'admin', '2023-12-27 15:00:27', 'admin', '2025-12-30 02:56:39', '至简官网地址');
+INSERT INTO `sys_menu` VALUES (2, '入库管理', 0, 30, '/stock_in', 'Layout', '', 1, 0, 'M', '0', '0', '', 'edit', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-04 11:09:28', '至简官网地址');
 INSERT INTO `sys_menu` VALUES (4, '商品管理', 0, 0, 'goods', 'Layout', '', 1, 0, 'M', '0', '0', '', 'international', 'admin', '2023-12-29 16:53:03', 'admin', '2025-10-01 12:16:48', '');
 INSERT INTO `sys_menu` VALUES (5, '系统设置', 0, 99, '/system', 'Layout', '', 1, 0, 'M', '0', '0', '', 'system', 'admin', '2023-12-27 15:00:27', 'admin', '2023-12-29 09:07:42.856856', '系统管理目录');
 INSERT INTO `sys_menu` VALUES (6, '出库管理', 0, 20, 'stock_out', 'Layout', NULL, 1, 0, 'M', '0', '0', '', 'guide', 'admin', '2024-03-30 17:36:10', 'admin', '2026-01-04 11:03:08', '');
-INSERT INTO `sys_menu` VALUES (7, '仓库设置', 0, 40, 'stock', 'Layout', NULL, 1, 0, 'M', '0', '0', '', 'lock', 'admin', '2024-08-25 15:54:14', 'admin', '2025-12-30 03:01:19', '');
+INSERT INTO `sys_menu` VALUES (7, '仓库设置', 0, 40, 'warehouse', 'Layout', NULL, 1, 0, 'M', '0', '0', '', 'lock', 'admin', '2024-08-25 15:54:14', 'admin', '2026-01-04 11:10:41', '');
 INSERT INTO `sys_menu` VALUES (100, '发货订单库', 1, 1, 'order_list', 'order/index', '', 1, 0, 'C', '0', '0', '', 'shopping', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-02 01:05:49', '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (101, '电商订单拉取', 1, 2, 'order_pull', 'order/pull_order', '', 1, 0, 'C', '0', '0', '', 'documentation', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-03 08:41:47', '角色管理菜单');
 INSERT INTO `sys_menu` VALUES (102, '店铺订单管理', 1, 3, 'shop_order_list', 'order/shopOrder/index', '', 1, 0, 'C', '1', '0', '', 'list', 'admin', '2023-12-27 15:00:27', 'admin', '2026-01-03 08:42:38', '菜单管理菜单');
@@ -2869,12 +2869,12 @@ INSERT INTO `sys_menu` VALUES (2093, '发货订单明细', 1, 2, 'order_item_lis
 INSERT INTO `sys_menu` VALUES (2099, '私域订单管理', 1, 10, 'offline_order_list', 'order/private/index', NULL, 1, 0, 'C', '0', '1', '', 'checkbox', 'admin', '2024-07-27 17:33:03', 'admin', '2025-05-24 13:10:53', '');
 INSERT INTO `sys_menu` VALUES (2100, '私域售后管理', 2, 3, 'offline_aftersale', 'refund/private/index', NULL, 1, 0, 'C', '0', '1', '', 'code', 'admin', '2024-07-27 17:33:33', 'admin', '2025-05-25 14:59:03', '');
 INSERT INTO `sys_menu` VALUES (2103, '手动创建订单', 1, 49, 'order_create', 'order/create', NULL, 1, 0, 'C', '1', '0', '', 'date', 'admin', '2024-07-27 20:30:07', 'admin', '2026-01-03 02:48:11', '');
-INSERT INTO `sys_menu` VALUES (2106, '入库管理', 2, 10, 'stock_in', 'stock/stockIn/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'download', 'admin', '2024-08-25 15:56:04', 'admin', '2025-12-30 02:57:11', '');
-INSERT INTO `sys_menu` VALUES (2114, '库位管理', 7, 90, 'warehouse', 'stock/warehouse/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'cascader', 'admin', '2024-09-21 20:07:26', 'admin', '2025-12-30 03:01:41', '');
-INSERT INTO `sys_menu` VALUES (2115, '商品库存', 4, 10, 'goods_inventory', 'stock/goodsInventory/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'chart', 'admin', '2024-09-21 20:43:00', 'admin', '2025-12-30 03:00:22', '');
+INSERT INTO `sys_menu` VALUES (2106, '入库管理', 2, 10, 'stock_in_list', 'stockIn/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'download', 'admin', '2024-08-25 15:56:04', 'admin', '2026-01-04 11:09:42', '');
+INSERT INTO `sys_menu` VALUES (2114, '库位管理', 7, 90, 'warehouse', 'warehouse/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'cascader', 'admin', '2024-09-21 20:07:26', 'admin', '2026-01-04 11:10:53', '');
+INSERT INTO `sys_menu` VALUES (2115, '商品库存', 4, 10, 'goods_inventory', 'goods/goodsInventory/index', NULL, 1, 0, 'C', '0', '0', '', 'chart', 'admin', '2024-09-21 20:43:00', 'admin', '2026-01-04 11:11:52', '');
 INSERT INTO `sys_menu` VALUES (2116, '出库管理', 6, 20, 'out_list', 'stockOut/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-09-21 20:44:46', 'admin', '2026-01-04 11:03:38', '');
-INSERT INTO `sys_menu` VALUES (2117, '仓位管理', 7, 91, 'position', 'stock/warehouse/position', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 11:52:18', 'admin', '2025-03-24 13:47:04', '');
-INSERT INTO `sys_menu` VALUES (2118, '新建入库单', 2, 11, 'stock_in/create', 'stock/stockIn/create.vue', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 14:49:40', 'admin', '2025-12-30 02:57:28', '');
+INSERT INTO `sys_menu` VALUES (2117, '仓位管理', 7, 91, 'position', 'warehouse/position', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 11:52:18', 'admin', '2026-01-04 11:10:59', '');
+INSERT INTO `sys_menu` VALUES (2118, '新建入库单', 2, 11, 'stock_in/create', 'stockIn/create.vue', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 14:49:40', 'admin', '2026-01-04 11:09:49', '');
 INSERT INTO `sys_menu` VALUES (2129, '订单发货', 6, 30, 'ship_order', 'shipping/wait_ship.vue', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2025-06-01 13:36:57', 'admin', '2026-01-04 11:00:08', '');
 INSERT INTO `sys_menu` VALUES (2135, '退货入库', 2, 20, 's', NULL, NULL, 1, 0, 'C', '0', '0', '', 'download', 'admin', '2025-12-30 02:58:18', 'admin', '2025-12-30 02:59:16', '');
 INSERT INTO `sys_menu` VALUES (2136, '采购入库', 2, 30, 'p', NULL, NULL, 1, 0, 'C', '0', '0', NULL, 'checkbox', 'admin', '2025-12-30 02:58:43', '', NULL, '');
