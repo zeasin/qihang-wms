@@ -56,34 +56,6 @@ public class OrderController extends BaseController
         return getDataTable(pageList);
     }
 
-
-
-    /**
-     * 订单发货(手动发货)
-     * @param shipBo
-     * @return
-     */
-    @PostMapping("/manualShipment")
-    public AjaxResult manualShipment(@RequestBody OrderShipRequest shipBo)
-    {
-        var result = orderService.manualShipmentOrder(shipBo,getUsername());
-        if(result.getCode() == 0) return AjaxResult.success();
-        else return AjaxResult.error(result.getMsg());
-    }
-
-    /**
-     * 分配供应商发货
-     * @param shipBo
-     * @return
-     */
-    @PostMapping("/allocateShipmentOrder")
-    public AjaxResult allocateShipmentOrder(@RequestBody OrderAllocateShipRequest shipBo)
-    {
-        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
-        if(result.getCode() == 0) return AjaxResult.success();
-        else return AjaxResult.error(result.getMsg());
-    }
-
     /**
      * 获取店铺订单详细信息
      */

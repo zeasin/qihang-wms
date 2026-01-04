@@ -45,20 +45,6 @@ public interface OOrderService extends IService<OOrder> {
     List<SalesDailyVo> salesDaily();
     SalesDailyVo getTodaySalesDaily();
     Integer getWaitShipOrderAllCount();
-    /**
-     * 手动发货
-     * @param shipBo
-     * @return
-     */
-    ResultVo<Integer> manualShipmentOrder(OrderShipRequest shipBo, String createBy);
-
-    /**
-     * 分配给供应商发货
-     * @param shipBo
-     * @param createBy
-     * @return
-     */
-    ResultVo<Integer> allocateShipmentOrder(OrderAllocateShipRequest shipBo, String createBy);
 
     /**
      * 取消订单
@@ -78,4 +64,11 @@ public interface OOrderService extends IService<OOrder> {
      */
     ResultVo cancelOrderItem(Long orderItemId, String cancelReason, String man);
     ResultVo saveShopOrder(OOrder order);
+
+    /**
+     * 生成出库单（按发货订单）
+     * @param shipOrderId
+     * @return
+     */
+    ResultVo<Long> generateStockOutEntryByShipOrderId(Long shipOrderId);
 }
