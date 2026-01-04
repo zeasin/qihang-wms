@@ -186,60 +186,65 @@ public class OOrderShipListServiceImpl extends ServiceImpl<OOrderShipListMapper,
         OOrder oOrder = orderMapper.selectById(shipOrderId);
         if(oOrder==null) return ResultVo.error("订单数据不存在");
         if(oOrder.getOrderStatus()==11) return ResultVo.error("已取消的订单不能操作");
-        if(oOrder.getShipStatus()!=0) return ResultVo.error("已出库的订单不能操作");
-        OOrderShipList oOrderShipList = this.baseMapper.selectById(shipOrderId);
-        if(oOrderShipList==null) return ResultVo.error("发货单不存在");
-        else if (oOrderShipList.getStatus()==3) {
-            return ResultVo.error("已经生成出库单");
+        if(oOrder.getShipStatus()==2) return ResultVo.error("已出库的订单不能操作");
+
+        List<OOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, shipOrderId).eq(OOrderItem::getShipStatus, 0));
+        if(oOrderItems.isEmpty()){
+            // 都发货了，更新订单状态
+            OOrder update = new OOrder();
+            update.setId(shipOrderId.toString());
+            update.setShipStatus(2);//全部出库
+            update.setUpdateTime(new Date());
+            orderMapper.updateById(update);
+            return ResultVo.error("没有要出库的订单item");
         }
-        List<OOrderShipListItem> oOrderShipListItems = shipListItemMapper.selectList(new LambdaQueryWrapper<OOrderShipListItem>().eq(OOrderShipListItem::getListId, oOrderShipList.getId()));
-        if(oOrderShipListItems.isEmpty()){
-            return ResultVo.error("没有找到发货单明细");
-        }
-        int sum = oOrderShipListItems.stream().mapToInt(OOrderShipListItem::getQuantity).sum();
+        //统计出库总数量
+        int sum = oOrderItems.stream().mapToInt(OOrderItem::getQuantity).sum();
         // 开始生成出库单
 
         // 组合出库单子表
         List<ErpStockOutItem> itemList = new ArrayList<>();
 
-        for (OOrderShipListItem item : oOrderShipListItems) {
-            if(item.getSkuId()==null||item.getSkuId()==0){
+        for (OOrderItem item : oOrderItems) {
+            if(item.getGoodsSkuId()==null||item.getGoodsSkuId()==0){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                log.error("======出库错误：发货单明细没有找到SkuId:{}",item.getSkuId());
-                return ResultVo.error("发货单明细没有找到SkuId:"+item.getId());
+                log.error("======出库错误：订单明细没有找到SkuId:{}",item.getSkuId());
+                return ResultVo.error("订单明细没有找到SkuId:"+item.getId());
             }
             ErpStockOutItem outItem = new ErpStockOutItem();
             outItem.setStockOutType(EnumStockOutType.DDCK.getIndex());
-            outItem.setSourceOrderId(item.getListId());
+            outItem.setSourceOrderId(item.getOrderId());
             outItem.setSourceOrderItemId(item.getId());
-            outItem.setSourceOrderNum(oOrderShipList.getOrderNum());
+            outItem.setSourceOrderNum(item.getOrderNum());
+            outItem.setSourceSubOrderNum(item.getSubOrderNum());
             outItem.setGoodsId(item.getGoodsId());
-            outItem.setSpecId(item.getSkuId());
+            outItem.setSpecId(item.getGoodsSkuId());
             outItem.setSpecNum(item.getSkuNum());
             outItem.setOriginalQuantity(item.getQuantity());
             outItem.setOutQuantity(0);
             outItem.setStatus(0);
             outItem.setCreateTime(new Date());
             itemList.add(outItem);
+
             // 更新自己
-            OOrderShipListItem update = new OOrderShipListItem();
-            update.setId(item.getId());
-            update.setStatus(3);//备货完成
-            update.setUpdateBy("备货完成");
-            update.setUpdateTime(new Date());
-            shipListItemMapper.updateById(update);
+            OOrderItem itemUpdate = new OOrderItem();
+            itemUpdate.setId(item.getId());
+            itemUpdate.setShipStatus(2);//备货完成
+            itemUpdate.setUpdateBy("出库备货");
+            itemUpdate.setUpdateTime(new Date());
+            orderItemMapper.updateById(itemUpdate);
         }
         //添加主表信息
         ErpStockOut insert = new ErpStockOut();
         insert.setStockOutNum("DDCK-"+ DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
         insert.setStockOutType(EnumStockOutType.DDCK.getIndex());
-        insert.setSourceNum(oOrderShipList.getOrderNum());
-        insert.setSourceId(oOrderShipList.getId());
-        insert.setRemark("备货单生成出库单");
-        insert.setCreateBy("备货单生成出库单");
+        insert.setSourceNum(oOrder.getOrderNum());
+        insert.setSourceId(oOrder.getId());
+        insert.setRemark("订单生成出库单");
+        insert.setCreateBy("订单生成出库单");
         insert.setCreateTime(new Date());
-        insert.setGoodsUnit(oOrderShipListItems.size());
-        insert.setSpecUnit(oOrderShipListItems.size());
+        insert.setGoodsUnit(oOrderItems.size());
+        insert.setSpecUnit(oOrderItems.size());
         insert.setSpecUnitTotal(sum);
         insert.setOutTotal(0);
         insert.setOperatorId(0L);
@@ -254,12 +259,12 @@ public class OOrderShipListServiceImpl extends ServiceImpl<OOrderShipListMapper,
         });
 
         // 更新发货订单
-        OOrderShipList shipOrderUpdate = new OOrderShipList();
-        shipOrderUpdate.setId(oOrderShipList.getId());
-        shipOrderUpdate.setStatus(3);
-        shipOrderUpdate.setUpdateTime(new Date());
-        shipOrderUpdate.setUpdateBy("生成出库单");
-        this.baseMapper.updateById(shipOrderUpdate);
+        OOrder orderUpdate = new OOrder();
+        orderUpdate.setId(shipOrderId.toString());
+        orderUpdate.setShipStatus(2);
+        orderUpdate.setUpdateTime(new Date());
+        orderUpdate.setUpdateBy("生成出库单");
+        orderMapper.updateById(orderUpdate);
         return ResultVo.success();
     }
 }

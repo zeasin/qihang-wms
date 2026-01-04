@@ -235,7 +235,7 @@
 
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="orderStatus" >
+      <el-table-column label="订单状态" align="center" prop="orderStatus" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.orderStatus === 0" style="margin-bottom: 6px;">新订单</el-tag>
           <el-tag v-if="scope.row.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
@@ -259,7 +259,13 @@
 <!--           <el-tag v-if="scope.row.refundStatus === 4">退款成功</el-tag>-->
         </template>
       </el-table-column>
-
+      <el-table-column label="出库状态" align="center" prop="orderStatus" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.shipStatus === 0" style="margin-bottom: 6px;">待出库</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 1" style="margin-bottom: 6px;">部分出库</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 2" style="margin-bottom: 6px;">已出库</el-tag>
+        </template>
+      </el-table-column>
 
 <!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->
 <!--        <template slot-scope="scope">-->
@@ -616,7 +622,7 @@ export default {
         return stockOut({id:row.id});
       }).then(() => {
         this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.$modal.msgSuccess("出库单生成成功");
       }).catch(() => {});
     },
     handlePullUpdate(row) {

@@ -85,7 +85,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         insert.setStockOutNum(request.getOutNum());
         insert.setStockOutType(request.getType());
         insert.setSourceNum(request.getSourceNo());
-        insert.setSourceId(0L);
+        insert.setSourceId("0");
         insert.setRemark(request.getRemark());
         insert.setCreateBy(userName);
         insert.setCreateTime(new Date());
@@ -108,8 +108,8 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
 
             outItem.setEntryId(insert.getId());
             outItem.setStockOutType(request.getType());
-            outItem.setSourceOrderId(0L);
-            outItem.setSourceOrderItemId(0l);
+            outItem.setSourceOrderId("0");
+            outItem.setSourceOrderItemId("0");
             outItem.setSourceOrderNum("");
             outItem.setGoodsId(item.getGoodsId());
             outItem.setSpecId(item.getSkuId());

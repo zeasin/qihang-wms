@@ -2,6 +2,9 @@ package cn.qihangerp.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -13,6 +16,7 @@ public class ErpStockOutItem implements Serializable {
     /**
      * 主键ID
      */
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**
@@ -28,17 +32,19 @@ public class ErpStockOutItem implements Serializable {
     /**
      * 来源订单id
      */
-    private Long sourceOrderId;
+    private String sourceOrderId;
 
     /**
      * 来源订单itemId出库对应的itemId，如：order_item表id、invoice_info表id
      */
-    private Long sourceOrderItemId;
+    private String sourceOrderItemId;
 
     /**
      * 来源订单号
      */
     private String sourceOrderNum;
+
+    private String sourceSubOrderNum;
 
     /**
      * 商品id

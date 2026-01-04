@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -16,6 +18,7 @@ public class ErpStockOut implements Serializable {
     /**
      * 
      */
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**
@@ -31,7 +34,7 @@ public class ErpStockOut implements Serializable {
     /**
      * 来源单据Id
      */
-    private Long sourceId;
+    private String sourceId;
 
     /**
      * 出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库

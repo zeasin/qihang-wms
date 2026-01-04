@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 03/01/2026 16:53:21
+ Date: 04/01/2026 17:59:13
 */
 
 SET NAMES utf8mb4;
@@ -294,13 +294,11 @@ CREATE TABLE `erp_stock_out`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `update_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_stock_out
 -- ----------------------------
-INSERT INTO `erp_stock_out` VALUES (5, 'DDCK-20251009144849', '251002-171237742200640', 5, 1, 1, 1, 1, 0, '备货单生成出库单', 0, 0, NULL, NULL, NULL, 0, '', '2025-10-09 14:48:49', '备货单生成出库单', '2025-10-09 06:48:49', NULL);
-INSERT INTO `erp_stock_out` VALUES (6, 'DDCK-20251009145209', '251002-171237742200640', 5, 1, 1, 1, 1, 0, '备货单生成出库单', 0, 1, '2025-10-09 23:16:41', NULL, NULL, 0, '', '2025-10-09 14:52:09', '备货单生成出库单', '2025-10-09 15:16:41', NULL);
 
 -- ----------------------------
 -- Table structure for erp_stock_out_item
@@ -313,6 +311,7 @@ CREATE TABLE `erp_stock_out_item`  (
   `source_order_id` bigint NOT NULL COMMENT '来源订单id',
   `source_order_item_id` bigint NOT NULL COMMENT '来源订单itemId出库对应的itemId，如：order_item表id、invoice_info表id',
   `source_order_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '来源订单号',
+  `source_sub_order_num` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源子订单号',
   `goods_id` bigint NOT NULL COMMENT '商品id',
   `spec_id` bigint NOT NULL COMMENT '商品规格id',
   `spec_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格编码',
@@ -325,13 +324,11 @@ CREATE TABLE `erp_stock_out_item`  (
   `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIndex`(`spec_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_stock_out_item
 -- ----------------------------
-INSERT INTO `erp_stock_out_item` VALUES (5, 1, 5, 5, 6, '251002-171237742200640', 0, 45, 'LEDDP00102', 1, 0, NULL, NULL, 0, '2025-10-09 14:48:49', NULL);
-INSERT INTO `erp_stock_out_item` VALUES (6, 1, 6, 5, 6, '251002-171237742200640', 0, 45, 'LEDDP00102', 1, 0, NULL, NULL, 0, '2025-10-09 14:52:09', NULL);
 
 -- ----------------------------
 -- Table structure for erp_stock_out_item_position
@@ -352,7 +349,7 @@ CREATE TABLE `erp_stock_out_item_position`  (
   `out_time` datetime NULL DEFAULT NULL COMMENT '出库时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_stock_info_item_id_index`(`goods_inventory_detail_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '出库仓位详情' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_stock_out_item_position
@@ -884,7 +881,7 @@ CREATE TABLE `o_order`  (
 -- Records of o_order
 -- ----------------------------
 INSERT INTO `o_order` VALUES (1, '260103-143340377723488', 300, 1011, NULL, '', '', NULL, 4, 11, 39.32, 0, 0, 0, 14.54, 24.78, 24.78, 0, '', '', '', '', '', '', '2026-01-03 13:08:45', '2026-01-03 13:18:01', '2026-01-03 13:08:46', '', 0, 0, 0, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, '待发货', '1');
-INSERT INTO `o_order` VALUES (2, '260103-064550356563156', 300, 1011, NULL, '', '', NULL, 1, 2, 33.93, 0, 0, 0, 0, 33.93, 33.93, 0, NULL, NULL, NULL, '', '', '', '2026-01-03 13:45:26', '2026-01-03 15:41:10', '2026-01-03 13:45:27', '', 0, 0, 0, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, '已发货待签收', '2');
+INSERT INTO `o_order` VALUES (2, '260103-064550356563156', 300, 1011, NULL, '', '', NULL, 1, 2, 33.93, 0, 0, 0, 0, 33.93, 33.93, 0, NULL, NULL, NULL, '', '', '', '2026-01-03 13:45:26', '2026-01-03 15:41:10', '2026-01-03 13:45:27', '', 0, 0, 2, '0', NULL, NULL, '2026-01-03 16:08:13', NULL, '2026-01-04 17:56:35', '生成出库单', NULL, '已发货待签收', '2');
 
 -- ----------------------------
 -- Table structure for o_order_item
@@ -932,8 +929,8 @@ CREATE TABLE `o_order_item`  (
 -- ----------------------------
 -- Records of o_order_item
 -- ----------------------------
-INSERT INTO `o_order_item` VALUES (1, 1011, 300, 1, NULL, '260103-143340377723488-1742164849117', '1742164849117', 0, 13, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/70732144-21a8-423c-90df-553c3ea4fe36.jpeg.a.jpeg', 'LEDDX001', '24W白光-215mm', 'LEDDX00103', 39.32, 39.32, 0, 39.32, 1, NULL, 0, 1, 1, 0, 0, 0, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, NULL);
-INSERT INTO `o_order_item` VALUES (2, 1011, 300, 2, NULL, '260103-064550356563156-1742164849116', '1742164849116', 0, 12, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/dfb81deb-a7c1-4028-b6b1-b3f02fb63c72.jpeg.a.jpeg', 'LEDDX001', '18W白光-175mm', 'LEDDX00102', 33.93, 33.93, 0, 33.93, 1, NULL, 0, 1, 2, 0, 0, 0, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, NULL);
+INSERT INTO `o_order_item` VALUES (1, 1011, 300, 1, '260103-143340377723488', '260103-143340377723488-1742164849117', '1742164849117', 0, 13, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/70732144-21a8-423c-90df-553c3ea4fe36.jpeg.a.jpeg', 'LEDDX001', '24W白光-215mm', 'LEDDX00103', 39.32, 39.32, 0, 39.32, 1, NULL, 0, 1, 1, 0, 0, 0, '2026-01-03 16:08:13', NULL, '2026-01-03 16:37:49', NULL, NULL, NULL);
+INSERT INTO `o_order_item` VALUES (2, 1011, 300, 2, '260103-064550356563156', '260103-064550356563156-1742164849116', '1742164849116', 0, 12, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 'https://img.pddpic.com/mms-material-img/2025-05-29/dfb81deb-a7c1-4028-b6b1-b3f02fb63c72.jpeg.a.jpeg', 'LEDDX001', '18W白光-175mm', 'LEDDX00102', 33.93, 33.93, 0, 33.93, 1, NULL, 0, 1, 2, 0, 0, 2, '2026-01-03 16:08:13', NULL, '2026-01-04 17:56:35', '出库备货', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for o_order_ship_list
@@ -1302,7 +1299,7 @@ CREATE TABLE `o_shop_pull_logs`  (
   `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
   `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2007370800982339586 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2007447856453763075 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_shop_pull_logs
@@ -1329,6 +1326,7 @@ INSERT INTO `o_shop_pull_logs` VALUES (2007255303028682753, 1012, 500, 'GOODS', 
 INSERT INTO `o_shop_pull_logs` VALUES (2007255692893470721, 1012, 500, 'GOODS', '主动拉取商品sku', '', '{successTotal:6}', '2026-01-03 09:00:23', 2095);
 INSERT INTO `o_shop_pull_logs` VALUES (2007363351869005826, 1011, 300, 'ORDER', '主动拉取订单', '{startTime:2026-01-03 00:00:01,endTime:2026-01-03 23:59:59}', '{insert:2,update:0,fail:0}', '2026-01-03 16:08:09', 3437);
 INSERT INTO `o_shop_pull_logs` VALUES (2007370800982339585, 1011, 300, 'ORDER', '主动拉取订单', '{startTime:2026-01-03 00:00:01,endTime:2026-01-03 23:59:59}', '{insert:2,update:0,fail:0}', '2026-01-03 16:37:48', 635);
+INSERT INTO `o_shop_pull_logs` VALUES (2007447856453763074, 1007, 300, 'ORDER', '主动拉取订单', '{startTime:2026-01-03 00:00:01,endTime:2026-01-03 23:59:59}', '{insert:0,update:0,fail:0}', '2026-01-03 21:32:54', 666229);
 
 -- ----------------------------
 -- Table structure for o_shop_region
@@ -3051,7 +3049,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-01-03 16:06:43', 'admin', '2023-08-07 19:31:37', '', '2026-01-03 08:06:42', '管理员');
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-01-04 17:49:15', 'admin', '2023-08-07 19:31:37', '', '2026-01-04 09:49:14', '管理员');
 INSERT INTO `sys_user` VALUES (2, NULL, 'openapi', 'openApi接口专用', '00', '2806456181@qq.com', '15818590000', '0', '', '$2a$10$fHkhoqbMiyracAsTzl38H.55bu.M.of1FXk2EK7RQBjfic3tLU0Ue', '0', '0', '127.0.0.1', '2024-06-24 10:23:35', 'admin', '2024-03-17 14:55:22', 'admin', '2024-06-24 10:23:35', NULL);
 INSERT INTO `sys_user` VALUES (101, 101, '15818590119', 'aaa123', '00', '', '', '0', '', '$2a$10$pXcT6cHaObMeKuYd9vZb5uEb8PyUdF2AcqqRN1cBqiA9rV4qYQW7G', '0', '2', '', NULL, 'admin', '2024-08-15 13:45:25', '', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, 101, '15818590119', '老齐', '00', '', '', '0', '', '$2a$10$ysk.zgJ8wh25c7vOjKyZ8uarM2hkG0S51j8GYdJSo2kZmc3f8HdKe', '0', '0', '', NULL, 'admin', '2024-08-15 13:49:59', 'admin', '2025-02-10 16:26:20', NULL);
@@ -3210,10 +3208,6 @@ CREATE TABLE `wms_stock_out`  (
 -- ----------------------------
 -- Records of wms_stock_out
 -- ----------------------------
-INSERT INTO `wms_stock_out` VALUES (1785676644348735490, '202405012220056', NULL, NULL, 1, 1, 1, 1, NULL, NULL, 0, 0, NULL, NULL, NULL, 0, NULL, '2024-05-01 22:24:23', '生成拣货单', '2024-05-01 22:24:22', NULL);
-INSERT INTO `wms_stock_out` VALUES (1786204816504958978, '202405030923075', NULL, NULL, 1, 1, 1, 1, 1, NULL, 2, 0, NULL, '2024-05-03 10:56:33', '2024-05-03 10:56:33', 1, 'admin', '2024-05-03 09:23:09', '生成拣货单', '2024-05-03 10:56:34', '出库');
-INSERT INTO `wms_stock_out` VALUES (1788393466709282818, '202405091020024', NULL, NULL, 1, 1, 1, 1, 0, NULL, 0, 0, NULL, NULL, NULL, 0, NULL, '2024-05-09 10:20:04', '生成拣货单', '2024-05-09 10:20:03', NULL);
-INSERT INTO `wms_stock_out` VALUES (1794205460481933313, '202405251109432', NULL, NULL, 1, 1, 1, 1, 0, NULL, 0, 0, NULL, NULL, NULL, 0, NULL, '2024-05-25 11:14:51', '生成拣货单', '2024-05-25 11:14:51', NULL);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item
@@ -3226,6 +3220,7 @@ CREATE TABLE `wms_stock_out_item`  (
   `source_order_id` bigint NOT NULL COMMENT '来源订单id',
   `source_order_item_id` bigint NOT NULL COMMENT '来源订单itemId出库对应的itemId，如：order_item表id、invoice_info表id',
   `source_order_num` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '来源订单号',
+  `source_sub_order_num` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源子订单号',
   `goods_id` int NOT NULL COMMENT '商品id',
   `spec_id` int NOT NULL COMMENT '商品规格id',
   `spec_num` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '规格编码',
@@ -3243,10 +3238,6 @@ CREATE TABLE `wms_stock_out_item`  (
 -- ----------------------------
 -- Records of wms_stock_out_item
 -- ----------------------------
-INSERT INTO `wms_stock_out_item` VALUES (1785676644373901314, 1, 1785676644348735490, 38, 442, '2055782964491095876', 9, 23, '2720210080260001', 1, 0, NULL, NULL, 0, '2024-05-01 22:24:23', NULL);
-INSERT INTO `wms_stock_out_item` VALUES (1786204816504958979, 1, 1786204816504958978, 41, 1785584827112509446, '2137984935735126281', 9, 32, '2720210080260105', 1, 1, '2024-05-03 10:56:27', '2024-05-03 10:56:26', 2, '2024-05-03 09:23:09', NULL);
-INSERT INTO `wms_stock_out_item` VALUES (1788393466763808769, 1, 1788393466709282818, 51, 1785584827112509452, 'A13885020023320', 1228, 1228, 'GZYYZ72773100', 1, 0, NULL, NULL, 0, '2024-05-09 10:20:04', NULL);
-INSERT INTO `wms_stock_out_item` VALUES (1794205460544847873, 1, 1794205460481933313, 49, 1785584827112509450, 'AD3702565220', 1229, 1229, 'GZYYZ72776200', 1, 0, NULL, NULL, 0, '2024-05-25 11:14:51', NULL);
 
 -- ----------------------------
 -- Table structure for wms_stock_out_item_position
@@ -3270,8 +3261,6 @@ CREATE TABLE `wms_stock_out_item_position`  (
 -- ----------------------------
 -- Records of wms_stock_out_item_position
 -- ----------------------------
-INSERT INTO `wms_stock_out_item_position` VALUES (1786220616376844290, 1786204816504958978, 1786204816504958979, 6, 7, 1, 20, 1, 'admin', '2024-05-03 10:25:55');
-INSERT INTO `wms_stock_out_item_position` VALUES (1786228283631636481, 1786204816504958978, 1786204816504958979, 6, 7, 1, 20, 1, 'admin', '2024-05-03 10:56:24');
 
 -- ----------------------------
 -- Table structure for wms_warehouse
