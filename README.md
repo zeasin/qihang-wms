@@ -66,9 +66,15 @@
 │  │  · 财务/报表     │  │  · 营销/促销     │  │ · 抖音小时达  ││
 │  └─────────────────┘  └─────────────────┘  └──────────────┘│
 ├─────────────────────────────────────────────────────────────┤
-│          技术底座：Spring Boot 4.1 + Vue 3.5                 │
+│          技术底座：Spring Boot 4.1 + Vue 3.5 + Electron      │
+├─────────────────────────────────────────────────────────────┤
+│          双客户端形态：Web端（浏览器） + 桌面端（本地安装）     │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**双客户端形态**：
+- **Vue Web端**：浏览器访问，适合有服务器的商户
+- **Electron桌面端**：本地安装，支持硬件驱动（打印机/扫码枪/钱箱）
 
 ---
 
@@ -86,7 +92,8 @@
 | 营业员管理 | ✅ 已完成 | 复用 `erp_sales_person`（扩展字段） |
 | 门店管理 | ✅ 已完成 | 复用 `o_shop`（type=999） |
 | 营销促销 | ✅ 已完成 | 复用 `o_marketing_discount_rule` |
-| POS收银 | 🚧 开发中 | Electron桌面端 + 离线模式 |
+| Vue Web端（管理后台+POS） | ✅ 已完成 | 浏览器访问，完整功能 |
+| Electron桌面端 | 🚧 开发中 | 本地安装，管理后台+POS+硬件驱动 |
 | 即时零售 | 📋 规划中 | 美团/淘宝/京东/抖音对接 |
 
 ---
@@ -241,9 +248,48 @@ A 门店库存不足 → 创建调拨单 →
 | 积分管理 | 消费自动累计积分，积分可抵扣 |
 | 消费记录 | 会员历史订单查询 |
 
-### 4.6 POS收银（开发中）
+### 4.6 Electron桌面端（开发中）
 
-Electron桌面端收银系统，支持离线模式和硬件外设对接。
+Electron桌面端是一个**完整的本地安装应用**，包含管理后台和POS收银两大功能模块。所有业务逻辑调用Java后端API，Electron只负责UI渲染和硬件驱动对接。
+
+**架构设计**：
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Java后端（业务逻辑核心）                     │
+│              所有业务逻辑 + 数据存储 + API接口                  │
+└─────────────────────────────────────────────────────────────┘
+                              ↑
+                    所有操作都调用API
+                    ↑                   ↑
+        ┌─────────────────┐   ┌─────────────────┐
+        │   Vue Web端      │   │ Electron桌面端   │
+        │   浏览器访问      │   │ 本地安装          │
+        │   管理后台+POS   │   │ 管理后台+POS     │
+        │                  │   │ + 硬件驱动        │
+        └─────────────────┘   └─────────────────┘
+```
+
+**Electron职责**：
+- ✅ UI渲染（复用Vue组件）
+- ✅ 硬件驱动（打印机、扫码枪、钱箱、电子秤）
+- ❌ 不做业务逻辑（全部转发给Java后端）
+- ❌ 不做本地数据库（所有数据存储在MySQL）
+
+**功能模块**：
+
+| 模块 | 功能 | 说明 |
+|------|------|------|
+| **登录** | 账号密码登录 | 调用Java API |
+| **首页** | 数据看板 | 调用Java API |
+| **商品管理** | 商品CRUD、SKU、分类、品牌 | 调用Java API |
+| **库存管理** | 入库/出库/盘点/预警 | 调用Java API |
+| **会员管理** | 会员CRUD、积分、储值 | 调用Java API |
+| **订单管理** | 订单列表/详情/统计 | 调用Java API |
+| **采购管理** | 采购单/供应商 | 调用Java API |
+| **POS收银** | 收银台/支付/打印 | 调用Java API + 本地硬件 |
+| **系统设置** | 用户/角色/字典 | 调用Java API |
+
+**POS收银功能**：
 
 | 功能 | 说明 |
 |------|------|
@@ -251,9 +297,19 @@ Electron桌面端收银系统，支持离线模式和硬件外设对接。
 | 支付方式 | 现金/微信/支付宝/银行卡/会员余额/组合支付 |
 | 班次管理 | 开班/交班/班次对账 |
 | 小票打印 | USB/网口打印机（ESC/POS指令）+ 云打印 |
-| 离线收银 | 断网时本地SQLite缓存，网络恢复后批量上传 |
 | 退货退款 | 整单/部分退货，原路退回/现金/余额 |
 | 硬件对接 | 电子秤（RS232串口）、钱箱、客显屏 |
+
+**与Vue Web端对比**：
+
+| 维度 | Vue Web端 | Electron桌面端 |
+|------|----------|---------------|
+| 功能 | 完整（管理+POS） | 完整（管理+POS） |
+| 部署 | 浏览器访问 | 本地安装 |
+| 硬件 | 无 | 打印机/扫码枪/钱箱 |
+| 网络 | 需要网络 | 需要网络 |
+| 后端 | Java | Java（同一套） |
+| 前端代码 | Vue | Vue（复用） |
 
 ### 4.7 即时零售对接（规划中）
 
@@ -410,96 +466,133 @@ graph TD
 
 ### 6.1 技术栈
 
-| 层级 | 组件 | 版本 |
-|------|------|------|
-| **后端框架** | Spring Boot | 4.1.0 |
-| **安全框架** | Spring Security | 7.1.0 |
-| **持久层** | MyBatis-Plus | 3.5.16 |
-| **数据库** | MySQL | 8 |
-| **缓存** | Redis | 7.x |
-| **前端框架** | Vue | 3.5 |
-| **前端语言** | TypeScript | 5.x |
-| **UI 框架** | Element Plus | 最新 |
-| **构建工具** | Vite | 8 |
-| **JDK** | Java | 17 |
-| **Node.js** | - | 20+ |
+| 层级 | 组件 | 版本 | 说明 |
+|------|------|------|------|
+| **后端框架** | Spring Boot | 4.1.0 | 业务逻辑核心 |
+| **安全框架** | Spring Security | 7.1.0 | 认证授权 |
+| **持久层** | MyBatis-Plus | 3.5.16 | ORM框架 |
+| **数据库** | MySQL | 8 | 数据存储 |
+| **缓存** | Redis | 7.x | 缓存/会话 |
+| **Web前端** | Vue | 3.5 | 管理后台UI |
+| **前端语言** | TypeScript | 5.x | 类型安全 |
+| **UI 框架** | Element Plus | 最新 | 组件库 |
+| **构建工具** | Vite | 8 | 前端构建 |
+| **桌面端** | Electron | 30+ | 本地安装应用 |
+| **JDK** | Java | 17 | 后端运行时 |
+| **Node.js** | - | 20+ | 前端/桌面端构建 |
 
 ### 6.2 项目结构
 
 ```
 qihang-retail/
 │
-├── common/                   # 通用工具模块
-│   ├── src/main/java/cn/qihangerp/common/
-│   │   ├── utils/            # 工具类
-│   │   ├── vo/               # ResultVo 统一响应
-│   │   ├── query/            # PageQuery 分页查询
-│   │   └── result/           # PageResult 分页结果
-│   └── pom.xml
+├── vue/                          # Web前端（管理后台+POS）
+│   ├── src/
+│   │   ├── views/                # 页面组件
+│   │   ├── api/                  # API接口
+│   │   ├── components/           # 通用组件
+│   │   ├── router/               # 路由配置
+│   │   ├── store/                # Pinia状态管理
+│   │   └── utils/                # 工具函数
+│   └── package.json
 │
-├── security/                 # 安全认证模块
-│   ├── src/main/java/cn/qihangerp/security/
-│   │   ├── config/           # Spring Security 配置
-│   │   ├── jwt/              # JWT Token 管理
-│   │   ├── filter/           # 认证过滤器
-│   │   └── entity/           # 安全相关实体
-│   └── pom.xml
+├── electron/                     # Electron桌面端
+│   ├── src/
+│   │   ├── main/                 # 主进程
+│   │   │   ├── index.ts          # 入口
+│   │   │   ├── hardware/         # 硬件驱动
+│   │   │   │   ├── printer.ts    # 打印机驱动
+│   │   │   │   ├── scanner.ts    # 扫码枪驱动
+│   │   │   │   ├── drawer.ts     # 钱箱驱动
+│   │   │   │   └── scale.ts      # 电子秤驱动
+│   │   │   └── ipc/              # IPC通信
+│   │   │       └── handlers.ts   # 硬件操作处理器
+│   │   │
+│   │   ├── renderer/             # 渲染进程
+│   │   │   ├── views/            # 页面组件（复用vue）
+│   │   │   ├── api/              # API调用（调用Java后端）
+│   │   │   ├── components/       # 通用组件（复用vue）
+│   │   │   └── utils/            # 工具函数
+│   │   │
+│   │   └── preload.ts            # 预加载脚本
+│   │
+│   ├── electron-builder.yml      # 打包配置
+│   ├── package.json
+│   └── README.md
 │
-├── model/                    # 领域模型模块
-│   ├── src/main/java/cn/qihangerp/
-│   │   ├── oms/domain/       # 订单相关实体
-│   │   ├── module/domain/    # 业务实体
-│   │   └── security/entity/  # 用户/角色实体
-│   └── pom.xml
+├── common/                       # Java公共模块
+│   └── src/main/java/cn/qihangerp/common/
 │
-├── mapper/                   # 数据访问模块
-│   ├── src/main/java/cn/qihangerp/mapper/
-│   └── src/main/resources/mapper/  # MyBatis XML
-│   └── pom.xml
+├── security/                     # Java安全模块
+│   └── src/main/java/cn/qihangerp/security/
 │
-├── service/                  # 业务逻辑模块
-│   ├── src/main/java/cn/qihangerp/
-│   │   ├── service/          # Service 接口
-│   │   └── service/impl/     # Service 实现
-│   └── pom.xml
+├── model/                        # Java领域模型
+│   └── src/main/java/cn/qihangerp/
 │
-├── erp-api/                  # Spring Boot 主应用模块
+├── mapper/                       # Java数据访问
+│   └── src/main/java/cn/qihangerp/mapper/
+│
+├── service/                      # Java业务逻辑
+│   └── src/main/java/cn/qihangerp/service/
+│
+├── erp-api/                      # Spring Boot主应用
 │   ├── src/main/java/cn/qihangerp/erp/
-│   │   ├── ErpApi.java       # 启动类
+│   │   ├── ErpApi.java           # 启动类
 │   │   ├── controller/
-│   │   │   ├── erp/          # 核心业务控制器
-│   │   │   └── sys/          # 系统管理控制器
-│   │   └── config/           # 全局配置
-│   ├── src/main/resources/
-│   │   ├── application.yml
-│   │   └── application-dev.yml
-│   └── pom.xml
+│   │   │   ├── erp/              # 核心业务控制器
+│   │   │   └── sys/              # 系统管理控制器
+│   │   └── config/               # 全局配置
+│   └── src/main/resources/
+│       ├── application.yml
+│       └── application-dev.yml
 │
-└── vue/                      # 前端项目
-    ├── src/
-    │   ├── views/            # 页面组件
-    │   ├── router/           # 路由配置
-    │   ├── store/            # Pinia 状态管理
-    │   ├── utils/            # 工具函数
-    │   └── api/              # API 接口封装
-    ├── .env.development
-    └── .env.production
+├── docs/                         # 文档
+└── README.md
 ```
 
-### 6.3 模块依赖
+### 6.3 双客户端架构
 
 ```
-    erp-api
+┌─────────────────────────────────────────────────────────────┐
+│                    客户端层                                  │
+│  ┌──────────────────┐  ┌──────────────────────────────┐    │
+│  │ Vue Web端        │  │ Electron桌面端               │    │
+│  │ (Vue3 + 浏览器)  │  │ (Vue3 + Electron)            │    │
+│  │                  │  │                              │    │
+│  │ · 管理后台       │  │ · 管理后台（完整功能）       │    │
+│  │ · POS收银        │  │ · POS收银（完整功能）        │    │
+│  │                  │  │ · 硬件驱动（打印机/扫码枪）   │    │
+│  └────────┬─────────┘  └──────────────┬───────────────┘    │
+└───────────┼───────────────────────────┼─────────────────────┘
+            │  HTTP + JWT              │  HTTP + JWT
+┌───────────▼───────────────────────────▼─────────────────────┐
+│  后端API层 (Spring Boot)                                    │
+│  ┌────────┬────────┬────────┬────────┬────────┬───────┐   │
+│  │  sys   │ goods  │  pos   │ member │ market │finance│   │
+│  ├────────┼────────┼────────┼────────┼────────┼───────┤   │
+│  │inventory│purchase│ store  │ report │  oms   │channel│   │
+│  └────────┴────────┴────────┴────────┴────────┴───────┘   │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│  数据层: MySQL 8 + Redis 7                                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 6.4 模块依赖
+
+```
+    erp-api (Spring Boot主应用)
        │
-       ├──→ security
+       ├──→ security (安全认证)
        │       │
-       │       └──→ common
+       │       └──→ common (公共工具)
        │
-       ├──→ service
+       ├──→ service (业务逻辑)
        │       │
-       │       └──→ mapper
+       │       └──→ mapper (数据访问)
        │               │
-       │               └──→ model
+       │               └──→ model (领域模型)
        │
        └──→ common
 ```
@@ -574,7 +667,7 @@ java -jar erp-api/target/erp-api-4.1.0.jar
 
 启动后访问 `http://localhost:8088` 验证后端服务。
 
-### 7.4 启动前端
+### 7.4 启动Web前端
 
 ```bash
 cd vue
@@ -584,7 +677,17 @@ npm run dev
 
 启动后访问 `http://localhost:88`。
 
-### 7.5 登录系统
+### 7.5 启动Electron桌面端
+
+```bash
+cd electron
+npm install
+npm run dev
+```
+
+启动后Electron桌面端会自动打开，连接Java后端 `http://localhost:8088`。
+
+### 7.6 登录系统
 
 - 默认账号：`admin`
 - 默认密码：`QHerp@23`
@@ -676,7 +779,7 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-### 9.2 前端部署
+### 9.2 Web前端部署
 
 ```bash
 cd vue
@@ -684,7 +787,25 @@ npm run build
 # 构建产物在 vue/dist/ 目录
 ```
 
-### 9.3 Nginx 配置
+### 9.3 Electron桌面端打包
+
+```bash
+cd electron
+npm install
+
+# 打包Windows版本
+npm run build:win
+
+# 打包macOS版本
+npm run build:mac
+
+# 打包Linux版本
+npm run build:linux
+```
+
+打包产物在 `electron/dist/` 目录，可直接分发给用户安装。
+
+### 9.4 Nginx 配置
 
 ```nginx
 # 前端静态资源
@@ -710,7 +831,7 @@ server {
 }
 ```
 
-### 9.4 Docker 部署
+### 9.5 Docker 部署
 
 ```dockerfile
 FROM openjdk:17-jdk-slim
