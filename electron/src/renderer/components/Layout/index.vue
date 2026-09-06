@@ -3,7 +3,6 @@
     <!-- 侧边栏 -->
     <aside class="sidebar" :class="{ collapsed: appStore.sidebarCollapsed }">
       <div class="logo">
-        <img src="@/assets/logo.svg" alt="Logo" v-if="false" />
         <span v-show="!appStore.sidebarCollapsed">启航零售ERP</span>
         <span v-show="appStore.sidebarCollapsed">启航</span>
       </div>

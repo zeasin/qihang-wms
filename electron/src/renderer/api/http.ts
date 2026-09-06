@@ -1,14 +1,14 @@
-import axios from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 
-const http = axios.create({
-  baseURL: 'http://localhost:8088',
+const instance = axios.create({
+  baseURL: '/api',
   timeout: 15000
 })
 
 // 请求拦截器
-http.interceptors.request.use(
+instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -21,21 +21,15 @@ http.interceptors.request.use(
   }
 )
 
-// 响应拦截器
-http.interceptors.response.use(
+// 响应拦截器（返回整个响应体，调用方自行取 res.token / res.data 等）
+instance.interceptors.response.use(
   (response) => {
-    const { code, msg, data } = response.data
-    if (code === 200) {
-      return data
-    } else if (code === 401) {
-      localStorage.removeItem('token')
-      router.push('/login')
-      ElMessage.error('登录已过期，请重新登录')
-      return Promise.reject(new Error(msg || '登录已过期'))
-    } else {
-      ElMessage.error(msg || '请求失败')
-      return Promise.reject(new Error(msg))
+    const res = response.data
+    if (res.code !== 200) {
+      ElMessage.error(res.msg || '请求失败')
+      return Promise.reject(new Error(res.msg))
     }
+    return res
   },
   (error) => {
     if (error.response?.status === 401) {
@@ -55,4 +49,12 @@ http.interceptors.response.use(
   }
 )
 
-export default http
+// 拦截器返回整个响应体（AjaxResult），调用方通过 res / res.data 取值
+type HttpInstance = {
+  get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>
+  delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>
+}
+
+export default instance as unknown as HttpInstance

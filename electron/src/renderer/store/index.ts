@@ -13,21 +13,23 @@ export const useUserStore = defineStore('user', () => {
   const token = ref<string>(localStorage.getItem('token') || '')
   const userInfo = ref<UserInfo | null>(null)
 
-  // 登录
+  // 登录（token 可能在顶层也可能在 data 内）
   async function login(username: string, password: string) {
-    const data = await http.post('/api/sys-api/login', { username, password })
-    token.value = data.token
-    localStorage.setItem('token', data.token)
+    const res: any = await http.post('/sys-api/login', { username, password })
+    const t = res.token || res.data?.token
+    token.value = t
+    localStorage.setItem('token', t)
     await getUserInfo()
-    return data
+    return res
   }
 
-  // 获取用户信息
+  // 获取用户信息（user 可能在顶层也可能在 data 内）
   async function getUserInfo() {
     if (!token.value) return null
-    const data = await http.get('/api/sys-api/getInfo')
-    userInfo.value = data.user
-    return data
+    const res: any = await http.get('/sys-api/getInfo')
+    const user = res.user || res.data?.user
+    userInfo.value = user
+    return res
   }
 
   // 退出登录

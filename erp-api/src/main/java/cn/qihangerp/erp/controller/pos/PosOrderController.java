@@ -4,12 +4,21 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.model.entity.OGoodsInventory;
 import cn.qihangerp.model.entity.OOrder;
+import cn.qihangerp.model.vo.PosDashboardStatsVo;
+import cn.qihangerp.model.vo.SalesDailyVo;
 import cn.qihangerp.request.OrderSearchRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.OGoodsInventoryService;
 import cn.qihangerp.service.OOrderService;
+import cn.qihangerp.service.OmsShopMemberService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * POS订单查询Controller
@@ -21,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 public class PosOrderController extends BaseController {
 
     private final OOrderService orderService;
+    private final OmsShopMemberService memberService;
+    private final OGoodsInventoryService goodsInventoryService;
 
     /**
      * 查询POS订单列表（仅 order_source = POS）
@@ -45,12 +56,44 @@ public class PosOrderController extends BaseController {
     }
 
     /**
-     * 查询今日销售统计
+     * 首页看板统计：今日销售/订单数/会员数/库存预警/近7天趋势/最近订单
      */
     @GetMapping("/today")
-    public AjaxResult todayStats(@RequestParam Long shopId) {
-        // TODO: 实现今日销售统计（基于 o_order order_source=POS）
-        return success("今日统计功能待实现");
+    public AjaxResult todayStats(@RequestParam(required = false) Long shopId) {
+        PosDashboardStatsVo stats = new PosDashboardStatsVo();
+
+        SalesDailyVo today = orderService.getTodaySalesDaily(null);
+        if (today != null) {
+            stats.setTodaySalesAmount(today.getAmount() == null ? 0d : today.getAmount());
+            stats.setTodayOrderCount(today.getCount() == null ? 0L : today.getCount().longValue());
+        } else {
+            stats.setTodaySalesAmount(0d);
+            stats.setTodayOrderCount(0L);
+        }
+
+        stats.setMemberCount(memberService.count());
+
+        long lowStock = goodsInventoryService.count(new LambdaQueryWrapper<OGoodsInventory>()
+                .le(OGoodsInventory::getAvailableQuantity, 10)
+                .eq(OGoodsInventory::getIsDelete, 0));
+        stats.setLowStockCount(lowStock);
+
+        List<SalesDailyVo> daily = orderService.salesDaily();
+        if (daily != null) {
+            if (daily.size() > 7) {
+                daily = daily.subList(0, 7);
+            }
+            Collections.reverse(daily);
+        }
+        stats.setSalesTrend(daily);
+
+        List<OOrder> recent = orderService.list(new LambdaQueryWrapper<OOrder>()
+                .eq(OOrder::getOrderSource, "POS")
+                .orderByDesc(OOrder::getCreateTime)
+                .last("LIMIT 5"));
+        stats.setRecentOrders(recent);
+
+        return success(stats);
     }
 
     /**

@@ -4,8 +4,8 @@ import { registerIPCHandlers } from './ipc/handlers'
 
 let mainWindow: BrowserWindow | null = null
 
-// 开发模式判断
-const isDev = process.env.ELECTRON_RENDERER_URL
+// 开发模式判断（vite-plugin-electron 注入 dev server 地址）
+const isDev = process.env.VITE_DEV_SERVER_URL
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -25,7 +25,7 @@ function createWindow(): void {
 
   // 开发模式加载Vite开发服务器
   if (isDev) {
-    mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL!)
+    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL!)
     mainWindow.webContents.openDevTools()
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
