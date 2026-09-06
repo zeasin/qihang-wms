@@ -36,29 +36,28 @@
   "build": {
     "appId": "com.qihang.retail",
     "productName": "启航零售ERP",
+    "icon": "build/icon",
     "directories": {
       "output": "release"
     },
     "files": [
-      "dist-electron/**/*"
+      "dist-electron/**/*",
+      "resources/**/*"
     ],
     "win": {
       "target": [
         "nsis"
-      ],
-      "icon": "build/icon.ico"
+      ]
     },
     "mac": {
       "target": [
         "dmg"
-      ],
-      "icon": "build/icon.icns"
+      ]
     },
     "linux": {
       "target": [
         "AppImage"
-      ],
-      "icon": "build/icon.png"
+      ]
     },
     "nsis": {
       "oneClick": false,

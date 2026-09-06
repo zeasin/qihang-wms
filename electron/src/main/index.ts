@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, Menu, shell } from 'electron'
 import { join } from 'path'
 import { registerIPCHandlers } from './ipc/handlers'
 
@@ -7,6 +7,10 @@ let mainWindow: BrowserWindow | null = null
 // 开发模式判断（vite-plugin-electron 注入 dev server 地址）
 const isDev = process.env.VITE_DEV_SERVER_URL
 
+function getWindowIcon(): string {
+  return join(__dirname, '../../resources/icon.png')
+}
+
 function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1400,
@@ -14,7 +18,10 @@ function createWindow(): void {
     minWidth: 1200,
     minHeight: 700,
     title: '启航零售ERP',
-    icon: join(__dirname, '../../public/favicon.ico'),
+    icon: getWindowIcon(),
+    autoHideMenuBar: true,
+    backgroundColor: '#f5f7fa',
+    show: false,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       nodeIntegration: false,
@@ -30,6 +37,8 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  mainWindow.once('ready-to-show', () => mainWindow?.show())
 
   // 打开外部链接时使用系统浏览器
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -47,6 +56,11 @@ registerIPCHandlers()
 
 // 应用准备就绪
 app.whenReady().then(() => {
+  // Windows/Linux 去掉默认菜单栏
+  if (process.platform !== 'darwin') {
+    Menu.setApplicationMenu(null)
+  }
+
   createWindow()
 
   app.on('activate', () => {
