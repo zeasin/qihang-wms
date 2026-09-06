@@ -68,10 +68,8 @@ public class PosEmployeeController extends BaseController {
      * 获取当前门店的营业员（下拉选择用）
      */
     @GetMapping("/options")
-    public AjaxResult options(@RequestParam Long shopId) {
-        ErpSalesPerson query = new ErpSalesPerson();
-        query.setShopId(shopId);
-        List<ErpSalesPerson> list = salesPersonService.queryList(query);
+    public AjaxResult options() {
+        List<ErpSalesPerson> list = salesPersonService.queryList(new ErpSalesPerson());
         return success(list);
     }
 }

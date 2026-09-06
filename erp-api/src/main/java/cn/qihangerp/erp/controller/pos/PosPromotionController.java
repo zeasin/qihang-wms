@@ -25,8 +25,8 @@ public class PosPromotionController extends BaseController {
      * 查询当前生效的折扣规则
      */
     @GetMapping("/active")
-    public AjaxResult getActiveRules(@RequestParam Long shopId) {
-        List<OMarketingDiscountRule> rules = discountRuleService.queryActiveRules(shopId);
+    public AjaxResult getActiveRules() {
+        List<OMarketingDiscountRule> rules = discountRuleService.queryActiveRules(null);
         return success(rules);
     }
 
@@ -34,8 +34,8 @@ public class PosPromotionController extends BaseController {
      * 查询指定商品适用的折扣规则
      */
     @GetMapping("/goods/{goodsId}")
-    public AjaxResult getRulesByGoods(@PathVariable Long goodsId, @RequestParam Long shopId) {
-        List<OMarketingDiscountRule> rules = discountRuleService.queryRulesByGoods(goodsId, shopId);
+    public AjaxResult getRulesByGoods(@PathVariable Long goodsId) {
+        List<OMarketingDiscountRule> rules = discountRuleService.queryRulesByGoods(goodsId, null);
         return success(rules);
     }
 

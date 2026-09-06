@@ -25,8 +25,8 @@ public class PosMemberController extends BaseController {
      * 按手机号查询会员（收银台输入手机号）
      */
     @GetMapping("/phone/{phone}")
-    public AjaxResult getByPhone(@PathVariable String phone, @RequestParam Long shopId) {
-        OmsShopMember member = memberService.queryByPhone(phone, shopId);
+    public AjaxResult getByPhone(@PathVariable String phone) {
+        OmsShopMember member = memberService.queryByPhone(phone, null);
         if (member == null) {
             return AjaxResult.error("未找到该手机号对应的会员");
         }

@@ -59,7 +59,7 @@ public class PosOrderController extends BaseController {
      * 首页看板统计：今日销售/订单数/会员数/库存预警/近7天趋势/最近订单
      */
     @GetMapping("/today")
-    public AjaxResult todayStats(@RequestParam(required = false) Long shopId) {
+    public AjaxResult todayStats() {
         PosDashboardStatsVo stats = new PosDashboardStatsVo();
 
         // 今日销售
