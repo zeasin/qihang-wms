@@ -62,36 +62,63 @@ public class PosOrderController extends BaseController {
     public AjaxResult todayStats(@RequestParam(required = false) Long shopId) {
         PosDashboardStatsVo stats = new PosDashboardStatsVo();
 
-        SalesDailyVo today = orderService.getTodaySalesDaily(null);
-        if (today != null) {
-            stats.setTodaySalesAmount(today.getAmount() == null ? 0d : today.getAmount());
-            stats.setTodayOrderCount(today.getCount() == null ? 0L : today.getCount().longValue());
-        } else {
+        // 今日销售
+        try {
+            SalesDailyVo today = orderService.getTodaySalesDaily(null);
+            if (today != null) {
+                stats.setTodaySalesAmount(today.getAmount() == null ? 0d : today.getAmount());
+                stats.setTodayOrderCount(today.getCount() == null ? 0L : today.getCount().longValue());
+            }
+        } catch (Exception e) {
+            logger.error("获取今日销售统计异常", e);
             stats.setTodaySalesAmount(0d);
             stats.setTodayOrderCount(0L);
         }
 
-        stats.setMemberCount(memberService.count());
-
-        long lowStock = goodsInventoryService.count(new LambdaQueryWrapper<OGoodsInventory>()
-                .le(OGoodsInventory::getAvailableQuantity, 10)
-                .eq(OGoodsInventory::getIsDelete, 0));
-        stats.setLowStockCount(lowStock);
-
-        List<SalesDailyVo> daily = orderService.salesDaily();
-        if (daily != null) {
-            if (daily.size() > 7) {
-                daily = daily.subList(0, 7);
-            }
-            Collections.reverse(daily);
+        // 会员总数
+        try {
+            stats.setMemberCount(memberService.count());
+        } catch (Exception e) {
+            logger.error("获取会员总数异常", e);
+            stats.setMemberCount(0L);
         }
-        stats.setSalesTrend(daily);
 
-        List<OOrder> recent = orderService.list(new LambdaQueryWrapper<OOrder>()
-                .eq(OOrder::getOrderSource, "POS")
-                .orderByDesc(OOrder::getCreateTime)
-                .last("LIMIT 5"));
-        stats.setRecentOrders(recent);
+        // 库存预警（去掉 is_delete 过滤，直接按可用库存查）
+        try {
+            long lowStock = goodsInventoryService.count(new LambdaQueryWrapper<OGoodsInventory>()
+                    .le(OGoodsInventory::getAvailableQuantity, 10));
+            stats.setLowStockCount(lowStock);
+        } catch (Exception e) {
+            logger.error("获取库存预警异常", e);
+            stats.setLowStockCount(0L);
+        }
+
+        // 近7天趋势
+        try {
+            List<SalesDailyVo> daily = orderService.salesDaily();
+            if (daily != null) {
+                if (daily.size() > 7) {
+                    daily = daily.subList(0, 7);
+                }
+                Collections.reverse(daily);
+            }
+            stats.setSalesTrend(daily);
+        } catch (Exception e) {
+            logger.error("获取销售趋势异常", e);
+            stats.setSalesTrend(Collections.emptyList());
+        }
+
+        // 最近POS订单
+        try {
+            List<OOrder> recent = orderService.list(new LambdaQueryWrapper<OOrder>()
+                    .eq(OOrder::getOrderSource, "POS")
+                    .orderByDesc(OOrder::getCreateTime)
+                    .last("LIMIT 5"));
+            stats.setRecentOrders(recent);
+        } catch (Exception e) {
+            logger.error("获取最近订单异常", e);
+            stats.setRecentOrders(Collections.emptyList());
+        }
 
         return success(stats);
     }
@@ -100,7 +127,7 @@ public class PosOrderController extends BaseController {
      * 查询销售日报
      */
     @GetMapping("/daily")
-    public AjaxResult dailyReport(@RequestParam Long shopId, @RequestParam String date) {
+    public AjaxResult dailyReport(@RequestParam String date) {
         // TODO: 实现销售日报（基于 o_order order_source=POS）
         return success("日报功能待实现");
     }
